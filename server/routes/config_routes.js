@@ -1,11 +1,9 @@
 const indexR = require("./index"); // create index route
 const usersR = require("./users"); // create index users
-const todosR = require("./todos"); 
 
 exports.routesInit = (app) => { // create a function for using routes on the app 
     app.use("/", indexR);
     app.use("/users", usersR);
-    app.use("/todos", todosR);
 
     // If you are writing a rout or a file that does not exist in Public
     // that will display error 404 

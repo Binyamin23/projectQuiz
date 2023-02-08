@@ -1,7 +1,7 @@
 const express = require("express"); //Express module
 const bcrypt = require("bcrypt"); //Bcrypt module
 const { validateUser, UserModel, validateLogin, genToken } = require("../models/userModel"); //import funcs from userModel
-const { auth } = require("../middlewares/auth"); //import funcs from auth to valid token
+const { auth } = require("../middlewares/atuh"); //import funcs from auth to valid token
 const router = express.Router(); //to create Route
 
 router.get("/", (req, res) => { //Get request users
