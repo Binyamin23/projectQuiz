@@ -1,143 +1,91 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const { auth, authAdmin } = require("../middlewares/auth");
+const express = require("express"); //Express module
+const bcrypt = require("bcrypt"); //Bcrypt module
+const { validateUser, UserModel, validateLogin, genToken } = require("../models/userModel"); //import funcs from userModel
+const { auth } = require("../middlewares/atuh"); //import funcs from auth to valid token
+const router = express.Router(); //to create Route
 
-const { validteUser, UserModel, validteLogin, createToken } = require("../models/userModel");
-const router = express.Router();
-
-// מאזין לכניסה לראוט של העמוד בית לפי מה שנקבע לראוטר
-// בקובץ הקונפיג
-router.get("/", async (req, res) => {
-  res.json({ msg: "Users work" });
+router.get("/", (req, res) => { //Get request users
+    res.json({ msg: "Users work ****" });
 })
 
-router.get("/checkToken",auth , async(req,res) => {
-  res.json(req.tokenData);
+// A route that will be used to test if the token is still valid or reliable
+router.get("/authUser", auth, async (req, res) => {
+    try {
+        res.json({ status: "ok", msg: "token valid", role: req.tokenData.role })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err_msg: "Something went wrong" });
+    }
 })
 
-// auth - פונקציית מידל וואר שבודקת שיש טוקן תקין למשתמש
-// ואז הפונקציה הבאה בשרשור של הראוטר שולפת את המידע של המשתמש
-router.get("/myInfo", auth, async (req, res) => {
-  try {
-    let data = await UserModel.findOne({ _id: req.tokenData._id }, { password: 0 });
-    res.json(data);
-  }
-  catch (err) {
-    console.log(err)
-    res.status(500).json(err)
-  }
+//A router that will be used to return the user's details
+router.get("/userInfo", auth, async (req, res) => {
+    try {
+        let user = await UserModel.findOne({ _id: req.tokenData._id }).populate('todos_id')
+        //findOne --> Returns one object 
+
+        res.json({ user });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err)
+    }
+    // Should return information of name, address
 })
 
-// ראוט שמחזיר את כל המשתמשים ורק משתמש עם טוקן אדמין
-// יוכל להגיע לכאן
-router.get("/allUsers", authAdmin, async (req, res) => {
-  let perPage = Number(req.query.perPage) || 20;
-  let page = Number(req.query.page) || 1
-  let sort = req.query.sort || "_id";
-  let reverse = req.query.reverse == "yes" ? 1 : -1;
-
-  try {
-    let data = await UserModel
-      .find({},{password:0})
-      .limit(perPage)
-      .skip((page - 1) * perPage)
-      .sort({ [sort]: reverse })
-    res.json(data);
-  }
-  catch (err) {
-    console.log(err)
-    res.status(500).json(err)
-  }
-})
-
-// הרשמה של משתמש חדש
+// Create a new User
 router.post("/", async (req, res) => {
-  let validBody = validteUser(req.body);
-  if (validBody.error) {
-    return res.status(400).json(validBody.error.details);
-  }
-  try {
-    let user = new UserModel(req.body);
-    user.password = await bcrypt.hash(user.password, 10);
-    await user.save();
+    // console.log(req.body)
 
-    user.password = "*****";
-    res.status(201).json(user)
-  }
-  catch (err) {
-    if (err.code == 11000) {
-      return res.status(401).json({ msg: "Email already in system, try log in", code: 11000 })
+    let validBody = validateUser(req.body); //validation the request of Create user
+    if (validBody.error) {
+        return res.status(400).json(validBody.error.details);
     }
-    console.log(err);
-    res.status(500).json(err);
-  }
+    try {
+        let user = new UserModel(req.body); // create new user from the model by RequestBody(object) 
+        //Encryption (bcrypt.hash(user.password, Encryption level))
+        user.password = await bcrypt.hash(user.password, 10); //Encryption the password of the user by bcrypt module
+        await user.save(); // save the user/object in database
+        user.password = "******"; //before send json need to hide the Encryption of the password
+        // res.status(201).json(user);
+        res.status(201).json({ msg: 'User created' });
+    } catch (err) {
+        if (err.code == 11000) { // if the email is already (Email Uniqe)
+            return res.status(400).json({ code: 11000, err_msg: "Email already exist" })
+        }
+        console.log(err);
+        res.status(500).json(err);
+    }
 })
 
-// לוג אין משתמש קיים שבסופו מקבל טוקן 
+
+
+//A router that will be used to login user
 router.post("/login", async (req, res) => {
-  let validBody = validteLogin(req.body);
-  if (validBody.error) {
-    return res.status(400).json(validBody.error.details);
-  }
-  try {
-    // לבדוק אם מייל קייים בכלל במערכת
-    let user = await UserModel.findOne({ email: req.body.email })
-    if (!user) {
-      return res.status(401).json({ msg: "User or password not match , code:1" })
+    let validBody = validateLogin(req.body); //validation the request of Login user
+    if (validBody.error) {
+        return res.status(400).json(validBody.error.details);
     }
-    // שהסיסמא שהגיעה מהבאדי בצד לוקח תואמת לסיסמא המוצפנת במסד
-    let passordValid = await bcrypt.compare(req.body.password, user.password)
-    if (!passordValid) {
-      return res.status(401).json({ msg: "User or password not match , code:2" })
-    }
-    let token = createToken(user._id, user.role);
-    res.json({ token: token })
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-})
+    try {
+        let user = await UserModel.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(401).json({ err_msg: "email or password invalid" });
+        }
+        //compatibility passwords between req.body.password to user.password
+        let validPassword = await bcrypt.compare(req.body.password, user.password); // compatibility passwords of bcrypt
+        if (!validPassword) { //if not compatibility
+            return res.status(401).json({ err_msg: "email or password invalid" });
+        }
+        // create a token, the token get the user._id
+        let token = genToken(user)
 
-// ?user_id= &role=
-// משנה תפקיד של משתמש
-router.patch("/role/", authAdmin, async(req,res) => {
-  try{
-    // ישנה את הרול של המשתמש שבקווארי של היוזר איי די
-    // לערך שנמצא בקווארי של רול
-    let user_id = req.query.user_id;
-    let role = req.query.role;
-    // לא מאפשר למשתמש עצמו לשנות את התפקיד שלו
-    // או לשנות את הסופר אדמין
-    if(user_id == req.tokenData._id || user_id == "63b13b2750267011bebf32be"){
-      return res.status(401).json({msg:"You try to change yourself or the superadmin , anyway you are stupid!"})
-    }
-    let data = await UserModel.updateOne({_id:user_id},{role})
-    res.json(data);
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-})
 
-router.delete("/:idDel", authAdmin, async(req,res) => {
-  try{
-    
-    let idDel = req.params.idDel;
-    // בודק שהאיי די שנרצה למחוק לא האיי די של המשתמש
-    // המחובר או של הסופר אדמין
-    // 63b13b2750267011bebf32be -> id of admin@walla.com (super admin)
-    if(idDel == req.tokenData._id || idDel == "63b13b2750267011bebf32be"){
-      return res.status(401).json({msg:"You try to change yourself or the superadmin , anyway you are stupid!"})
+
+        res.json({ token, role: user.role }); //res.json({ token }) equal to res.json({ token:token })
+        // At the end we will need to send a token to the user
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
     }
-    let data = await UserModel.deleteOne({_id:idDel});
-    res.json(data);
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
 })
 
 module.exports = router;
