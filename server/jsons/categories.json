@@ -1,0 +1,55 @@
+[{
+  "_id": {
+    "$oid": "63b141b3a57bc264701a1e7e"
+  },
+  "name": "Actions games",
+  "url_code": "acitons",
+  "img_url": "https://play-lh.googleusercontent.com/fXj6av9XcsZ26-o6lW3cR-0nqP2iYGKzNvUYxn6Vo9SEPT5Jf3FuBcYq43Yv9sHdEx5N=w2560-h1440-rw",
+  "info": "Fun actions games for android smart phones and iphone",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14233a57bc264701a1e80"
+  },
+  "name": "Strategy",
+  "url_code": "stratgy",
+  "img_url": "https://arcadingonline.com/wp-content/uploads/2019/04/8638067405_786d6104b5_b.jpg",
+  "info": "Fun Stratgy games for android smart phones and iphone",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b142cba57bc264701a1e82"
+  },
+  "name": "Business Apps",
+  "url_code": "business",
+  "img_url": "https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "info": "Apps for Bussniess , that save times for the Bussniess and more...",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14346a57bc264701a1e84"
+  },
+  "name": "Arcade games",
+  "url_code": "arcade",
+  "img_url": "https://images.pexels.com/photos/4835429/pexels-photo-4835429.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "info": "Fun Arcade games for android smart phones and iphone",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63ba91c8c325e0a999dd58ea"
+  },
+  "name": "Puzzle",
+  "url_code": "puzzle",
+  "img_url": "https://images.pexels.com/photos/54101/magic-cube-cube-puzzle-play-54101.jpeg?auto=compress&cs=tinysrgb&w=600",
+  "info": "Games that you need to use your brain to solve! very fun !",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63c3af11d5db89b1a3b93a22"
+  },
+  "name": "Sports games",
+  "url_code": "sport",
+  "img_url": "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600",
+  "info": "All games of sport that we love!",
+  "__v": 0
+}]
