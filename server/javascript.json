@@ -1,0 +1,194 @@
+{
+	// Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	"Print to console": {
+		"prefix": "cc",
+		"body": [
+			"console.log($1);",
+			"$2"
+		],
+		"description": "Log output to console"
+	},
+	"window onload": {
+		"prefix": "win",
+		"body": [
+			"window.onload = function(){",
+			"\t$1",
+			"}"
+		],
+		"description": "Log output to console"
+	},
+	"this state":{
+		"prefix": "ts",
+		"body": [
+			"this.state.$1"
+		],
+		"description": "add this.state"
+	},
+	"react onload": {
+		"prefix": "react2",
+		"body": [
+			"import React,{Component} from 'react';",
+			"",
+			"class $1 extends Component{",
+				"\trender(){",
+					"\t\treturn(",
+					"\t\t\t<div>$1</div> $2",
+					"\t\t)",
+				"}",
+			"}",
+			"",
+			"export default $1"
+
+			
+		],
+		"description": "Log output to console"
+	},
+
+	"react2 onload": {
+		"prefix": "react",
+		"body": [
+			"import React from 'react';",
+			"",
+			"function $1(props){",
+
+					"\treturn(",
+					"\t\t<div>$1 work</div> ",
+					"\t)",
+				
+			"}",
+			"",
+			"export default $1"
+
+			
+		],
+		"description": "Log output to console"
+	},
+
+	"import react ang": {
+		"prefix": "imp",
+		"body": [
+			"import {$2} from '$1';",
+			"$3"
+
+			
+		],
+		"description": "Log output to console"
+	},
+	"react3 onload": {
+		"prefix": "rn",
+		"body": [
+			"import React, {useState} from 'react';",
+			"import { StyleSheet, Text, View, Button } from 'react-native';",
+			"",
+			"function $1(props){",
+
+					"\treturn(",
+					"\t\t<View>",
+					"\t\t\t<Text>$1 work</Text>",
+					"\t\t</View> ",
+					"\t)",
+				
+			"}",
+			"",
+			"export default $1"
+
+			
+		],
+		"description": "Log output to console"
+	},
+	"storage chrome": {
+		"prefix": "storage",
+		"body": [
+			"chrome.storage.sync",
+			
+		],
+		"description": "chrome storage"
+	},
+	"arrow function": {
+		"prefix": "arw",
+		"body": [
+			"= () => { \n\t$1\n}",
+			
+		],
+		"description": "arrow function"
+	},
+	"useState hook":{
+		"prefix":"sta",
+		"body":[
+			"let [$1,set$1] = useState($2)"
+		],
+		"description": "create use state fast code"
+	},
+	"document query selector": {
+		"prefix": "dq",
+		"body": [
+			"document.querySelector(\"$1\").$2",
+			
+		],
+		"description": "arrow function"
+	},
+	"render method": {
+		"prefix": "rend",
+		"body": [
+			"render(){",
+				"\tlet div = document.createElement(\"div\");",
+				"\tdiv.className = \"$1\";",
+				"\tdocument.querySelector(this.parent).append(div);",
+				"\tdiv.innerHTML = `",
+				"\n\t$2",
+				"\t`",
+			"}"
+		
+			
+		],
+		"description": "render method from elazar and yosi! "
+	},
+	"try catch": {
+		"prefix": "tr",
+		"body": [
+			"try{",
+			"\t \"$1\" ",
+			"}",
+			"catch(err){",
+			"\t console.log(err);",
+			"\t alert(\"There problem, come back later\");",
+			"}",
+		],
+		"description": "try catch"
+	},
+	"Form events": {
+		"prefix": "id_form",
+		"body": [
+			"let id_form = document.querySelector(\"#id_form\");",
+  		"id_form.addEventListener(\"submit\", (e) => {",
+    	"\te.preventDefault();\n\t$1",
+  "})"
+
+		],
+		"description": "Form events from Elazar Ben chaim"
+	},
+	"try end catch express": {
+		"prefix": "tryexp",
+		"body": [
+			"try{",
+				"\t$1",
+			"}",
+			"catch(err){",
+				"\tconsole.log(err);",
+				"\tres.status(502).json({err})",
+			"}"
+		
+		],
+		"description": "try end catch from Elazar Ben chaim"
+	}
+
+	}
+
+
+
+
+	

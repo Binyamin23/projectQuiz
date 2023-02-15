@@ -1,8 +1,9 @@
-const express = require("express");
+const express= require("express");
 const router = express.Router();
-// main route 
-router.get("/", (req, res) => {
-    res.json({ msg: "Welcome to my API 2 " });
+
+router.get("/", async(req,res) => {
+  res.json({msg:"Api Work 200 09:20"});
 })
+
 
 module.exports = router;

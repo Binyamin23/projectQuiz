@@ -1,20 +1,32 @@
-const express = require("express"); //Express 
-const path = require("path"); //To Perform manipulations on folders & files
+const express = require("express");
+const path = require("path");
 const http = require("http");
-const { routesInit, corsAccessControl } = require("./routes/config_routes"); // import routesInit() & corsAccessControl()
-require("./db/mongoConnect"); // Links the mongo to app
-require('dotenv').config()
+const cors = require("cors");
 
-const app = express(); // app of express        
+const {routesInit} = require("./routes/configRoutes");
+const fileUpload = require("express-fileupload");
+require("./db/mongoConnect")
 
-app.use(express.json()); // app of jsons
-// app.use(express.static(path.join(__dirname, "public")));
+const app = express();
+// מאפשר גם לדומיין שלא קשור לשרת לבצע בקשה 
+app.use(cors());
+app.use(fileUpload({
+    limits: {fileSize: 1024 * 1024 * 5}
+}))
+// מגדיר לשרת שהוא יכול לקבל מידע מסוג ג'ייסון בבאדי בבקשות שהם לא גט
+app.use(express.json());
 
-corsAccessControl(app);
+// דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
+app.use(express.static(path.join(__dirname,"public")));
+
+// פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
+// צד שרת שלנו
 routesInit(app);
 
-
+// הגדרת שרת עם יכולות אפ שמייצג את האקספרס
 const server = http.createServer(app);
-let port =  process.env.PORT ||  3010;
+// משתנה שיגדיר על איזה פורט אנחנו נעבוד
+// אנסה לבדוק אם אנחנו על שרת אמיתי ויאסוף את הפורט משם אם לא ואנחנו לוקאלי יעבוד על 3002
+let port = process.env.PORT || 3010;
+// הפעלת השרת והאזנה לפורט המבוקש
 server.listen(port);
-//hello world

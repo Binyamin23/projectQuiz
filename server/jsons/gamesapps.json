@@ -1,0 +1,222 @@
+[{
+  "_id": {
+    "$oid": "63b14d7d8974ec3b2dcf69b1"
+  },
+  "name": "PUBG MOBILE",
+  "info": "Lots of events for you to explore.Climb to the top in PUBG MOBILE and fire at will. PUBG MOBILE is an original battle royale mobile game and one of the best mobile shooting games.",
+  "price": 10,
+  "img_url": "https://play-lh.googleusercontent.com/fk_-QuHFslPBGJNVj2htx1hA4xpwB3P9jFoY_s9vbkOfaHZiYfFu_DEjQn2Z9FSS8LI=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.tencent.ig",
+  "category_url": "acitons",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564093149"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14e328974ec3b2dcf69b3"
+  },
+  "name": "Guns of Boom",
+  "info": "• Easy and intuitive controls: get a hang of the game from the get-go and start climbing up the ranks! Vivid graphics and support for older devices: stunning visuals will keep you glued to the screen, while the hardware requirements remain very moderate.",
+  "price": 5,
+  "img_url": "https://play-lh.googleusercontent.com/AyxQAUdCVkiHRTjcE1CLTlw_zFWnMWLgyMacumWtzp7bLVfPAqdWLFkNailNyr3HcRM=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.gameinsight.gobandroid",
+  "category_url": "acitons",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564274142"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14eb78974ec3b2dcf69b5"
+  },
+  "name": "Clash of Clans",
+  "info": "Join millions of players worldwide as you build your village, raise a clan, and compete in epic Clan Wars!Mustachioed Barbarians, fire wielding Wizards, and other unique troops are waiting for you! Enter the world of Clash!",
+  "price": 2,
+  "img_url": "https://play-lh.googleusercontent.com/JfYjuQk3CTNvtnYLL8eMJzhYta7y2rx7ODSziYgALHYbl01rT8A4i19cTk6SRBEB3A=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.supercell.clashofclans",
+  "category_url": "stratgy",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564407440"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14f398974ec3b2dcf69b7"
+  },
+  "name": "Command Generals RTS",
+  "info": "Command, conquer and defeat your enemy on the battle of rts and make the art of war real in this wonderful rts games. At first you have to select the country you wish to lead and start the trench assault to contain generals 2005. Red alert your base is under impressive attack! Hell march is ready to fabulous beginning.",
+  "price": 10,
+  "img_url": "https://play-lh.googleusercontent.com/uEa5KeQbJyvsevXTwWedVuYpBa8-8JknKo3I5sB9oTN5HdG675jcZcNtGvjVXldQjkqE=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=rts.command.generals.art.of.war",
+  "category_url": "stratgy",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564537776"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b14fdc8974ec3b2dcf69b9"
+  },
+  "name": "PAC-MAN",
+  "info": "Play PAC-MAN, the retro arcade game you know and love! Featuring new modes, mazes, power-ups, and more! Join millions of fans eating PAC-DOTS and chomping GHOSTS in this exciting arcade classic, updated for mobile!",
+  "price": 5,
+  "img_url": "https://play-lh.googleusercontent.com/JxjXUVLlrpt94G6wu2XAf892q6Djz4n_Ow-wKqBY_xc2LPsYRzzbQ52Dl6rFc2Lf7g=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.namcobandaigames.pacmantournaments",
+  "category_url": "arcade",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564700536"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b1509d8974ec3b2dcf69bb"
+  },
+  "name": "Space Invaders",
+  "info": "Space Invaders is a very addictive and entertaining game. Avoid the projectiles and eliminate the invaders.",
+  "price": 7,
+  "img_url": "https://play-lh.googleusercontent.com/VIRwTUOO_jnzuyfVjtiSXhTOVBQUnKd_7kBJFugLvyJaMHFsUxvFKOGq5tBL5zsIw-Oy=w526-h296-rw",
+  "link_url": "https://play-lh.googleusercontent.com/VIRwTUOO_jnzuyfVjtiSXhTOVBQUnKd_7kBJFugLvyJaMHFsUxvFKOGq5tBL5zsIw-Oy=w526-h296-rw",
+  "category_url": "arcade",
+  "date": {
+    "$date": {
+      "$numberLong": "1672564893442"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b151298974ec3b2dcf69bf"
+  },
+  "name": "Business Calendar 2",
+  "info": "Business Calendar 2 has everything you need in a calendar app: It provides an excellent overview of your appointments, it’s easy to use and it gives you powerful tools for planning your events and tasks.",
+  "price": 7,
+  "img_url": "https://play-lh.googleusercontent.com/0-FRQ4-9JeVXNKNBmS3HngmEehJc1XJnUwhtg0zBa4jSQv8ku9CREfHvJIV7iJym-W6o=w416-h235-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.appgenix.bizcal",
+  "category_url": "business",
+  "date": {
+    "$date": {
+      "$numberLong": "1672565033289"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63b151798974ec3b2dcf69c1"
+  },
+  "name": "LinkedIn",
+  "info": "Welcome professionals! Find jobs on one of the largest social networking apps and online jobs market with LinkedIn, the most trusted network and business community. Build connections with industry leaders in your community, follow business news, get salary insights and discover a new career. Start your job search and find the workplace for you - whether in a welcoming office setting or from the comfort of your house when you work from home.",
+  "price": 2,
+  "img_url": "https://play-lh.googleusercontent.com/z0gMa0aRAkLxjS-lVaSOO1Ygb48rttOcR5iRpgJPTM6_enkfeCuN37JWm_9qcHJaJw=w416-h235-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.linkedin.android",
+  "category_url": "business",
+  "date": {
+    "$date": {
+      "$numberLong": "1672565113890"
+    }
+  },
+  "user_id": "63b13b6050267011bebf32c2",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63d63bd1c24faca5c67219d6"
+  },
+  "name": "Zombie World Survivor",
+  "info": "Become a brave and mighty hero standing against hordes of enemies all alone and try to save the city!",
+  "price": 5,
+  "img_url": "https://play-lh.googleusercontent.com/XMK7ebC4an5yrz1b0ucuOzH-r7byb0UmyaV4Q9uf7qQ0EYWeBJZS4OHcVvgOgBgNHxs7=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.zombieworld.survivor",
+  "category_url": "acitons",
+  "date": {
+    "$date": {
+      "$numberLong": "1674984401547"
+    }
+  },
+  "user_id": "63d6269a2b9c6ae8c3b18a2b",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63d63c27c24faca5c67219da"
+  },
+  "name": "Tanks vs Bugs",
+  "info": "Where archers fail, tanks rush in and prevail!\nAs our general would always say: ‘A tank-sized bug can only be handled by a TANK!’",
+  "price": 3,
+  "img_url": "https://play-lh.googleusercontent.com/-Ge4fq4AaxNAY8hzzA_dWp1dyJ7RnoZ9ns6APXs1qVOaTH0hjFSC9p1propPIgnjc4I=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.redspell.nanotanks",
+  "category_url": "acitons",
+  "date": {
+    "$date": {
+      "$numberLong": "1674984487511"
+    }
+  },
+  "user_id": "63d6269a2b9c6ae8c3b18a2b",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63d65624c24faca5c6721a43"
+  },
+  "name": "Golden Axe classic",
+  "info": "All three 16-bit chapters of SEGA’s Golden Axe series hit SEGA Forever in one single app!",
+  "price": 4,
+  "img_url": "https://play-lh.googleusercontent.com/D5wENPxXdeO-1qk3kSFTEAS45hH6aJuWao0DHClipgEoubpX2TKZ041ZzwadbVhpOg=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.sega.goldenaxe",
+  "category_url": "arcade",
+  "date": {
+    "$date": {
+      "$numberLong": "1674991140139"
+    }
+  },
+  "user_id": "63d6269a2b9c6ae8c3b18a2b",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63d65fa1c24faca5c6721acc"
+  },
+  "name": "Fifa mobile",
+  "info": "Build an Ultimate Team™ of your favorite soccer stars and kickoff your journey to the FIFA World Cup™ in EA SPORTS™ FIFA Mobile today.",
+  "price": 12,
+  "img_url": "https://play-lh.googleusercontent.com/ezV4keQCG-ra49OJzTkrUlj8aMkDI7-K85FwxrKgM8I4IyrG-Wy3xLIiCusT1CkyNIk=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.ea.gp.fifamobile",
+  "category_url": "sport",
+  "date": {
+    "$date": {
+      "$numberLong": "1674993569074"
+    }
+  },
+  "user_id": "63d65ea5c24faca5c6721abd",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63d660c8c24faca5c6721aef"
+  },
+  "name": "Candy Crush",
+  "info": "We hope you’re having fun playing Candy Crush Saga! We update the game every week so don't forget to download the latest version to get all the sweet new features and levels!\n\nNew to the game? Don’t be shy, join the fun!\n\nComing back after a break? About time!",
+  "price": 3,
+  "img_url": "https://play-lh.googleusercontent.com/RMVbCCiiufNaIAYsdoWDP9NNEkfHx94206TtjqUshn9ZT9YAmmx_hE7bw19akRpdMP8=w526-h296-rw",
+  "link_url": "https://play.google.com/store/apps/details?id=com.king.candycrushsaga",
+  "category_url": "puzzle",
+  "date": {
+    "$date": {
+      "$numberLong": "1674993864301"
+    }
+  },
+  "user_id": "63d6269a2b9c6ae8c3b18a2b",
+  "__v": 0
+}]
