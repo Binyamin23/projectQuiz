@@ -31,6 +31,7 @@ router.get("/myInfo", auth, async (req, res) => {
 // ראוט שמחזיר את כל המשתמשים ורק משתמש עם טוקן אדמין
 // יוכל להגיע לכאן
 router.get("/allUsers", authAdmin, async (req, res) => {
+  
   let perPage = Number(req.query.perPage) || 20;
   let page = Number(req.query.page) || 1
   let sort = req.query.sort || "_id";

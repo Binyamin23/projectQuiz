@@ -3,11 +3,12 @@ const Joi = require("joi");
 
 let schema = new mongoose.Schema({
   name: String,
-  url_code: String,
-  img_url: String,
   info: String,
+  url_code: String,
+  img_url: String
 })
 exports.CategoryModel = mongoose.model("categories", schema)
+
 
 exports.validateJoi = (_reqBody) => {
   let joiSchema = Joi.object({

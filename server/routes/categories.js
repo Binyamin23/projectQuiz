@@ -3,7 +3,7 @@ const { authAdmin } = require("../middlewares/auth");
 let {CategoryModel,validateJoi} = require("../models/categoryModel");
 const router = express.Router();
 
-router.get("/", async(req,res) => {
+router.get("/all", async(req,res) => {
   try{
     let data = await CategoryModel.find({})
     .limit(20);
@@ -43,7 +43,7 @@ router.get("/byCode/:url_code", async(req,res) => {
 
 // get שנותן לי מידע על קטגוריה ספציפית
 
-router.post("/", authAdmin,async(req,res) => {
+router.post("/newCat", authAdmin, async(req,res) => {
   let validBody = validateJoi(req.body);
   if(validBody.error){
     return res.status(401).json(validBody.error.details)
@@ -59,7 +59,7 @@ router.post("/", authAdmin,async(req,res) => {
   }
 })
 
-router.put("/:id", authAdmin,async(req,res) => {
+router.put("/edit/:id", authAdmin,async(req,res) => {
   let validBody = validateJoi(req.body);
   if(validBody.error){
     return res.status(401).json(validBody.error.details)
@@ -75,7 +75,7 @@ router.put("/:id", authAdmin,async(req,res) => {
   }
 })
 
-router.delete("/:id", authAdmin,async(req,res) => {
+router.delete("/delete/:id", authAdmin,async(req,res) => {
   try{
     let id = req.params.id;
     let data = await CategoryModel.deleteOne({_id:id});
