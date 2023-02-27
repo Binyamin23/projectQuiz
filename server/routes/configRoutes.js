@@ -1,7 +1,7 @@
 const indexR = require("./index");
 const usersR = require("./users");
 const categoriesR = require("./categories");
-const gamesAppsR = require("./gamesApps");
+const questionsR = require("./questions");
 const uploadR = require("./upload");
 
 
@@ -10,7 +10,7 @@ exports.routesInit = (app) => {
   app.use("/",indexR);
   app.use("/users",usersR);
   app.use("/categories",categoriesR);
-  app.use("/gamesApps", gamesAppsR);
+  app.use("/questions", questionsR);
   app.use("/upload", uploadR);
 
 

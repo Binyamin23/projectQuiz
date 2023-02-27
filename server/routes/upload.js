@@ -2,7 +2,7 @@ const express= require("express");
 const path = require("path");
 const { auth } = require("../middlewares/auth");
 const { UserModel } = require("../models/userModel");
-const { GamesAppsModel } = require("../models/gamesAppModel")
+const { GamesAppsModel } = require("../models/questionsModel")
 const router = express.Router();
 
 router.get("/", async(req,res) => {
