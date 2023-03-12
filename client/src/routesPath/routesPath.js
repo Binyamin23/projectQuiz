@@ -14,7 +14,7 @@ import PageGamesList from "../client_comps/pageGamesList/pageGamesList"
 import AddGame from "../client_comps/userPages/addGame"
 import EditGame from "../client_comps/userPages/editGames"
 import Login from "../client_comps/userPages/login"
-import Signup from "../client_comps/userPages/signup"
+import Signup from "../client_comps/userPages/signUp"
 import UserGamesAddedList from "../client_comps/userPages/userGamesAddedList"
 
 // פו
