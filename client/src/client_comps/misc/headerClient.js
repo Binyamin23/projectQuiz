@@ -15,7 +15,7 @@ export default function HeaderClient() {
   }
 
   return (
-    <header className="container-fluid bg-warning p-2 shadow">
+    <header className="container-fluid bg-dark-subtle p-2 shadow">
       <div className="container">
         <div className="row align-items-center">
           <div className='logo col-auto'>

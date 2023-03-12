@@ -16,6 +16,11 @@ header{
   האלמנט עם אבסלוט או פיקסד , אז נשים רילטיב */
   position: relative;
   z-index: 99;
+
+}
+footer{
+  position: relative;
+  z-index:100;
 }
 
 header ul{
