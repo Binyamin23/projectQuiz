@@ -80,7 +80,7 @@ export default function GameInfo() {
               Back</button>
           </div>
           <hr />
-          <SimGames category_url={info.category_url} />
+          <SimGames _id={info._id} category_url={info.category_url} />
 
         </React.Fragment>
         : <Loading />

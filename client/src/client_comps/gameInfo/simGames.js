@@ -6,7 +6,7 @@ import GameAppItem from '../misc/gameAppItem';
 // Similair game - משחקים דומים
 export default function SimGames(props) {
   const [ar,setAr] = useState([]);
-  const {category_url} = props;
+  const {category_url, _id} = props;
 
   useEffect(() => {
    doApi();
