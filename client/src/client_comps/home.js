@@ -7,7 +7,7 @@ import Sidebar from './misc/sidebar'
 
 export default function Home() {
   return (
-    <div style={{position:"relative"}}>      
+    <div>      
       <Sidebar />
     </div>
     )
