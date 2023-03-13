@@ -1,0 +1,10 @@
+#mainDiv{
+height: 100vh;
+overflow-Y:auto;
+overflow-x:"hidden";
+width: "40vw";
+position: "fixed";
+left: 0;
+top:0;
+bottom:"120px"
+}

@@ -1,8 +1,9 @@
 /* global css */
-main{
+main {
   min-height: 85vh;
 }
-.center{
+
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +11,7 @@ main{
   flex-direction: column;
 }
 
-header{
+header {
   /* כדי שנוכל לתת זיד אינדקס חובה לתת גם מאפיין
   פוזישן כלשהו, ואם אנחנו לא רוצים בטעות להשפיע על
   האלמנט עם אבסלוט או פיקסד , אז נשים רילטיב */
@@ -18,35 +19,36 @@ header{
   z-index: 99;
 
 }
-footer{
+
+footer {
   position: relative;
-  z-index:100;
+  z-index: 99; 
 }
 
-header ul{
+header ul {
   display: flex;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
-header ul a{
-  color:black;
-  padding:0 12px;
+header ul a {
+  color: black;
+  padding: 0 12px;
   text-decoration: none;
 }
 
-.bg-item-app{
+.bg-item-app {
   background-size: cover;
   background-position: center;
   min-height: 130px;
   background-color: black;
 }
 
-.page404{
+.page404 {
   min-height: 100vh;
   background: grey;
-  color:white;
+  color: white;
   display: flex;
   padding-top: 80px;
   /* align-items: center; */
@@ -56,9 +58,9 @@ header ul a{
   background-size: cover;
 }
 
-.page404 h1{
+.page404 h1 {
   font-size: 3.5em;
-  color:white;
-  text-shadow: 0 1px 0 #CCCCCC, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+  color: white;
+  text-shadow: 0 1px 0 #CCCCCC, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, .1), 0 0 5px rgba(0, 0, 0, .1), 0 1px 3px rgba(0, 0, 0, .3), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .2), 0 20px 20px rgba(0, 0, 0, .15);
   /* text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #d633ff, 0 0 30px #d633ff, 0 0 40px #d633ff, 0 0 55px #d633ff, 0 0 75px #d633ff; */
 }

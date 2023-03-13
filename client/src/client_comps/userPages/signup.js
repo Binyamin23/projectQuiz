@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, doApiMethod } from '../../services/apiService';
+import Sidebar from '../misc/sidebar';
 
 export default function Signup() {
   const nav = useNavigate();
@@ -39,8 +40,45 @@ export default function Signup() {
 
   return (
     <div className='container'>
+      <Sidebar/>
       <h1 className='text-center display-4'>Sign up to our site</h1>
       <p className='lead text-center'>Allow you to add your app to our site!</p>
+      <form className='col-md-6 mx-auto p-2 shadow' onSubmit={handleSubmit(onSubForm)} id="id_form" >
+        <label>name</label>
+        <input {...register("name", { required: true, minLength: 2 })} className="form-control" type="text" />
+        {errors.name && <div className="text-danger">* Enter valid name</div>}
+        <label>email</label>
+        <input {...register("email", { required: true, minLength: 2 })} className="form-control" type="email" />
+        {errors.email && <div className="text-danger">* Enter valid email</div>}
+        <label>password</label>
+        <input {...register("password", { required: true, minLength: 2 })} className="form-control" type="password" />
+        {errors.password && <div className="text-danger">* Enter valid password</div>}
+        <button className='btn btn-info mt-3'>Sign up</button>
+      </form>
+      <form className='col-md-6 mx-auto p-2 shadow' onSubmit={handleSubmit(onSubForm)} id="id_form" >
+        <label>name</label>
+        <input {...register("name", { required: true, minLength: 2 })} className="form-control" type="text" />
+        {errors.name && <div className="text-danger">* Enter valid name</div>}
+        <label>email</label>
+        <input {...register("email", { required: true, minLength: 2 })} className="form-control" type="email" />
+        {errors.email && <div className="text-danger">* Enter valid email</div>}
+        <label>password</label>
+        <input {...register("password", { required: true, minLength: 2 })} className="form-control" type="password" />
+        {errors.password && <div className="text-danger">* Enter valid password</div>}
+        <button className='btn btn-info mt-3'>Sign up</button>
+      </form>
+      <form className='col-md-6 mx-auto p-2 shadow' onSubmit={handleSubmit(onSubForm)} id="id_form" >
+        <label>name</label>
+        <input {...register("name", { required: true, minLength: 2 })} className="form-control" type="text" />
+        {errors.name && <div className="text-danger">* Enter valid name</div>}
+        <label>email</label>
+        <input {...register("email", { required: true, minLength: 2 })} className="form-control" type="email" />
+        {errors.email && <div className="text-danger">* Enter valid email</div>}
+        <label>password</label>
+        <input {...register("password", { required: true, minLength: 2 })} className="form-control" type="password" />
+        {errors.password && <div className="text-danger">* Enter valid password</div>}
+        <button className='btn btn-info mt-3'>Sign up</button>
+      </form>
       <form className='col-md-6 mx-auto p-2 shadow' onSubmit={handleSubmit(onSubForm)} id="id_form" >
         <label>name</label>
         <input {...register("name", { required: true, minLength: 2 })} className="form-control" type="text" />
