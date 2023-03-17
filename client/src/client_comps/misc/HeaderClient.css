@@ -1,0 +1,33 @@
+
+.li, h2{
+    color:rgba(60, 126, 250, 0.483);
+}
+
+.logo {
+    width: 5rem;
+    border-radius: 1cm;
+}
+.li {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.user-icon {
+    color: rgb(60, 126, 250);
+    font-size: 1.6rem;
+}
+
+/* @media screen and (max-width: 767px) {
+    .fixed-end {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      z-index: 1;
+   
+    }
+} */
+
+.btn-logout {
+    color: rgb(60, 126, 250);
+margin-right: 6px;
+}

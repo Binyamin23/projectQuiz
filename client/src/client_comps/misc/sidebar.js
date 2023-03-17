@@ -25,10 +25,11 @@ const Sidebar = () => {
             <option>Javascript</option>
           </select>
         </li>
-        <li>Level</li>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
+        <br />
+        <li className='li-level'>Level</li>
+        <li className='li'>1</li>
+        <li className='li'>2</li>
+        <li className='li'>3</li>
       </ul>
     </div>
   );

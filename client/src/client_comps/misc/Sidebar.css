@@ -1,8 +1,8 @@
 .sidebar {
     position: fixed;
     top: 0;
-    left: -40vw;
-    width: 40vw;
+    left: -50vw;
+    width:50vw;
     height: 100%;
     background-color: rgba(60, 126, 250, 0.483);
     transition: all 0.3s ease-in-out;
@@ -41,8 +41,8 @@
   }
   
   .sidebar-menu {
-    margin: 0;
     padding: 0;
+    margin: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -51,18 +51,60 @@
     height: 100%;
   }
   
-  .sidebar-menu li {
+  .sidebar-menu .li {
+    padding: 1rem;
+    color: white;
+    font-size: 1.5rem;
+  }
+  .li-level {
     padding: 1rem;
     color: white;
     font-size: 1.5rem;
   }
   
-  .sidebar-menu li:hover {
+  .sidebar-menu .li:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5%;
+    border-radius:10%;
+
   }
   
-  select{
-    font-size: large;
-    
+  select {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    width: max-content;
+    text-align: center;
   }
+  
+  select:focus {
+    outline: none;
+  }
+  
+  select option {
+    background-color: #222;
+    color: white;
+  }
+  
+  select::-ms-expand {
+    display: none;
+  }
+  
+  select:before {
+    content: "\25BC";
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 20px;
+    right: 15px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  
+  select:hover:before {
+    color: white;
+  }
+  
