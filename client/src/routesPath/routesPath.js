@@ -10,12 +10,14 @@ import UsersList from "../admin_comps/usersList"
 import GameInfo from "../client_comps/gameInfo/gameInfo"
 import Home from "../client_comps/home"
 import FavsGameList from "../client_comps/pageGamesList/favsGamesList"
-import PageGamesList from "../client_comps/pageGamesList/pageGamesList"
+import Quiz from "../client_comps/pageGamesList/catQuiz"
+import PageGamesList from "../client_comps/pageGamesList/catQuiz"
 import AddGame from "../client_comps/userPages/addGame"
 import EditGame from "../client_comps/userPages/editGames"
 import Login from "../client_comps/userPages/login"
 import Signup from "../client_comps/userPages/signup"
 import UserGamesAddedList from "../client_comps/userPages/userGamesAddedList"
+import CatQuiz from "../client_comps/pageGamesList/catQuiz"
 
 // פו
 export const clientRoutes = () => {
@@ -23,15 +25,12 @@ export const clientRoutes = () => {
     <React.Fragment>
        <Route path="/" element={<Home />} />
        <Route path="/test" element={<h2>Test 4444</h2>} />
-       <Route path="/category/:catName" element={<PageGamesList />} />
-        <Route path="/info/:id" element={<GameInfo />} />
+       <Route path="/category/:catName/level/:level" element={<CatQuiz/>} />
         <Route path="/favs" element={<FavsGameList />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/userGameList" element={<UserGamesAddedList />} />
-        <Route path="/userGameList/add" element={<AddGame />} />
-        <Route path="/userGameList/edit/:id" element={<EditGame />} />
+  
     </React.Fragment>
   )
 }

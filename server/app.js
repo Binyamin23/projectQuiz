@@ -27,6 +27,6 @@ routesInit(app);
 const server = http.createServer(app);
 // משתנה שיגדיר על איזה פורט אנחנו נעבוד
 // אנסה לבדוק אם אנחנו על שרת אמיתי ויאסוף את הפורט משם אם לא ואנחנו לוקאלי יעבוד על 3002
-let port = process.env.PORT || 3010;
+let port = process.env.PORT || 3006;
 // הפעלת השרת והאזנה לפורט המבוקש
 server.listen(port);

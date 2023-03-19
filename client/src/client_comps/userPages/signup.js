@@ -40,7 +40,6 @@ export default function Signup() {
 
   return (
     <div className='container'>
-      <Sidebar/>
       <h1 className='text-center display-4'>Sign up to our site</h1>
       <p className='lead text-center'>Allow you to add your app to our site!</p>
       <form className='col-md-6 mx-auto p-2 shadow' onSubmit={handleSubmit(onSubForm)} id="id_form" >

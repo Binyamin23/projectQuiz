@@ -1,9 +1,11 @@
 import axios from "axios"
 
-export const API_URL = "http://localhost:3002";
+export const API_URL = "http://localhost:3006";
 // export const API_URL = "http://blalba.cyclic.com";
 
 export const TOKEN_KEY = "apps_tok";
+
+export const OPEN_AI_KEY = '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';
 
 // for Get only
 export const doApiGet = async(_url) => {

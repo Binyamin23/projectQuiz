@@ -1,49 +1,40 @@
-import axios from 'axios';
-import React, { useRef } from 'react'
-import { API_URL } from '../services/apiService';
+import { Configuration, OpenAIApi } from "openai";
+import { useState } from "react";
+import { OPEN_AI_KEY } from "../services/apiService";
+import { arrayItems } from "./chatGPT/aiOptions";
+import OptionSelection from "./chatGPT/optionSelection";
+import Translation from "./chatGPT/translation";
 
-export default function TestUpload() {
+function Chat() {
+  const configuration = new Configuration({
+    apiKey: OPEN_AI_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
+  const [option, setOption] = useState({});
+  const [result, setResult] = useState("");
+  const [input, setInput] = useState("");
+  console.log(OPEN_AI_KEY);
+  const selectOption = (option) => {
+    setOption(option);
+  };
 
-  const fileRef = useRef();
-
-  const onSub = (e) => {
-    e.preventDefault();
-    uploadFile();
-    
-  }
-  
-  const uploadFile = async() => {
-    console.log(fileRef.current.files)
-    try{
-
-      if(fileRef.current.files){
-        let url = API_URL+"/upload/gamesApp";
-        let formData = new FormData()
-        // אינפוט של קבצים , אין להם וויליו
-        // אך יש להם פיילס שהוא מערך/רשימה
-        // של קבצים שהמשתמש בחר
-        // אם נתעסק עם קובץ אחד בעצם נעלה את תא 0
-        formData.append("myFile",fileRef.current.files[0])
-        let resp = await axios.post(url, formData);
-        console.log(resp.data)
-      }
-    }
-    catch(err){
-      console.log(err);
-      alert("There problem")
-    }
-    
-  }
+  const doStuff = async () => {
+    const response = await openai.completions.create({
+      model: "davinci",
+      prompt: "Hello,",
+      maxTokens: 5,
+      n: 1,
+      stop: "\n",
+    });
+    console.log(response.data.choices[0].text);
+    setResult(response.data.choices[0].text);
+  };
 
   return (
-    <div className='container'>
-      <h2>Test upload file form:</h2>
-      <form onSubmit={onSub} className='col-md-6 '>
-        <label>Choose file</label>
-        <br/>
-        <input ref={fileRef} type="file" />
-        <button>Upload</button>
-      </form>
+    <div className="App">
+      <button onClick={doStuff}>Click</button>
     </div>
-  )
+  );
 }
+
+export default Chat;

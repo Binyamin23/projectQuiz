@@ -27,6 +27,7 @@ export default function AuthAdmin() {
 
 
   return (
-    <React.Fragment></React.Fragment>
+    <React.Fragment>
+    </React.Fragment>
   )
 }

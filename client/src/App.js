@@ -16,7 +16,12 @@ function App() {
       {/* Routes of header what to show client or admin header... */}
       <Routes>
         <Route path="/admin/*" element={<AdminHeader />} />
-        <Route path="/*" element={<HeaderClient />} />
+        <Route path="/*" element={
+          <>
+        <HeaderClient />
+        <Sidebar />
+        </>
+      } />
       </Routes>
       <main>
         <Routes>

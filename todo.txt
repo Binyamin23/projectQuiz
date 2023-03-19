@@ -1,0 +1,3 @@
+- Add picture of category to sidebar
+- Schema for categories (info of category, image etc.)
+

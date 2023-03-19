@@ -8,7 +8,6 @@ import Sidebar from './misc/sidebar'
 export default function Home() {
   return (
     <div>      
-      <Sidebar />
     </div>
     )
 }
