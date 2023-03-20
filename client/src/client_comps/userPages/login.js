@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {useForm} from "react-hook-form"
 import { API_URL,doApiMethod, TOKEN_KEY } from '../../services/apiService';
 import {useNavigate} from "react-router-dom";
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/createContext';
 
 export default function Login() {
+
+  const { user, setUser } = useContext(AuthContext);
 
   const{register , handleSubmit ,  formState: { errors } } = useForm();
   const nav = useNavigate();
@@ -24,6 +27,7 @@ export default function Login() {
       // save local of token
       localStorage.setItem(TOKEN_KEY, data.token);
       // navigate to categoriesList.js
+      setUser(true)
       nav("/");
       toast.info("You logged in");
     }

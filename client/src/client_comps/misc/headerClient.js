@@ -5,21 +5,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTie } from '@fortawesome/free-solid-svg-icons'
 import './HeaderClient.css'
 import logo from '../../images/logo.png'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import useWindowWidth from '../../comps_general/useWidth';
+import { AuthContext } from '../../context/createContext';
 
 
 export default function HeaderClient() {
+  const { user, setUser } = useContext(AuthContext);
 
   let width = useWindowWidth();
 
   const nav = useNavigate();
   const [isMobile, setIsMobile] = useState(width<500);
   const [showMenu, setShowMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage["apps_tok"] != null);
+  //const [isLoggedIn, setIsLoggedIn] = useState(localStorage["apps_tok"] != null);
 
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
+    setUser(false)
     toast.info("You logged out, see you soon!");
     nav("/")
   }
@@ -42,7 +45,7 @@ export default function HeaderClient() {
             </ul>
 
             {!isMobile || showMenu ?
-              !isLoggedIn ?
+              !user ?
                 <ul className='col-auto'>
                   <li><Link className='li' to="/login">Log in</Link></li>
                   <li><Link className='li' to="/signup">Sign up</Link></li>
@@ -54,7 +57,7 @@ export default function HeaderClient() {
 
           </div>
           <ul className='col-auto fixed-end user-icon'>
-          {isLoggedIn?
+          {user?
             <button onClick={onLogOut} className='btn btn-logout' >Log out</button>
             :''
             }
