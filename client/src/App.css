@@ -1,6 +1,7 @@
 /* global css */
 main {
   min-height: 85vh;
+  font-family: 'Rajdhani', sans-serif;
 }
 
 .center {
@@ -17,6 +18,8 @@ header {
   האלמנט עם אבסלוט או פיקסד , אז נשים רילטיב */
   position: relative;
   z-index: 99;
+  font-family: 'Rajdhani', sans-serif;
+  font: weight 500px;;
 
 }
 

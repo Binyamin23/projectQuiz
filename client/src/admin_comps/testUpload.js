@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 import { useState } from "react";
-import { OPEN_AI_KEY } from "../services/apiService";
+import { apiPostGPT, OPEN_AI_KEY } from "../services/apiService";
 import { arrayItems } from "./chatGPT/aiOptions";
 import OptionSelection from "./chatGPT/optionSelection";
 import Translation from "./chatGPT/translation";
@@ -19,20 +19,22 @@ function Chat() {
   };
 
   const doStuff = async () => {
-    const response = await openai.completions.create({
-      model: "davinci",
-      prompt: "Hello,",
-      maxTokens: 5,
-      n: 1,
-      stop: "\n",
-    });
-    console.log(response.data.choices[0].text);
-    setResult(response.data.choices[0].text);
+    let url = 'https://api.openai.com/v1/chat/completions'
+    let body = {
+      "model": "gpt-3.5-turbo",
+      "messages": [{ "role": "user", "content": "Hello!" }]
+    }
+
+    const response = await apiPostGPT(url, body);
+
+    console.log(response.data.choices[0].message.content);
+    setResult(response.data.choices[0].message.content);
   };
 
   return (
     <div className="App">
       <button onClick={doStuff}>Click</button>
+      <h2>{result}</h2>
     </div>
   );
 }
