@@ -52,7 +52,7 @@ export default function Login() {
         <input {...register("password",{required:true,minLength:3})} type="text" className='form-control'/>
         {errors.password && <div className='text-danger'>* Enter valid password (min 3 chars)</div>}
         <div className='mt-4 text-center'>
-          <button className='btn btn-warning col-4 shadow'>Log in</button>
+          <button className='btn col-4 shadow'>Log in</button>
         </div>
       </form>
     </div>
