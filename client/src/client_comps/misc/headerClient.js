@@ -16,8 +16,8 @@ export default function HeaderClient() {
   let width = useWindowWidth();
 
   const nav = useNavigate();
-  const [isMobile, setIsMobile] = useState(width<500);
-  const [showMenu, setShowMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(width < 500);
+  const [showDropdown, setShowDropdown] = useState(false);
   //const [isLoggedIn, setIsLoggedIn] = useState(localStorage["apps_tok"] != null);
 
   const onLogOut = () => {
@@ -44,7 +44,7 @@ export default function HeaderClient() {
               <li><Link to="/">Users</Link></li> */}
             </ul>
 
-            {!isMobile || showMenu ?
+            {!isMobile ?
               !user ?
                 <ul className='col-auto'>
                   <li><Link className='li' to="/login">Log in</Link></li>
@@ -57,12 +57,23 @@ export default function HeaderClient() {
 
           </div>
           <ul className='col-auto fixed-end user-icon'>
-          {user?
-            <button onClick={onLogOut} className='btn btn-logout' >Log out</button>
-            :''
+            {user ?
+              <button onClick={onLogOut} className='btn btn-logout' >Log out</button>
+              : ''
             }
-            <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowMenu(!showMenu)} />
-            
+            <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />
+            {isMobile && showDropdown && (
+              <div className="dropdown border rounded-2">
+                <ul>
+                  <li>
+                   <Link onClick={()=>setShowDropdown(!showDropdown)}  to="/login">Log in</Link>
+                   |
+                    <Link onClick={()=>setShowDropdown(!showDropdown)}  to="/signup">Sign up</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+
 
           </ul>
         </div>
