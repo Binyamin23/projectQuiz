@@ -5,7 +5,7 @@ export const API_URL = "http://localhost:3006";
 
 export const TOKEN_KEY = "apps_tok";
 
-export const OPEN_AI_KEY = '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';
+export const OPEN_AI_KEY = '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';
 
 // for Get only
 export const doApiGet = async(_url) => {
@@ -41,6 +41,23 @@ export const doApiMethod = async(_url,_method,_body = {}) => {
   catch(err){
     console.log(err);
    throw err;
+  }
+}
+
+export const apiPostGPT = async (_url, _body = {}) => {
+  try {
+      let resp = await axios({
+          url: _url,
+          method: 'POST',
+          data: JSON.stringify(_body),
+          headers: {
+               "Content-Type": "application/json" ,
+               "Authorization": `Bearer ${OPEN_AI_KEY}` 
+          }
+      })
+      return resp;
+  } catch (err) {
+      throw err;
   }
 }
 
