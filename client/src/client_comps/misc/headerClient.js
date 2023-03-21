@@ -31,7 +31,7 @@ export default function HeaderClient() {
     <header className="container-fluid bg-dark-subtle p-2 shadow ">
       <div className="container">
         <div className="row align-items-center">
-          <div className='logo col-auto'>
+          <div className='col-auto'>
             <Link className='li' to="/">
               <img className='logo' src={logo} />
             </Link>
