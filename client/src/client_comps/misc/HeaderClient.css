@@ -4,8 +4,8 @@
 }
 
 .logo {
-    width: 6rem;
-    border-radius: 1cm;
+    width: 10rem;
+    border-radius: 0cm;
 
 }
 .li {
@@ -38,7 +38,7 @@ margin-right: 6px;
 .dropdown {
 
     position: absolute;
-    top:85px;
+    top:120px;
     right: 20px;
     background-color: rgba(60, 126, 250, 0.688);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.34);
