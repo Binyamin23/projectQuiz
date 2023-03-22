@@ -7,19 +7,18 @@ import EditCategory from "../admin_comps/editCategory"
 import LoginAdmin from "../admin_comps/loginAdmin"
 import TestUpload from "../admin_comps/testUpload"
 import UsersList from "../admin_comps/usersList"
-import FavsGameList from "../client_comps/pageGamesList/favsGamesList"
+import CatQuiz from "../client_comps/quiz/catQuiz"
 import Login from "../client_comps/userPages/login"
 import Signup from "../client_comps/userPages/signup"
-import CatQuiz from "../client_comps/pageGamesList/catQuiz"
 
 // פו
 export const clientRoutes = () => {
   return(
     <React.Fragment>
-       <Route path="/" element={<CatQuiz />} />
+       <Route path="/" element={<CatQuiz/>} />
        <Route path="/test" element={<h2>Test 4444</h2>} />
        <Route path="/category/:catName/level/:level" element={<CatQuiz/>} />
-        <Route path="/favs" element={<FavsGameList />} />
+        <Route path="/favs" />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

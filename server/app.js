@@ -19,6 +19,12 @@ app.use(express.json());
 // דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
 app.use(express.static(path.join(__dirname,"public")));
 
+app.get('/public/images/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'public', 'images', imageName);
+    res.sendFile(imagePath);
+  });
+
 // פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
 // צד שרת שלנו
 routesInit(app);
