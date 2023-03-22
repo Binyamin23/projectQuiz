@@ -4,10 +4,25 @@
 }
 
 .logo {
-    width: 10rem;
-    border-radius: 0cm;
-
+  width: 10rem;
+  border-radius: 0cm;
+  border: 1px none #ccc;
+  transition: all 0.2s ease-in-out;
 }
+
+.logo:hover {
+  transform: scale(1);
+  border-radius: 1cm;
+  border-color: #999;
+}
+
+.logo:active {
+  transform: scale(0.9);
+  transition: all 0.08s ease-in-out;
+  border-color: #ccc;
+}
+
+
 .li {
     font-size: 1.2rem;
     font-weight: 400;
@@ -16,7 +31,10 @@
 .user-icon {
     color: rgb(60, 126, 250);
     font-size: 1.6rem;
+    transition: all 0.2s ease-in-out;
+
 }
+
 
 /* @media screen and (max-width: 767px) {
     .fixed-end {
