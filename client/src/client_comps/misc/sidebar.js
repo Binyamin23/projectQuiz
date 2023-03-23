@@ -1,11 +1,12 @@
-import React, { useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cat, setCat] = useState("c");
+  const [cat, setCat] = useState("");
   const nav = useNavigate();
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -15,6 +16,12 @@ const Sidebar = () => {
     nav(`category/${e.target.value}/level/1`);
     setCat(e.target.value);
   }
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setCat("c");
+    }
+  }, [location]);
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
@@ -27,7 +34,7 @@ const Sidebar = () => {
       </button>
       <ul className="sidebar-menu">
         <li>
-          <select onChange={changeCategory}>
+          <select onChange={changeCategory} value={cat}>
             <option value={"c"}>C</option>
             <option value={"java"}>Java</option>
             <option value={"js"}>Javascript</option>

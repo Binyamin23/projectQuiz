@@ -19,9 +19,9 @@ app.use(express.json());
 // דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
 app.use(express.static(path.join(__dirname,"public")));
 
-app.get('/public/images/:imageName', (req, res) => {
+app.get('/public/images/categories/:imageName', (req, res) => {
     const imageName = req.params.imageName;
-    const imagePath = path.join(__dirname, 'public', 'images', imageName);
+    const imagePath = path.join(__dirname, 'public', 'images','categories', imageName);
     res.sendFile(imagePath);
   });
 

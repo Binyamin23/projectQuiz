@@ -29,14 +29,14 @@ router.post("/category/:catID", auth, async (req, res) => {
       }
       // מייצר שם חדש לקובץ שהוא האיי די פלוס הסיומת של קובץ המקור שהעלנו
       let newFileName = id + path.extname(myFile.name);
-      myFile.mv("server/public/images/"+newFileName, async(err) => {
+      myFile.mv("server/public/images/categories/"+newFileName, async(err) => {
         if(err){
           console.log(err);
           res.status(400).json({err})
         } else {
           console.log("File uploaded successfully");
           // TODO: update the doc in collection of the new img url
-          let data = await CategoryModel.updateOne({_id:id,user_id:req.tokenData._id},{img_url:"public/images/"+newFileName})
+          let data = await CategoryModel.updateOne({_id:id,user_id:req.tokenData._id},{img_url:"/public/images/categories/"+newFileName})
           res.json({msg:"File uploaded!",status:200,data})
         }
       });

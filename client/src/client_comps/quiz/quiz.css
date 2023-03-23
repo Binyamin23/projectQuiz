@@ -1,3 +1,4 @@
 .container-quiz {
-    background-image: ;
+  transition: background-image 0.3s ease-in-out;
+  background-size: cover;
 }
