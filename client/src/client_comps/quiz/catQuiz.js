@@ -23,7 +23,7 @@ export default function CatQuiz() {
     try {
       const data = await doApiGet(API_URL + `/categories/byCode/${cat}`);
       setCategory(data);
-      setLoading(false);
+      setLoading(true);
     } catch (err) {
       console.log(err);
       setLoading(false);

@@ -17,7 +17,7 @@ export default function AddCategory() {
 
   const doApi = async(bodyData) => {
     try{
-      let url = API_URL+"/categories";
+      let url = API_URL+"/categories/newCat";
       let data = await doApiMethod(url,"POST",bodyData);
       if(data._id){
         alert("Category added");

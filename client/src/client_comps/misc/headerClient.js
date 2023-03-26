@@ -27,6 +27,8 @@ export default function HeaderClient() {
     nav("/")
   }
 
+  
+
   return (
     <header className="container-fluid bg-dark-subtle p-2 shadow ">
       <div className="container">
