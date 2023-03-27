@@ -6,30 +6,32 @@ import './Sidebar.css';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cat, setCat] = useState("");
   const nav = useNavigate();
   const location = useLocation();
   const params = useParams();
-
+  const [cat, setCat] = useState(() => {
+    return localStorage.getItem('selectedCat') || 'c';
+  });
+  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   const changeCategory = (e) => {
-    nav(`category/${e.target.value}/level/1`);
-    setCat(e.target.value);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
+    const selectedCat = e.target.value;
+    nav(`/category/${selectedCat}/level/1`);
+    setCat(selectedCat);
+    localStorage.setItem('selectedCat', selectedCat);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  
 
   useEffect(() => {
-    setCat(params['catName']);
     if (location.pathname === "/") {
       setCat("c")
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
     }
+  }, [location, params['catName']]);
 
-  }, [location]);
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
@@ -50,8 +52,9 @@ const Sidebar = () => {
         </li>
         <br />
         <li className='li-level'>Level</li>
-        <Link onClick={toggleSidebar} to={`/category/${cat}/level/1`} className='li'>1</Link>
-        <Link onClick={toggleSidebar} to={`/category/${cat}/level/2`} className='li'>2</Link>
+        <li>value:{params['catName']}</li>
+        <Link onClick={toggleSidebar} to={`/category/${localStorage.getItem('selectedCat')}/level/1`} className='li'>1</Link>
+        <Link onClick={toggleSidebar} to={`/category/${localStorage.getItem('selectedCat') }/level/2`} className='li'>2</Link>
         <Link onClick={toggleSidebar} to={`/category/${cat}/level/3`} className='li'>3</Link>
       </ul>
     </div>
