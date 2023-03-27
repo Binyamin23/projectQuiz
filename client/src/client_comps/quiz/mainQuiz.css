@@ -1,0 +1,31 @@
+/* Quiz.css */
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.3rem;
+}
+
+.quiz-header {
+    background-color: rgba(60, 126, 250, 0.428);
+    padding: 1.2rem;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.question-title {}
+
+.btn-group {
+    margin-top: 1rem;
+}
+
+.btn-group-vertical h5 {
+    color: white;
+    margin: 0.5rem;
+}
+
+.quiz-footer {
+    text-align: center;
+    margin-top: 1rem;
+}

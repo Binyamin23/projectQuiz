@@ -15,11 +15,14 @@ const Sidebar = () => {
   const changeCategory = (e) => {
     nav(`category/${e.target.value}/level/1`);
     setCat(e.target.value);
-  }
-
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
+  };
+  
   useEffect(() => {
     if (location.pathname === "/") {
       setCat("c");
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
     }
   }, [location]);
 

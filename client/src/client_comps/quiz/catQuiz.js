@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { API_URL, doApiGet } from '../../services/apiService';
+import Quiz from './mainQuiz';
 
-import './quiz.css';
+import './catQuiz.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function CatQuiz() {
   const [cat, setCat] = useState('c');
@@ -11,45 +14,68 @@ export default function CatQuiz() {
 
   const params = useParams();
 
+  const [questions, setQuestions] = useState([]);
+
   useEffect(() => {
     setCat(params['catName'] || 'c');
   }, [params['catName']]);
 
   useEffect(() => {
-    fetchCats();
+    const fetchData = async () => {
+      await fetchCats();
+      await fetchQuestions();
+      setLoading(false);
+    };
+
+    fetchData();
   }, [cat]);
 
   const fetchCats = async () => {
     try {
       const data = await doApiGet(API_URL + `/categories/byCode/${cat}`);
       setCategory(data);
-      setLoading(true);
     } catch (err) {
       console.log(err);
-      setLoading(false);
       setCategory({ img_url: '../../images/logo.png' }); // set default image URL or null
     }
   };
 
+  const fetchQuestions = async () => {
+    try {
+      const data = await doApiGet(API_URL + '/questions/levelOne');
+      setQuestions(data);
+      console.log("quizCat - questions", data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleArrowClick = () => {
+    const welcomeElement = document.querySelector('.welcome-container');
+    const rect = welcomeElement.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const top = rect.bottom + scrollTop;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
   return (
-    <div
-      className="container-fluid container-quiz"
-      style={{
-        backgroundImage: `url(${API_URL + (category?.img_url || '../../images/logo.png')})`,
-        backgroundSize: 'cover',
-        minHeight: '100vh',
-        
-      }}
-    >
-      {loading ? (
-        <div className="row justify-content-around">
-          <div className="col-10 col-md-6 border text-center justify-content-around">
-            <h2 className="p-2">{cat}</h2>
-          </div>
+    <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${API_URL + (category?.img_url || '../../images/logo.png')})` }}>
+      <div className="welcome-container">
+        <div className="inner-welcome">
+          <h1 className="welcome-title">{category.name}</h1>
+          <p className="welcome-info">{category.info}</p>
         </div>
-      ) : (
-        'loading...'
-      )}
+        <div className="welcome-arrow-container" onClick={handleArrowClick}>
+          <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
+        </div>
+      </div>
+      <div id="quiz-component" className="quiz-container">
+        {!loading ? (
+          <Quiz questions={questions} />
+        ) : (
+          'loading...'
+        )}
+      </div>
     </div>
   );
 }
