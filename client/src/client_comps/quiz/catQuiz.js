@@ -40,7 +40,7 @@ export default function CatQuiz() {
 
   const fetchQuestions = async () => {
     try {
-      const data = await doApiGet(API_URL + '/questions/levelOne');
+      const data = await doApiGet(API_URL + `/questions/?cat=${cat}`);
       setQuestions(data);
       setLoading(false);
       console.log("quizCat - questions", data);
