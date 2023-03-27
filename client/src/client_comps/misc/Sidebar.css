@@ -1,8 +1,8 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: -50vw;
-  width: 50vw;
+  left: -40vw;
+  width: 40vw;
   height: 100%;
   background-color: rgba(60, 126, 250, 0.888);
   transition: all 0.3s ease-in-out;
@@ -30,6 +30,11 @@
   align-items: center;
   justify-content: center;
   outline: none;
+}
+
+.arrows {
+width: rem;
+color: white;
 }
 
 .sidebar-toggle i {

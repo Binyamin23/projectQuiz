@@ -39,16 +39,16 @@ export default function HeaderClient() {
             </Link>
           </div>
           <div className='col row align-items-center justify-content-between'>
-            <ul className='col-auto'>
-              <li><Link className='li' to="/userGameList">Scores</Link></li>
-              <li><Link className='li' to="/favs">Favs</Link></li>
+            <ul className='col-auto menu'>
+              <li><Link className='li p-2' to="/userGameList">Scores</Link></li>
+              <li><Link className='li p-2' to="/favs">Favs</Link></li>
               {/* <li><Link to="/">Apps</Link></li>
               <li><Link to="/">Users</Link></li> */}
             </ul>
 
             {!isMobile ?
               !user ?
-                <ul className='col-auto'>
+                <ul className='col-auto '>
                   <li><Link className='li' to="/login">Log in</Link></li>
                   <li><Link className='li' to="/signup">Sign up</Link></li>
                 </ul> :
@@ -60,7 +60,7 @@ export default function HeaderClient() {
           </div>
           <ul className='col-auto fixed-end user-icon'>
             {user ?
-              <button onClick={onLogOut} className='btn btn-logout' >Log out</button>
+              <button onClick={onLogOut} className='btn btn-logout m-0' >Log out</button>
               : ''
             }
             <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />

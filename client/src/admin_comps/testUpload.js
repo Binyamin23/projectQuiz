@@ -6,17 +6,12 @@ import OptionSelection from "./chatGPT/optionSelection";
 import Translation from "./chatGPT/translation";
 
 function Chat() {
-  const configuration = new Configuration({
-    apiKey: OPEN_AI_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
   const [option, setOption] = useState({});
   const [result, setResult] = useState("");
   const [input, setInput] = useState("");
+  
   console.log(OPEN_AI_KEY);
-  const selectOption = (option) => {
-    setOption(option);
-  };
+ 
 
   const doStuff = async () => {
     let url = 'https://api.openai.com/v1/chat/completions'

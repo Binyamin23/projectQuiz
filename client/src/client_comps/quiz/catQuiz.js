@@ -24,9 +24,7 @@ export default function CatQuiz() {
     const fetchData = async () => {
       await fetchCats();
       await fetchQuestions();
-      setLoading(false);
     };
-
     fetchData();
   }, [cat]);
 
@@ -44,6 +42,7 @@ export default function CatQuiz() {
     try {
       const data = await doApiGet(API_URL + '/questions/levelOne');
       setQuestions(data);
+      setLoading(false);
       console.log("quizCat - questions", data);
     } catch (err) {
       console.log(err);
@@ -54,7 +53,7 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const top = rect.bottom + scrollTop;
+    const top = rect.bottom + scrollTop -140;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 

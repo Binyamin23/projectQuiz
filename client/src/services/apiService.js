@@ -5,7 +5,7 @@ export const API_URL = "http://localhost:3008";
 
 export const TOKEN_KEY = "apps_tok";
 
-export const OPEN_AI_KEY = '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';
+export const OPEN_AI_KEY = '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';
 
 // for Get only
 export const doApiGet = async(_url) => {

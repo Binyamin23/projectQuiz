@@ -34,7 +34,7 @@ export const adminRoutes = () => {
         <Route path="/admin/categories" element={<CategoriesList />} />
         <Route path="/admin/categories/new" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
-        <Route path="/admin/apps" element={<AppListAdmin />} />
+        <Route path="/admin/questions" element={<AppListAdmin />} />
         <Route path="/admin/users" element={<UsersList />} />
         <Route path="/admin/test" element={<TestUpload />} />
     </React.Fragment>

@@ -12,7 +12,7 @@ export default function AdminHeader() {
           <div className='col-auto'>
             <ul>
               <li><Link to="/admin/categories">Categories</Link></li>
-              <li><Link to="/admin/apps">Questions</Link></li>
+              <li><Link to="/admin/questions">Questions</Link></li>
               <li><Link to="/admin/users">Users</Link></li>
               <li><Link to="/admin/test">Tests</Link></li>
             </ul>

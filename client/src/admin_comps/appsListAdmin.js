@@ -22,7 +22,7 @@ export default function AppListAdmin() {
     let perPage = getQuery.get("perPage") || 5;
     let page = getQuery.get("page") || 1;
 
-    let url = `${API_URL}/gamesApps?page=${page}&perPage=${perPage}`;
+    let url = `${API_URL}/questions`;
     // let url = API_URL + "/gamesApps";
     try {
       let data = await doApiGet(url);
@@ -64,13 +64,14 @@ export default function AppListAdmin() {
       <table className='table table-striped table-hover'>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Price</th>
+            <th>lang</th>
+            <th>lvl</th>
+            <th>Question</th>
+            {/* <th>Price</th>
             <th>Info</th>
             <th>Category</th>
             <th>Date</th>
-            <th>Del</th>
+            <th>Del</th> */}
           </tr>
         </thead>
         <tbody>
@@ -79,9 +80,10 @@ export default function AppListAdmin() {
             // myDate = myDate.replaceAll("T"," ")
             return (
               <tr key={item._id}>
-                <td>{i+1}</td>
-                <td>{item.name}</td>
-                <td>{item.price}</td>
+                <td>{item.cat_url}</td>
+                <td>{item.level}</td>
+                <td>{item.question}</td>
+                {/* <td>{item.price}</td>
                 <td title={item.info}>{item.info.substring(0,15)}...</td>
                 <td>{item.category_url}</td>
                 <td>{myDate}</td>
@@ -89,7 +91,7 @@ export default function AppListAdmin() {
                   <button onClick={() => {
                     onXClick(item._id);
                   }} className='bg-danger'>X</button>
-                </td>
+                </td> */}
               </tr>
             )
           })}

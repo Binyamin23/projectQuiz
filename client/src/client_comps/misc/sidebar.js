@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleArrowLeft, faCircleArrowRight } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Sidebar.css';
@@ -17,7 +19,7 @@ const Sidebar = () => {
     setCat(e.target.value);
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Add this line
   };
-  
+
   useEffect(() => {
     if (location.pathname === "/") {
       setCat("c");
@@ -30,10 +32,10 @@ const Sidebar = () => {
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       <button className="sidebar-toggle" onClick={toggleSidebar}>
         {isOpen ? (
-          <i className="fas fa-arrow-left"></i>
-        ) : (
-          <i className="fas fa-arrow-right"></i>
-        )}
+          <FontAwesomeIcon className='arrows' size='lg' icon={faCircleArrowLeft} />)
+          : (
+            <FontAwesomeIcon className='arrows'size='lg' icon={faCircleArrowRight} />
+          )}
       </button>
       <ul className="sidebar-menu">
         <li>

@@ -15,23 +15,38 @@ router.get("/levelOne", async (req, res) => {
   }
 })
 
-router.get("/allLevels", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   let level = req.query.level;
+  let cat = req.query.cat;
+  let reverse = req.query.reverse == "yes" ? -1 : 1;
+
+  let reg = new RegExp(cat, "i");
+
   let data;
+
   try {
-    if (level) {
-      data = await QuestionsModel.find({ level })
+    if (cat && level) {
+      data = await QuestionsModel
+        .find({ cat_url: reg, level })
+    }
+    else if (cat) {
+      data = await QuestionsModel
+        .find({ cat_url: reg })
+        .sort({ level: reverse })
     }
     else {
-      data = await QuestionsModel.find({})
+      data = await QuestionsModel
+        .find({})
+        .sort({ cat_url: reverse, level: reverse })
     }
     res.json(data);
   }
   catch (err) {
-    console.log("allLevels", err)
+    console.log("get Questions", err)
     res.status(500).json(err)
   }
 })
+
 // router.get("/", async (req, res) => {
 //   // Math.min -> מביא את המספר הקטן יותר מבין 2 המספרים של ה 20 ומספר העמוד
 //   let perPage = Math.min(req.query.perPage,20) || 5;
@@ -154,7 +169,7 @@ router.delete("/:id", authAdmin, async (req, res) => {
     res.json(data);
   }
   catch (err) {
-    console.log("deleteQuestion",err)
+    console.log("deleteQuestion", err)
     res.status(500).json(err)
   }
 })

@@ -6,6 +6,7 @@ let schema = new mongoose.Schema({
   level: Number,
   cat_url: String,
   img_url: String,
+  info: String,
   answers: [String],
   status: { type: Boolean, default: false },
   date: {
@@ -22,6 +23,7 @@ exports.validateJoi = (_reqBody) => {
     level: Joi.number().min(1).max(3).required(),
     cat_url: Joi.string().min(1).max(20).required(),
     img_url: Joi.string().min(1).max(200).allow("", null),
+    info: Joi.string().min(10).max(500).allow("",null),
     answers: Joi.array().items(Joi.string()).length(4).required()
   })
   return joiSchema.validate(_reqBody)

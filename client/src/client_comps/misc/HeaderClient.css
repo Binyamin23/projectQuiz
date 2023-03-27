@@ -22,6 +22,10 @@
   border-color: #ccc;
 }
 
+.menu{
+  margin-left: -2rem;
+}
+
 
 .li {
     font-size: 1.2rem;
