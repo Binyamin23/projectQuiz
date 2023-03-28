@@ -9,10 +9,8 @@ const Sidebar = () => {
   const nav = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const [cat, setCat] = useState(() => {
-    return localStorage.getItem('selectedCat') || 'c';
-  });
-  
+  const [cat, setCat] = useState(params['catName'] || 'c');
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -21,16 +19,15 @@ const Sidebar = () => {
     const selectedCat = e.target.value;
     nav(`/category/${selectedCat}/level/1`);
     setCat(selectedCat);
-    localStorage.setItem('selectedCat', selectedCat);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      setCat("c")
-    }
-  }, [location, params['catName']]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  }, [location]);
+
 
 
   return (
@@ -44,17 +41,17 @@ const Sidebar = () => {
       </button>
       <ul className="sidebar-menu">
         <li>
-          <select onChange={changeCategory} value={cat}>
-            <option value={"c"}>C</option>
-            <option value={"java"}>Java</option>
-            <option value={"js"}>Javascript</option>
+          <select key={cat} onChange={changeCategory}>
+            <option value="c" selected={cat === "c"}>C</option>
+            <option value="java" selected={cat === "java"}>Java</option>
+            <option value="js" selected={cat === "js"}>Javascript</option>
           </select>
+
         </li>
         <br />
         <li className='li-level'>Level</li>
-        <li>value:{params['catName']}</li>
-        <Link onClick={toggleSidebar} to={`/category/${localStorage.getItem('selectedCat')}/level/1`} className='li'>1</Link>
-        <Link onClick={toggleSidebar} to={`/category/${localStorage.getItem('selectedCat') }/level/2`} className='li'>2</Link>
+        <Link onClick={toggleSidebar} to={`/category/${cat}/level/1`} className='li'>1</Link>
+        <Link onClick={toggleSidebar} to={`/category/${cat}/level/2`} className='li'>2</Link>
         <Link onClick={toggleSidebar} to={`/category/${cat}/level/3`} className='li'>3</Link>
       </ul>
     </div>

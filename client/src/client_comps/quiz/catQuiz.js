@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { API_URL, doApiGet } from '../../services/apiService';
 import Quiz from './mainQuiz';
 
@@ -8,25 +8,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function CatQuiz() {
-  const [cat, setCat] = useState('c');
+  const params = useParams();
+
+  const [cat, setCat] = useState(params['catName'] || 'c');
+  const [level, setLevel] = useState(params['level'] || 1);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
+  const location = useLocation();
 
-  const params = useParams();
 
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     setCat(params['catName'] || 'c');
-  }, [params['catName']]);
+  },[params['catName']]);
+  
+  useEffect(() => {
+    setLevel(params['level'] || 1);
+  },[params['level']]);
+  
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchCats();
-      await fetchQuestions();
-    };
-    fetchData();
-  }, [cat]);
+      fetchCats();
+      fetchQuestions();
+    }, [cat]);
+
+  useEffect(() => {
+      fetchQuestions();
+    }, [level]);
 
   const fetchCats = async () => {
     try {
@@ -40,7 +49,7 @@ export default function CatQuiz() {
 
   const fetchQuestions = async () => {
     try {
-      const data = await doApiGet(API_URL + `/questions/?cat=${cat}`);
+      const data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}`);
       setQuestions(data);
       setLoading(false);
       console.log("quizCat - questions", data);
@@ -70,7 +79,7 @@ export default function CatQuiz() {
       </div>
       <div id="quiz-component" className="quiz-container">
         {!loading ? (
-          <Quiz questions={questions} />
+          <Quiz key={questions.length} questions={questions} />
         ) : (
           'loading...'
         )}
