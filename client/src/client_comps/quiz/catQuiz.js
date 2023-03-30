@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { API_URL, doApiGet } from '../../services/apiService';
 import Quiz from './mainQuiz';
@@ -6,6 +6,7 @@ import Quiz from './mainQuiz';
 import './catQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../../context/createContext';
 
 export default function CatQuiz() {
   const params = useParams();
@@ -14,6 +15,8 @@ export default function CatQuiz() {
   const [level, setLevel] = useState(params['level'] || 1);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
+  const { user, setUser } = useContext(AuthContext);
+
   const location = useLocation();
 
 
@@ -21,21 +24,21 @@ export default function CatQuiz() {
 
   useEffect(() => {
     setCat(params['catName'] || 'c');
-  },[params['catName']]);
-  
+  }, [params['catName']]);
+
   useEffect(() => {
     setLevel(params['level'] || 1);
-  },[params['level']]);
-  
+  }, [params['level']]);
+
 
   useEffect(() => {
-      fetchCats();
-      fetchQuestions();
-    }, [cat]);
+    fetchCats();
+    fetchQuestions();
+  }, [cat]);
 
   useEffect(() => {
-      fetchQuestions();
-    }, [level]);
+    fetchQuestions();
+  }, [level]);
 
   const fetchCats = async () => {
     try {
@@ -43,15 +46,23 @@ export default function CatQuiz() {
       setCategory(data);
     } catch (err) {
       console.log(err);
-      setCategory({ img_url: '../../images/logo.png' }); // set default image URL or null
+      setCategory({ img_url: '../../images/logo.png' }); //set default image URL or null
     }
   };
 
   const fetchQuestions = async () => {
+    let data;
     try {
-      const data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}`);
-      setQuestions(data);
-      setLoading(false);
+      if (!user) {
+        data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
+        setQuestions(data);
+        setLoading(false);
+      }
+      else {
+        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}`);
+        setQuestions(data);
+        setLoading(false);
+      }
       console.log("quizCat - questions", data);
     } catch (err) {
       console.log(err);
@@ -62,7 +73,7 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const top = rect.bottom + scrollTop -140;
+    const top = rect.bottom + scrollTop - 140;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
@@ -79,7 +90,7 @@ export default function CatQuiz() {
       </div>
       <div id="quiz-component" className="quiz-container">
         {!loading ? (
-          <Quiz key={questions.length} questions={questions} />
+          <Quiz key={questions[0]._id} questions={questions} />
         ) : (
           'loading...'
         )}

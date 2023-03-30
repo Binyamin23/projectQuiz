@@ -4,9 +4,13 @@ const { GamesAppsModel, validateJoi, QuestionsModel } = require("../models/quest
 const { random } = require("lodash")
 const router = express.Router();
 
-router.get("/levelOne", async (req, res) => {
+router.get("/levelOne/category/:cat", async (req, res) => {
+  let cat = req.params.cat;
+
+  let reg = new RegExp(cat, "i");
+
   try {
-    let data = await QuestionsModel.find({ level: 1 })
+    let data = await QuestionsModel.find({ level: 1, cat_url: reg })
     res.json(data);
   }
   catch (err) {

@@ -4,6 +4,7 @@ import Loading from '../comps_general/loading';
 
 import PagesComp from '../comps_general/pagesComp';
 import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
+import QuizForm from './addQuestion';
 import AuthAdmin from './authAdmin'
 
 export default function AppListAdmin() {
@@ -58,6 +59,7 @@ export default function AppListAdmin() {
     <div className='container'>
       <AuthAdmin />
       <h1>List of apps/games in the system</h1>
+      <QuizForm/>
       {/* apiPages-> בקשה כדי שיחזיר כמות ומספר עמודים */}
       <PagesComp apiPages={API_URL+"/gamesApps/count?perPage=5"} linkTo={"/admin/apps?page="} linkCss={"btn btn-warning me-2"} />
       {loading && <Loading />}

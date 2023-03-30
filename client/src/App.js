@@ -41,7 +41,7 @@ function App() {
         </Routes>
 
         {/* The toast messages added here */}
-        {/* <ToastContainer position="top-left" theme="colored" /> */}
+        <ToastContainer position="top-left" theme="colored" />
       </UserAuth>
     </BrowserRouter>
   );
