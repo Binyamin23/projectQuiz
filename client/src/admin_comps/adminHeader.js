@@ -11,7 +11,7 @@ export default function AdminHeader() {
           <div className='logo'>
             <h2 className='h2-no-margin'>Admin</h2>
           </div>
-          <h2 className='h2-no-margin text-dark' onClick={() => nav('/')}>Quiz</h2>
+          <h2  style={{cursor:"pointer"}} className='h2-no-margin text-dark' onClick={() => nav('/')}>Quiz</h2>
 
 
 
