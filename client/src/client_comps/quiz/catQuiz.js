@@ -73,7 +73,7 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const top = rect.bottom + scrollTop - 140;
+    const top = rect.bottom + scrollTop;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 

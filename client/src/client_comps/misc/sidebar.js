@@ -13,10 +13,10 @@ const Sidebar = () => {
   const params = useParams();
   const [cat, setCat] = useState(params['catName'] || 'c');
   const [level, setLevel] = useState(params['level'] || '');
-  const { user, setUser } = useContext(AuthContext);
+  const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   const toggleSidebarClose = (newLevel) => {
-    if (user || newLevel == 1) {
+    if (user || admin || newLevel == 1) {
       nav(`/category/${cat}/level/${newLevel}`);
     } else {
       toast.info('Please log in or sign up to access this level.');

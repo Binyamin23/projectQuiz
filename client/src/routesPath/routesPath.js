@@ -30,7 +30,6 @@ export const clientRoutes = () => {
 export const adminRoutes = () => {
   return(
     <React.Fragment>
-      <Route path="/admin" element={<LoginAdmin />} />
         <Route path="/admin/categories" element={<CategoriesList />} />
         <Route path="/admin/categories/new" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:id" element={<EditCategory />} />

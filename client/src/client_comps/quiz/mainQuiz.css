@@ -3,7 +3,14 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 1.3rem;
+    /* Set a max-height instead of fixed height */
+    max-height: 400px;
+    /* Enable scrolling based on content size */
+    overflow-y: auto;
 }
+
+/* ... the rest of your CSS ... */
+
 
 .quiz-header {
     background-color: rgba(60, 126, 250, 0.428);

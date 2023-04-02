@@ -11,7 +11,7 @@ import { AuthContext } from '../../context/createContext';
 
 
 export default function HeaderClient() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   let width = useWindowWidth();
 
@@ -23,11 +23,12 @@ export default function HeaderClient() {
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     setUser(false)
+    setAdmin(false)
     toast.info("You logged out, see you soon!");
     nav("/")
   }
 
-  
+
 
   return (
     <header className="container-fluid bg-dark-subtle p-2 shadow ">
@@ -42,12 +43,15 @@ export default function HeaderClient() {
             <ul className='col-auto menu'>
               <li><Link className='li p-2' to="/userGameList">Scores</Link></li>
               <li><Link className='li p-2' to="/favs">Favs</Link></li>
+              {admin ?
+                <li><Link className='li p-2' to="/admin/categories">Admin</Link></li>
+                : ''}
               {/* <li><Link to="/">Apps</Link></li>
               <li><Link to="/">Users</Link></li> */}
             </ul>
 
             {!isMobile ?
-              !user ?
+              !user && !admin ?
                 <ul className='col-auto '>
                   <li><Link className='li' to="/login">Log in</Link></li>
                   <li><Link className='li' to="/signup">Sign up</Link></li>
@@ -59,22 +63,38 @@ export default function HeaderClient() {
 
           </div>
           <ul className='col-auto fixed-end user-icon'>
-            {user ?
+            {!isMobile && user || !isMobile && admin ?
               <button onClick={onLogOut} className='btn btn-logout m-0' >Log out</button>
               : ''
             }
             <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />
-            {isMobile && showDropdown && (
+            {isMobile && showDropdown && !user && !admin ? (
+
               <div className="dropdown border rounded-2">
                 <ul>
                   <li>
-                   <Link onClick={()=>setShowDropdown(!showDropdown)}  to="/login">Log in</Link>
-                   |
-                    <Link onClick={()=>setShowDropdown(!showDropdown)}  to="/signup">Sign up</Link>
+                    <Link onClick={() => setShowDropdown(!showDropdown)} to="/login">Log in</Link>
+                    |
+                    <Link onClick={() => setShowDropdown(!showDropdown)} to="/signup">Sign up</Link>
                   </li>
                 </ul>
               </div>
-            )}
+            )
+              : isMobile && showDropdown ?
+                <div className="dropdown border rounded-2">
+                  <ul>
+                    <li>
+
+                      <Link className='btn btn-logout m-0' onClick={() => {
+                        setShowDropdown(!showDropdown)
+                        onLogOut()
+                      }} to="/signup">Log out</Link>
+
+                    </li>
+                  </ul>
+                </div>
+                : ''
+            }
 
 
           </ul>

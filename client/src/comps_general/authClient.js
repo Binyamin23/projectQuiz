@@ -4,9 +4,10 @@ import { AuthContext } from '../context/createContext';
 import { API_URL, doApiGet } from '../services/apiService';
 
 
-const UserAuth = ({children}) => {
+const UserAuth = ({ children }) => {
 
     const [user, setUser] = useState(false);
+    const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
         doApi();
@@ -16,21 +17,29 @@ const UserAuth = ({children}) => {
         let url = API_URL + "/users/checkToken"
         try {
             let data = await doApiGet(url);
-            if (data.role === "admin" || data.role === "user") {
+            if (data.role === "admin") {
+                setAdmin(true)
+            }
+            else if (data.role === "user") {
                 setUser(true)
             }
-            else setUser(false)
+            else {
+                setUser(false)
+                setAdmin(false)
+            }
         }
         catch (err) {
             setUser(false)
-           
+            setAdmin(false)
+
+
         }
     }
 
-    return(
-    <AuthContext.Provider value={{user, setUser}}>
-        {children}
-    </AuthContext.Provider>
+    return (
+        <AuthContext.Provider value={{ user, admin, setUser, setAdmin }}>
+            {children}
+        </AuthContext.Provider>
     )
 }
 
