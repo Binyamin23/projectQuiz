@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/createContext';
-import { API_URL, doApiGet } from '../services/apiService';
+import { API_URL, TOKEN_KEY, doApiGet } from '../services/apiService';
 
 
 const UserAuth = ({ children }) => {
 
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState(localStorage.getItem(TOKEN_KEY) !== null);
     const [admin, setAdmin] = useState(false);
 
     useEffect(() => {

@@ -3,7 +3,7 @@ import { faCircleArrowLeft, faCircleArrowRight } from '@fortawesome/free-solid-s
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import './Sidebar.css';
-import { AuthContext } from '../../context/createContext';
+import { AuthContext, LevelContext } from '../../context/createContext';
 import { toast } from 'react-toastify';
 
 const Sidebar = () => {
@@ -11,9 +11,9 @@ const Sidebar = () => {
   const nav = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const [cat, setCat] = useState(params['catName'] || 'c');
-  const [level, setLevel] = useState(params['level'] || '');
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
+
+  const { cat, setCat, level, setLevel } = useContext(LevelContext);
 
   const toggleSidebarClose = (newLevel) => {
     if (user || admin || newLevel == 1) {
@@ -42,15 +42,16 @@ const Sidebar = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
 
-  useEffect(() => {
-    setLevel(params['level'] || '');
-  }, [params]);
+  
 
   const handleLevelClick = async (newLevel) => {
     await setLevel(newLevel);
+    console.log('cat:', cat);
+    console.log('level:', level);
     nav(`/category/${cat}/level/${newLevel}`);
     toggleSidebarClose(newLevel);
   }
+  
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>

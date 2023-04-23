@@ -1,44 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { API_URL, doApiGet } from '../../services/apiService';
+import { API_URL, TOKEN_KEY, doApiGet } from '../../services/apiService';
 import Quiz from './mainQuiz';
-
 import './catQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { AuthContext } from '../../context/createContext';
+import { AuthContext, LevelContext } from '../../context/createContext';
 
 export default function CatQuiz() {
   const params = useParams();
 
-  const [cat, setCat] = useState(params['catName'] || 'c');
-  const [level, setLevel] = useState(params['level'] || 1);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
+  const { cat, level } = useContext(LevelContext);
   const { user, setUser } = useContext(AuthContext);
 
   const location = useLocation();
 
-
   const [questions, setQuestions] = useState([]);
-
-  useEffect(() => {
-    setCat(params['catName'] || 'c');
-  }, [params['catName']]);
-
-  useEffect(() => {
-    setLevel(params['level'] || 1);
-  }, [params['level']]);
-
-
-  useEffect(() => {
-    fetchCats();
-    fetchQuestions();
-  }, [cat]);
-
-  useEffect(() => {
-    fetchQuestions();
-  }, [level]);
 
   const fetchCats = async () => {
     try {
@@ -51,6 +30,7 @@ export default function CatQuiz() {
   };
 
   const fetchQuestions = async () => {
+    console.log("cat, level:", cat, level)
     let data;
     try {
       if (!user) {
@@ -68,6 +48,14 @@ export default function CatQuiz() {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    fetchCats();
+  }, [cat]);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [cat, level]);
 
   const handleArrowClick = () => {
     const welcomeElement = document.querySelector('.welcome-container');

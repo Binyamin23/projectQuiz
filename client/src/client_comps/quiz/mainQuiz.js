@@ -66,22 +66,24 @@ const Quiz = ({ questions }) => {
         setCurrentQuestion(currentQuestion - 1);
     };
 
-    const checkAnswers = () => {
-        let correctAnswers = 0;
+const checkAnswers = () => {
+    let correctAnswers = 0;
 
-        answers.forEach((answer, index) => {
-            if (answer === Questions[index].correct) {
-                correctAnswers++;
-            }
-        });
+    answers.forEach((answer, index) => {
+        if (Questions && Questions[index] && answer === Questions[index].correct) {
+            correctAnswers++;
+        }
+    });
 
-        alert(`You got ${correctAnswers} out of ${questions.length} questions right.`);
-        setShowResults(true);
-    };
+    alert(`You got ${correctAnswers} out of ${questions.length} questions right.`);
+    setShowResults(true);
+};
+
 
     useEffect(() => {
         console.log(Questions)
     }, [Questions])
+
 
     return (
         <div className="quiz-container container">
