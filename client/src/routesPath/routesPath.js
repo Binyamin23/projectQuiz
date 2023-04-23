@@ -10,6 +10,7 @@ import UsersList from "../admin_comps/usersList"
 import CatQuiz from "../client_comps/quiz/catQuiz"
 import Login from "../client_comps/userPages/login"
 import Signup from "../client_comps/userPages/signup"
+import FavoritesPage from "../client_comps/quiz/favsGamesList"
 
 // פו
 export const clientRoutes = () => {
@@ -18,7 +19,7 @@ export const clientRoutes = () => {
        <Route path="/" element={<CatQuiz/>} />
        <Route path="/test" element={<h2>Test 4444</h2>} />
        <Route path="/category/:catName/level/:level" element={<CatQuiz/>} />
-        <Route path="/favs" />
+        <Route path="/favs" element={<FavoritesPage/>}/>
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

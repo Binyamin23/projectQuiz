@@ -1,4 +1,4 @@
-export const FAVS_LOCAL_KEY = "favs_ar";
+export const FAVS_LOCAL_KEY = "starredQuestions";
 const localFav_ar = localStorage[FAVS_LOCAL_KEY] ? JSON.parse(localStorage[FAVS_LOCAL_KEY]) : [];
 
 // פונקציה שמוסיפה ללוקאל איי די למערך הלוקאלי

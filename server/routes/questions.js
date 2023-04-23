@@ -19,6 +19,8 @@ router.get("/levelOne/category/:cat", async (req, res) => {
   }
 })
 
+
+
 router.get("/", auth, async (req, res) => {
   let level = req.query.level;
   let cat = req.query.cat;
@@ -135,7 +137,7 @@ router.post("/newQuestion", authAdmin, async (req, res) => {
   try {
     let question = new QuestionsModel(req.body);
     question.user_id = req.tokenData._id;
-    question.short_id = await createShortId();    // create short_id
+    question.short_id = await createShortId(); // create short_id
     console.log(question);
     await question.save();
     res.status(201).json(question);
@@ -143,6 +145,16 @@ router.post("/newQuestion", authAdmin, async (req, res) => {
   catch (err) {
     console.log("questions", err);
     res.status(502).json({ err })
+  }
+})
+router.post("/favorites" , async(req,res) => {
+  try{
+    let data = await QuestionsModel.find({_id:{$in:req.body.ids}})
+    res.json(data);
+  }
+  catch(err){
+    console.log(err);
+    res.status(502).json({err})
   }
 })
 

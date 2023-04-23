@@ -1,8 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import './mainQuiz.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
+
+    const addToLocalStorage = (_id) => {
+        // Get the current list of starred questions from local storage or initialize an empty array
+        const currentStarredQuestions = JSON.parse(localStorage.getItem('starredQuestions') || '[]');
+
+        // Check if the question ID already exists in the array
+        if (!currentStarredQuestions.includes(_id)) {
+            // Add the new question ID to the array
+            currentStarredQuestions.push(_id);
+
+            // Save the updated array back to local storage
+            localStorage.setItem('starredQuestions', JSON.stringify(currentStarredQuestions));
+
+            // Show a success toast message
+            toast.success('Question added to favorites');
+        } else {
+            // Show a toast message when the question is already in favorites
+            toast.info('Question already saved in favorites');
+        }
+    };
+
+
+
+
     const shuffleArray = (array) => {
         const newArr = [...array];
         for (let i = newArr.length - 1; i > 0; i--) {
@@ -28,23 +55,24 @@ const Quiz = ({ questions }) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('userAnswers')) || Array(questions.length).fill(null));
     const [showResults, setShowResults] = useState(false);
-    const getStoredAnswers = () => {
-        const storedAnswers = JSON.parse(localStorage.getItem('userAnswers'));
-        const expiration = localStorage.getItem('userAnswersExpiration');
 
-        if (!storedAnswers || !expiration) {
-            return Array(questions.length).fill(null);
-        }
+    // const getStoredAnswers = () => {
+    //     const storedAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+    //     const expiration = localStorage.getItem('userAnswersExpiration');
 
-        const currentTime = new Date().getTime();
-        if (currentTime >= Number(expiration)) {
-            localStorage.removeItem('userAnswers');
-            localStorage.removeItem('userAnswersExpiration');
-            return Array(questions.length).fill(null);
-        }
+    //     if (!storedAnswers || !expiration) {
+    //         return Array(questions.length).fill(null);
+    //     }
 
-        return storedAnswers;
-    };
+    //     const currentTime = new Date().getTime();
+    //     if (currentTime >= Number(expiration)) {
+    //         localStorage.removeItem('userAnswers');
+    //         localStorage.removeItem('userAnswersExpiration');
+    //         return Array(questions.length).fill(null);
+    //     }
+
+    //     return storedAnswers;
+    // };
 
 
     const handleAnswer = (index, answer) => {
@@ -66,18 +94,18 @@ const Quiz = ({ questions }) => {
         setCurrentQuestion(currentQuestion - 1);
     };
 
-const checkAnswers = () => {
-    let correctAnswers = 0;
+    const checkAnswers = () => {
+        let correctAnswers = 0;
 
-    answers.forEach((answer, index) => {
-        if (Questions && Questions[index] && answer === Questions[index].correct) {
-            correctAnswers++;
-        }
-    });
+        answers.forEach((answer, index) => {
+            if (Questions && Questions[index] && answer === Questions[index].correct) {
+                correctAnswers++;
+            }
+        });
 
-    alert(`You got ${correctAnswers} out of ${questions.length} questions right.`);
-    setShowResults(true);
-};
+        alert(`You got ${correctAnswers} out of ${questions.length} questions right.`);
+        setShowResults(true);
+    };
 
 
     useEffect(() => {
@@ -107,8 +135,9 @@ const checkAnswers = () => {
                     </div>
 
                     <div className="quiz-footer">
-                        {/* Replace the following spans with your icons, for example: <FontAwesomeIcon icon="star" /> */}
-                        <span className="mr-3">Star</span>
+                        <button>
+                            <FontAwesomeIcon onClick={() => addToLocalStorage(Questions[currentQuestion]._id)} className='mr-3' icon={faStar} style={{ color: "#dbd751", }} />
+                        </button>
                         <span>Report</span>
                     </div>
                 </div>
