@@ -147,6 +147,7 @@ router.post("/newQuestion", authAdmin, async (req, res) => {
     res.status(502).json({ err })
   }
 })
+
 router.post("/favorites" , async(req,res) => {
   try{
     let data = await QuestionsModel.find({_id:{$in:req.body.ids}})

@@ -13,7 +13,7 @@ export default function CatQuiz() {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
   const { cat, level } = useContext(LevelContext);
-  const { user, setUser } = useContext(AuthContext);
+    const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   const location = useLocation();
 
@@ -30,32 +30,35 @@ export default function CatQuiz() {
   };
 
   const fetchQuestions = async () => {
-    console.log("cat, level:", cat, level)
     let data;
     try {
-      if (!user) {
+      if (!user && !admin) {
         data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
-        setQuestions(data);
-        setLoading(false);
-      }
-      else {
+      } else {
         data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}`);
-        setQuestions(data);
-        setLoading(false);
       }
       console.log("quizCat - questions", data);
+      if (data && data.length > 0) {
+        setQuestions(data);
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
     } catch (err) {
       console.log(err);
     }
   };
+  
 
   useEffect(() => {
     fetchCats();
   }, [cat]);
 
   useEffect(() => {
+    console.log("Cat:", cat, "Level:", level);
     fetchQuestions();
   }, [cat, level]);
+  
 
   const handleArrowClick = () => {
     const welcomeElement = document.querySelector('.welcome-container');

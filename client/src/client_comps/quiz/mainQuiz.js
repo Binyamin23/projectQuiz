@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+import { FavoritesUpdateContext } from '../../context/createContext';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
+
+    const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
+
 
     const addToLocalStorage = (_id) => {
         // Get the current list of starred questions from local storage or initialize an empty array
@@ -21,6 +25,8 @@ const Quiz = ({ questions }) => {
 
             // Show a success toast message
             toast.success('Question added to favorites');
+            setFavoritesUpdateFlag(!favoritesUpdateFlag);
+
         } else {
             // Show a toast message when the question is already in favorites
             toast.info('Question already saved in favorites');

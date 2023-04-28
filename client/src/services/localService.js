@@ -1,4 +1,5 @@
 export const FAVS_LOCAL_KEY = "starredQuestions";
+
 const localFav_ar = localStorage[FAVS_LOCAL_KEY] ? JSON.parse(localStorage[FAVS_LOCAL_KEY]) : [];
 
 // פונקציה שמוסיפה ללוקאל איי די למערך הלוקאלי
@@ -8,8 +9,10 @@ export const addIdToFavLocal = (_id) => {
 }
 
 export const getLocal = () => {
+  const localFav_ar = localStorage[FAVS_LOCAL_KEY] ? JSON.parse(localStorage[FAVS_LOCAL_KEY]) : [];
   return localFav_ar;
 }
+
 
 // מוחק איי די מהלוקאל
 export const removeIdFromLocal = (_id) => {
