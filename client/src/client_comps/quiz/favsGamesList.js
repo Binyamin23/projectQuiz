@@ -1,32 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import axios from 'axios';
 import { API_URL, doApiMethod } from '../../services/apiService';
 import { FAVS_LOCAL_KEY, getLocal, removeIdFromLocal } from '../../services/localService';
-import { useLocation, useHistory} from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
+import { FavoritesUpdateContext } from '../../context/createContext';
 
 
 function FavoritesPage() {
   const [starredQuestions, setStarredQuestions] = useState([]);
 
+  const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
+
+
   const [ar, setAr] = useState([]);
   const [favsLocal_ar, setFavsLocalAr] = useState(getLocal());
 
-  const deleteQuestion = (_id)=> {
+  const deleteQuestion = (_id) => {
     removeIdFromLocal(_id);
-    doApi();
-  }
-  const history = useHistory();
+    setFavsLocalAr(getLocal());
+};
 
   useEffect(() => {
-    const unlisten = history.listen(() => {
       doApi();
-    });
+  }, [favoritesUpdateFlag]);
 
-    return () => {
-      unlisten();
-    };
-  }, [history]);
+  useEffect(() => {
+    doApi();
+}, [favsLocal_ar]);
+
 
   const doApi = async () => {
 
