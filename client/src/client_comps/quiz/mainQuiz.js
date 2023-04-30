@@ -3,15 +3,20 @@ import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { FavoritesUpdateContext } from '../../context/createContext';
+import { AuthContext, FavoritesUpdateContext } from '../../context/createContext';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
 
     const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
+    const { user, admin } = useContext(AuthContext);
 
 
     const addToLocalStorage = (_id) => {
+        if (!user && !admin) {
+            toast.warning('Only signed up members can use this feature');
+            return;
+        }
         // Get the current list of starred questions from local storage or initialize an empty array
         const currentStarredQuestions = JSON.parse(localStorage.getItem('starredQuestions') || '[]');
 
@@ -140,12 +145,16 @@ const Quiz = ({ questions }) => {
                         ))}
                     </div>
 
-                    <div className="quiz-footer">
-                        <button>
-                            <FontAwesomeIcon onClick={() => addToLocalStorage(Questions[currentQuestion]._id)} className='mr-3' icon={faStar} style={{ color: "#dbd751", }} />
-                        </button>
-                        <span>Report</span>
+                    <div className="quiz-footer p-2">
+                        <FontAwesomeIcon
+                            onClick={() => addToLocalStorage(Questions[currentQuestion]._id)}
+                            className="mr-3 quiz-icon"
+                            icon={faStar}
+                        />
+                        <br></br>
+                        <span className='text-light p-2'>Add to favs</span>
                     </div>
+
                 </div>
 
                 <div className="d-flex justify-content-between mt-3">

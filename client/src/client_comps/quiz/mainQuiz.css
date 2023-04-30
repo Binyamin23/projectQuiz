@@ -36,3 +36,15 @@
     text-align: center;
     margin-top: 1rem;
 }
+
+.quiz-icon {
+    color: #dbd751;
+    font-size: 24px;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .quiz-icon:hover {
+    transform: scale(1.2);
+  }
+  

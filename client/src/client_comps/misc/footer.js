@@ -10,9 +10,9 @@ export default function Footer() {
       color: '#fff',
       padding: '1rem'
     }}>
-      <p>Copyright © {new Date().getFullYear()} Your Company Name</p>
+      <p>Copyright © {new Date().getFullYear()} Code Quiz</p>
       <p>All rights reserved</p>
-      <p>Contact us: <a href="mailto:info@yourcompany.com" style={{ color: '#fff' }}>info@yourcompany.com</a></p>
+      <p>Contact us: <a href="mailto:benyaron@gmail.com" style={{ color: '#fff' }}>benyaron@gmail.com</a></p>
     </footer>
   );
 };

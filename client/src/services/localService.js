@@ -15,8 +15,12 @@ export const getLocal = () => {
 
 
 // מוחק איי די מהלוקאל
+// מוחק איי די מהלוקאל
 export const removeIdFromLocal = (_id) => {
+  const localFav_ar = getLocal();
   let favIDIndex = localFav_ar.findIndex(val => val == _id)
-  localFav_ar.splice(favIDIndex,1);
-  localStorage.setItem(FAVS_LOCAL_KEY,JSON.stringify(localFav_ar));
+  if (favIDIndex !== -1) {
+    localFav_ar.splice(favIDIndex, 1);
+    localStorage.setItem(FAVS_LOCAL_KEY, JSON.stringify(localFav_ar));
+  }
 }
