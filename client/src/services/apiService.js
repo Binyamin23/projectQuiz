@@ -61,6 +61,53 @@ export const apiPostGPT = async (_url, _body = {}) => {
   }
 }
 
+// Add this function to your API helper file
+export const updateUserWrongIds = async (userId, questionId) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    console.error("Token not found in local storage");
+    return;
+  }
+
+  const response = await fetch(API_URL + "/users/updateWrongIds", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": token // Use token here, not TOKEN_KEY
+    },
+    body: JSON.stringify({ userId, questionId }),
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+export const removeFromUserWrongIds = async (userId, questionId) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    console.error("Token not found in local storage");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/wrong_ids/${questionId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": token
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error removing question ID from user's wrong_ids:", error);
+    throw error;
+  }
+};
+
+
+
+
 // בודק אם התמונה מקומית ואם כן מוסיף לה את הכתובת של השרת
 export const fixImageUrl = (_imgUrl) => {
   if(!_imgUrl.includes("://")){

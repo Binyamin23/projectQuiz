@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, FavoritesUpdateContext } from '../../context/createContext';
+import { removeFromUserWrongIds, updateUserWrongIds } from '../../services/apiService';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
 
     const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
-    const { user, admin } = useContext(AuthContext);
+    const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
+
+
 
 
     const addToLocalStorage = (_id) => {
@@ -105,22 +108,46 @@ const Quiz = ({ questions }) => {
         setCurrentQuestion(currentQuestion - 1);
     };
 
-    const checkAnswers = () => {
+
+    const checkAnswers = async () => {
         let correctAnswers = 0;
-
-        answers.forEach((answer, index) => {
-            if (Questions && Questions[index] && answer === Questions[index].correct) {
+        let wrongAnswers = 0;
+    
+        const minIndex = Math.min(Questions.length, answers.length);
+    
+        for (let i = 0; i < minIndex; i++) {
+            if (Questions[i] && answers[i] === Questions[i].correct) {
                 correctAnswers++;
+    
+                if (userObj && userObj.wrong_ids && userObj.wrong_ids.includes(Questions[i]._id)) {
+                    const data = await removeFromUserWrongIds(userObj._id, Questions[i]._id);
+                    console.log("Removed question ID from user's wrong_ids:", data);
+                    userObj.wrong_ids = userObj.wrong_ids.filter(id => id !== Questions[i]._id);
+                }
+            } else {
+                if (userObj) {
+                    console.log("check:", userObj);
+                    const data = await updateUserWrongIds(userObj._id, Questions[i]._id);
+                    console.log("Added question ID to user's wrong_ids:", data);
+                    userObj.wrong_ids.push(Questions[i]._id);
+                }
+                wrongAnswers++;
             }
-        });
-
-        alert(`You got ${correctAnswers} out of ${questions.length} questions right.`);
+        }
+    
         setShowResults(true);
+    
+        toast.success(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
+    
+        return correctAnswers;
     };
+    
+
 
 
     useEffect(() => {
         console.log(Questions)
+        console.log(userObj)
     }, [Questions])
 
 
@@ -177,6 +204,7 @@ const Quiz = ({ questions }) => {
                         </button>
                     )}
                 </div>
+                
             </div>
         </div>
     );

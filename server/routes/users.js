@@ -28,6 +28,49 @@ router.get("/myInfo", auth, async (req, res) => {
   }
 })
 
+router.post("/updateWrongIds", auth, async (req, res) => {
+  const { userId, questionId } = req.body;
+  // console.log("Received userId:", userId); // Debug
+  // console.log("Received questionId:", questionId); // Debug
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      if (!user.wrong_ids.includes(questionId)) {
+        user.wrong_ids.push(questionId);
+        await user.save();
+        res.status(200).json({ success: true });
+      } else {
+        res.status(200).json({ success: false, message: "Question already in wrong_ids" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (err) {
+    console.log("Error updating user's wrong_ids:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+router.delete('/:userId/wrong_ids/:questionId', auth, async (req, res) => {
+  const { userId, questionId } = req.params;
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      user.wrong_ids = user.wrong_ids.filter(id => !id.equals(questionId));
+      await user.save();
+      res.status(200).json({ success: true });
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (err) {
+    console.log("Error removing question ID from user's wrong_ids:", err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+
+
+
 // ראוט שמחזיר את כל המשתמשים ורק משתמש עם טוקן אדמין
 // יוכל להגיע לכאן
 router.get("/allUsers", authAdmin, async (req, res) => {

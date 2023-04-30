@@ -13,7 +13,7 @@ export default function CatQuiz() {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
   const { cat, level } = useContext(LevelContext);
-    const { user, admin, setUser, setAdmin } = useContext(AuthContext);
+    const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
   const location = useLocation();
 
@@ -31,11 +31,14 @@ export default function CatQuiz() {
 
   const fetchQuestions = async () => {
     let data;
+    console.log(userObj)
     try {
       if (!user && !admin) {
         data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
       } else {
-        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}`);
+        // Extract wrong_ids from the user object in AuthContext and join them with a comma
+        const wrongIds = userObj.wrong_ids.join(",");
+        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&wrongIds=${wrongIds}&limit=2`);
       }
       console.log("quizCat - questions", data);
       if (data && data.length > 0) {
@@ -48,6 +51,7 @@ export default function CatQuiz() {
       console.log(err);
     }
   };
+  
   
 
   useEffect(() => {

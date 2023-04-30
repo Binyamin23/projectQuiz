@@ -25,33 +25,39 @@ router.get("/", auth, async (req, res) => {
   let level = req.query.level;
   let cat = req.query.cat;
   let reverse = req.query.reverse == "yes" ? -1 : 1;
+  let wrongIds = req.query.wrongIds ? req.query.wrongIds.split(",").filter(id => id) : [];
+  let limit = req.query.limit || 2; // Set default limit to 10
+
 
   let reg = new RegExp(cat, "i");
 
   let data;
 
   try {
+    let query = { $or: [{ _id: { $nin: wrongIds } }] };
+
     if (cat && level) {
-      data = await QuestionsModel
-        .find({ cat_url: reg, level })
+      query = { ...query, cat_url: reg, level };
+    } else if (cat) {
+      query = { ...query, cat_url: reg };
     }
-    else if (cat) {
-      data = await QuestionsModel
-        .find({ cat_url: reg })
-        .sort({ level: reverse })
-    }
-    else {
-      data = await QuestionsModel
-        .find({})
-        .sort({ cat_url: reverse, level: reverse })
-    }
+
+    query.$or.push({ _id: { $in: wrongIds }, cat_url: reg, level });
+
+    data = await QuestionsModel
+      .find(query)
+      .sort({ cat_url: reverse, level: reverse })
+      .limit(parseInt(limit))
+
     res.json(data);
-  }
-  catch (err) {
+  } catch (err) {
     console.log("get Questions", err)
     res.status(500).json(err)
   }
 })
+
+
+
 
 // router.get("/", async (req, res) => {
 //   // Math.min -> מביא את המספר הקטן יותר מבין 2 המספרים של ה 20 ומספר העמוד
