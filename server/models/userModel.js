@@ -21,8 +21,14 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Question'
   }],
-  positive_answers: Number,
-  wrong_answers: Number
+  wrong_answers: {
+    type: Number,
+    default: 0
+  },
+  right_answers: {
+    type: Number,
+    default: 0
+  }
 });
 
 exports.UserModel = mongoose.model("users", userSchema);

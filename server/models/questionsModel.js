@@ -10,12 +10,14 @@ let schema = new mongoose.Schema({
   answers: [String],
   status: { type: Boolean, default: false },
   date: {
-    type: Date, default: Date.now
+    type: Date,
+    default: Date.now
   },
-  short_id: Number
-})
+  short_id: Number,
+  random: { type: Number, default: Math.random }
+});
 
-exports.QuestionsModel = mongoose.model("questions", schema)
+exports.QuestionsModel = mongoose.model("questions", schema);
 
 exports.validateJoi = (_reqBody) => {
   let joiSchema = Joi.object({

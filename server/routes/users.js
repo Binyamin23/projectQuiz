@@ -28,6 +28,28 @@ router.get("/myInfo", auth, async (req, res) => {
   }
 })
 
+router.post('/updateAnswerCount', auth, async (req, res) => {
+  const { userId, isCorrect } = req.body;
+
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      if (isCorrect) {
+        user.right_answers++;
+      } else {
+        user.wrong_answers++;
+      }
+      await user.save();
+      res.status(200).json({ success: true });
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (err) {
+    console.log('Error updating user\'s answer count:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 router.post("/updateWrongIds", auth, async (req, res) => {
   const { userId, questionId } = req.body;
   // console.log("Received userId:", userId); // Debug

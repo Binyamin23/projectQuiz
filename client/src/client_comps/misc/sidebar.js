@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation, useParams, Navigate } from 'react-route
 import './Sidebar.css';
 import { AuthContext, LevelContext } from '../../context/createContext';
 import { toast } from 'react-toastify';
+import { API_URL, doApiGet } from '../../services/apiService';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,8 +13,8 @@ const Sidebar = () => {
   const location = useLocation();
   const params = useParams();
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
-
   const { cat, setCat, level, setLevel } = useContext(LevelContext);
+  const [categories, setCategories] = useState([]);
 
   const toggleSidebarClose = (newLevel) => {
     if (user || admin || newLevel == 1) {
@@ -23,9 +24,8 @@ const Sidebar = () => {
       nav('/signup')
     };
     setIsOpen(!isOpen)
-
   };
-  
+
 
   const toggleSidebarOpen = () => {
     setIsOpen(!isOpen)
@@ -42,6 +42,15 @@ const Sidebar = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
 
+  useEffect(() => {
+    doApi();
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setCat('c');
+    }
+  }, [location, setCat]);
   
 
   const handleLevelClick = async (newLevel) => {
@@ -51,7 +60,19 @@ const Sidebar = () => {
     nav(`/category/${cat}/level/${newLevel}`);
     toggleSidebarClose(newLevel);
   }
-  
+
+  const doApi = async () => {
+    try {
+      let url = API_URL + "/categories/all";
+      let data = await doApiGet(url);
+      console.log("cats sidebar:",data);
+      setCategories(data)
+    }
+    catch (err) {
+      console.log(err)
+      alert("There's a problem, please try again later.")
+    }
+  }
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
@@ -64,10 +85,11 @@ const Sidebar = () => {
       </button>
       <ul className="sidebar-menu">
         <li>
-          <select key={cat} onChange={changeCategory}>
-            <option value="c" selected={cat === "c"}>C</option>
-            <option value="java" selected={cat === "java"}>Java</option>
-            <option value="js" selected={cat === "js"}>Javascript</option>
+        <select onChange={changeCategory} value={cat}>
+            {categories.map((category) => (
+              <option key={category._id} value={category.url_code} >{category.name}
+              </option>
+            ))}
           </select>
         </li>
         <br />

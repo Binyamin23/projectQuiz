@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, FavoritesUpdateContext } from '../../context/createContext';
-import { removeFromUserWrongIds, updateUserWrongIds } from '../../services/apiService';
+import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserWrongIds } from '../../services/apiService';
+import axios from 'axios';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
@@ -108,21 +109,35 @@ const Quiz = ({ questions }) => {
         setCurrentQuestion(currentQuestion - 1);
     };
 
+    const updateAnswerCount = async (userId, isCorrect) => {
+        try {
+            await doApiMethod(API_URL + '/users/updateAnswerCount', 'POST', { userId, isCorrect });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+
 
     const checkAnswers = async () => {
         let correctAnswers = 0;
         let wrongAnswers = 0;
-    
+
         const minIndex = Math.min(Questions.length, answers.length);
-    
+
         for (let i = 0; i < minIndex; i++) {
             if (Questions[i] && answers[i] === Questions[i].correct) {
                 correctAnswers++;
-    
+
                 if (userObj && userObj.wrong_ids && userObj.wrong_ids.includes(Questions[i]._id)) {
                     const data = await removeFromUserWrongIds(userObj._id, Questions[i]._id);
                     console.log("Removed question ID from user's wrong_ids:", data);
                     userObj.wrong_ids = userObj.wrong_ids.filter(id => id !== Questions[i]._id);
+                }
+
+                // Update the right answer count on the server
+                if (userObj) {
+                    await updateAnswerCount(userObj._id, true);
                 }
             } else {
                 if (userObj) {
@@ -132,16 +147,26 @@ const Quiz = ({ questions }) => {
                     userObj.wrong_ids.push(Questions[i]._id);
                 }
                 wrongAnswers++;
+
+                // Update the wrong answer count on the server
+                if (userObj) {
+                    await updateAnswerCount(userObj._id, false);
+                }
             }
         }
-    
+
         setShowResults(true);
-    
-        toast.success(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
-    
-        return correctAnswers;
+        if (correctAnswers == 0) {
+            toast.error(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
+        }
+        else if (wrongAnswers == 0) {
+            toast.success(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
+        }
+        else {
+            toast.info(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
+        }
     };
-    
+
 
 
 
@@ -204,7 +229,7 @@ const Quiz = ({ questions }) => {
                         </button>
                     )}
                 </div>
-                
+
             </div>
         </div>
     );
