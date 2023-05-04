@@ -35,6 +35,7 @@ const Sidebar = () => {
     const selectedCat = e.target.value;
     nav(`/category/${selectedCat}/level/1`);
     setCat(selectedCat);
+    setLevel(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

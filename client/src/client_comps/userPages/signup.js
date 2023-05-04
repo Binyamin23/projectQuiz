@@ -56,16 +56,18 @@ export default function Signup() {
               {errors.password && <div className="text-danger">* Enter a valid password (min 2 chars)</div>}
             </div>
             <div className="mt-4 text-center">
-              <div className='form-check'>
-                <input className='form-check-input' type='checkbox'/>
-                {/* {...register('agreeToPrivacy', { required: true })}  */}
-                <label className='form-check-label'>
-                  I agree to the <Link to='/privacy-policy'>privacy policy</Link> and <Link to='/terms-of-service'>terms of service</Link>
+              <div className="form-check d-flex justify-content-center">
+                <input className="form-check-input me-2" type="checkbox" {...register('agreeToPrivacy', { required: true })} />
+                <label className="form-check-label">
+                 I agree to the<span><Link to="/privacy-policy"> privacy policy</Link></span> 
                 </label>
-                {errors.agreeToPrivacy && (<div className='text-danger'>* You must agree to the privacy policy and terms of service</div>)}
               </div>
-              <button className="btn btn-primary w-50 mt-3">Sign up</button>
+              {errors.agreeToPrivacy && <div className="text-danger">* You must agree to the privacy policy and terms of service</div>}
+              <button className="btn btn-primary w-50 mt-3 d-block mx-auto">Sign up</button>
             </div>
+
+
+
             <p className='mt-4 text-center'>Do you have an account? <br></br> <Link className='text-primary' to="/login"><strong> Sign in</strong></Link></p>
           </form>
         </div>

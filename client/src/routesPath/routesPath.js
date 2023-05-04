@@ -9,8 +9,9 @@ import TestUpload from "../admin_comps/testUpload"
 import UsersList from "../admin_comps/usersList"
 import CatQuiz from "../client_comps/quiz/catQuiz"
 import Login from "../client_comps/userPages/login"
-import Signup from "../client_comps/userPages/signup"
 import FavoritesPage from "../client_comps/quiz/favsGamesList"
+import PrivacyPolicy from "../client_comps/userPages/privacyPolicy"
+import Signup from "../client_comps/userPages/signup"
 
 // פו
 export const clientRoutes = () => {
@@ -23,6 +24,7 @@ export const clientRoutes = () => {
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
   
     </React.Fragment>
   )
