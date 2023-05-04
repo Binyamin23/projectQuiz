@@ -3,14 +3,25 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 1.3rem;
-    /* Set a max-height instead of fixed height */
-    max-height: 400px;
-    /* Enable scrolling based on content size */
-    overflow-y: auto;
 }
 
-/* ... the rest of your CSS ... */
+.center-vertically {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 
+@media (min-width: 576px) {
+    .quiz-container {
+        height: 100vh;
+    }
+    .quiz-container.center-vertically {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
 
 .quiz-header {
     background-color: rgba(60, 126, 250, 0.428);
@@ -21,8 +32,16 @@
     border-radius: 5px;
 }
 
-.question-title {}
-
+.question-title {
+    font-size: 1.5rem;
+  }
+  
+  @media (max-width: 576px) { /* Adjust the breakpoint as needed */
+    .question-title {
+      font-size: 1rem;
+    }
+  }
+  
 .btn-group {
     margin-top: 1rem;
 }
@@ -48,3 +67,45 @@
     transform: scale(1.2);
   }
   
+  .fixed-bottom {
+    position: fixed;
+    bottom: 5rem; /* Increase the distance from the bottom */
+    left: 0;
+    right: 0;
+}
+  
+  .fixed-bottom-buttons {
+    position: absolute;
+    bottom: 5rem;
+    left: 0;
+    right: 0;
+  }
+  .answer-button {
+    max-height: 100px; /* Adjust this value to control the max height of the answer buttons */
+    overflow-y: auto;
+    text-align: left;
+}
+
+.btn-group-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (min-width: 576px) {
+    .btn-group-container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  
+  .button-group {
+    position: fixed; /* Add this property */
+    bottom: 1rem; /* Add this property */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem; /* Add horizontal padding for better appearance */
+    z-index: 10; /* Add this property to ensure buttons appear above other elements */
+}

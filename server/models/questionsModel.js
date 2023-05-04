@@ -26,7 +26,8 @@ exports.validateJoi = (_reqBody) => {
     cat_url: Joi.string().min(1).max(20).required(),
     img_url: Joi.string().min(1).max(200).allow("", null),
     info: Joi.string().min(10).max(500).allow("",null),
-    answers: Joi.array().items(Joi.string()).length(4).required()
+    answers: Joi.array().items(Joi.string()).length(4).required(),
+    status: Joi.boolean().allow("",null)
   })
   return joiSchema.validate(_reqBody)
 }

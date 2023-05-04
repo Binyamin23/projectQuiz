@@ -1,7 +1,6 @@
 import React from "react"
 import { Route } from "react-router-dom"
 import AddCategory from "../admin_comps/addCategory"
-import AppListAdmin from "../admin_comps/appsListAdmin"
 import CategoriesList from "../admin_comps/categoriesList"
 import EditCategory from "../admin_comps/editCategory"
 import LoginAdmin from "../admin_comps/loginAdmin"
@@ -12,6 +11,7 @@ import Login from "../client_comps/userPages/login"
 import FavoritesPage from "../client_comps/quiz/favsGamesList"
 import PrivacyPolicy from "../client_comps/userPages/privacyPolicy"
 import Signup from "../client_comps/userPages/signup"
+import QuestionsList from "../admin_comps/questions"
 
 // פו
 export const clientRoutes = () => {
@@ -36,7 +36,7 @@ export const adminRoutes = () => {
         <Route path="/admin/categories" element={<CategoriesList />} />
         <Route path="/admin/categories/new" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
-        <Route path="/admin/questions" element={<AppListAdmin />} />
+        <Route path="/admin/questions" element={<QuestionsList />} />
         <Route path="/admin/users" element={<UsersList />} />
         <Route path="/admin/test" element={<TestUpload />} />
     </React.Fragment>

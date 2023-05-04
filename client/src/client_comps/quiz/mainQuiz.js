@@ -10,10 +10,55 @@ import axios from 'axios';
 
 const Quiz = ({ questions }) => {
 
+    const [showButtons, setShowButtons] = useState(false);
+
     const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
     const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
+    const handleScroll = () => {
+        const quizElement = document.querySelector('#quiz-component');
+        const rect = quizElement.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const bottom = rect.bottom + scrollTop;
+    
+        const scrollPercentage = (window.scrollY + window.innerHeight) / bottom;
+    
+        if (scrollPercentage >= 0.8) {
+            setShowButtons(true);
+        } else {
+            setShowButtons(false);
+        }
+    };
+    
+    
 
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
+
+
+    const getFontSize = (text) => {
+        const length = text.length;
+        const screenWidth = window.innerWidth;
+
+        if (screenWidth > 576) { // Adjust the breakpoint as needed
+            if (length < 100) return '1.5rem';
+            if (length < 200) return '1.2rem';
+            if (length < 300) return '1rem';
+            return '0.9rem';
+        } else {
+            if (length < 100) return '1rem';
+            if (length < 200) return '0.9rem';
+            if (length < 300) return '0.8rem';
+            return '0.7rem';
+        }
+    };
 
 
     const addToLocalStorage = (_id) => {
@@ -177,26 +222,33 @@ const Quiz = ({ questions }) => {
 
 
     return (
-        <div className="quiz-container container">
+<div className="quiz-container container center-vertically" id="quiz-component">
             <div className='row'>
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
                 </div>
-                <div className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2'>
+                <div className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-4'>
 
-                    <h3 className='mt-3 text-light question-title mt-4'>{Questions[currentQuestion].question}</h3>
-                    <div className="btn-group-vertical rounded-2  mt-3 text-light">
-                        {Questions[currentQuestion].answers.map((answer, index) => (
-                            <button
-                                key={index}
-                                className={`btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-secondary')) : (answers[currentQuestion] === index ? 'primary' : 'outline-secondary')}`}
-                                onClick={() => !showResults && handleAnswer(currentQuestion, index)}
-                            >
-                                <h5>{answer}</h5>
-                            </button>
-                        ))}
+                    {/* Set the font size for the question based on its length */}
+                    <h3 className='mt-3 text-light question-title mt-1' style={{ fontSize: getFontSize(Questions[currentQuestion].question), height: '2rem' }}>{Questions[currentQuestion].question}</h3>
+                    <div className="btn-group-container d-flex justify-content-center align-items-center">
+                        <div className="btn-group-vertical rounded-2  mt-4 text-light">
+                            {Questions[currentQuestion].answers.map((answer, index) => (
+                                <button
+                                    key={index}
+                                    className={`answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-secondary')) : (answers[currentQuestion] === index ? 'primary' : 'outline-secondary')}`}
+                                    onClick={() => !showResults && handleAnswer(currentQuestion, index)}
+                                >
+                                    <h5>{answer}</h5>
+                                </button>
+
+                            ))}
+                        </div>
+
+
+
                     </div>
-
+                    {/* Add a CSS class to fix the position of the quiz footer */}
                     <div className="quiz-footer p-2">
                         <FontAwesomeIcon
                             onClick={() => addToLocalStorage(Questions[currentQuestion]._id)}
@@ -207,29 +259,33 @@ const Quiz = ({ questions }) => {
                         <span className='text-light p-2'>Add to favs</span>
                     </div>
 
-                </div>
-
-                <div className="d-flex justify-content-between mt-3">
-                    <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
-                        Previous
-                    </button>
-                    {currentQuestion === questions.length - 1 ? (
-                        <button
-                            className="btn btn-secondary"
-                            onClick={checkAnswers}
-                        >
-                            Check Answers
-                        </button>
-                    ) : (
-                        <button
-                            className="btn btn-secondary"
-                            onClick={moveToNextQuestion}
-                        >
-                            Next
-                        </button>
+                    {showButtons && (
+                        <div className="quiz-buttons">
+                            <div className="d-flex justify-content-between mt-3 button-group mb-4">
+                                <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
+                                    Previous
+                                </button>
+                                {currentQuestion === questions.length - 1 ? (
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={checkAnswers}
+                                    >
+                                        Check Answers
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={moveToNextQuestion}
+                                    >
+                                        Next
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     )}
-                </div>
 
+
+                </div>
             </div>
         </div>
     );

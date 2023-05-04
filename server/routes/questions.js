@@ -12,6 +12,18 @@ const _ = require("lodash");
 
 const router = express.Router();
 
+router.get("/all", auth, async (req, res) => {
+  try {
+    let data = await QuestionsModel.find();
+    res.json(data);
+  }
+  catch (err) {
+    console.log("get all Questions", err);
+    res.status(500).json(err);
+  }
+})
+
+
 router.get("/levelOne/category/:cat", async (req, res) => {
   let cat = req.params.cat;
 
@@ -54,9 +66,6 @@ router.get("/", auth, async (req, res) => {
     let wrongIdsQuery = { _id: { $in: wrongIds }, cat_url: reg, level };
     let otherQuestionsQuery = { _id: { $nin: wrongIds }, cat_url: reg, level };
 
-    // Update the random field for all documents with the same level and category in the collection
-    await updateRandom(level, cat);
-
     // Fetch questions with wrongIds
     const wrongIdsData = await QuestionsModel
       .find(wrongIdsQuery)
@@ -73,6 +82,8 @@ router.get("/", auth, async (req, res) => {
 
     // Send the merged data as the response
     res.json(mergedData);
+     // Update the random field for all documents with the same level and category in the collection
+     await updateRandom(level, cat);
 
   } catch (err) {
     console.log("get Questions", err);
