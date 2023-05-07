@@ -5,7 +5,6 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, FavoritesUpdateContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserWrongIds } from '../../services/apiService';
-import axios from 'axios';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
@@ -16,21 +15,26 @@ const Quiz = ({ questions }) => {
     const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
     const handleScroll = () => {
-        const quizElement = document.querySelector('#quiz-component');
-        const rect = quizElement.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const bottom = rect.bottom + scrollTop;
-    
-        const scrollPercentage = (window.scrollY + window.innerHeight) / bottom;
-    
-        if (scrollPercentage >= 0.8) {
-            setShowButtons(true);
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollPosition = window.scrollY;
+
+        const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+        const showButtonsThreshold = 0.8; // Adjust this value as needed (0.8 means 80% of the page)
+        const hideButtonsThreshold = 0.95; // Adjust this value as needed (0.9 means 90% of the page)
+
+        const quizButtons = document.querySelector('.quiz-buttons');
+        if (scrollPercentage >= showButtonsThreshold && scrollPercentage < hideButtonsThreshold) {
+            quizButtons.classList.add('visible');
         } else {
-            setShowButtons(false);
+            quizButtons.classList.remove('visible');
         }
     };
-    
-    
+
+
+
+
+
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -39,6 +43,7 @@ const Quiz = ({ questions }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
 
 
 
@@ -222,7 +227,7 @@ const Quiz = ({ questions }) => {
 
 
     return (
-<div className="quiz-container container center-vertically" id="quiz-component">
+        <div className="quiz-container container center-vertically" id="quiz-component">
             <div className='row'>
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
@@ -259,30 +264,30 @@ const Quiz = ({ questions }) => {
                         <span className='text-light p-2'>Add to favs</span>
                     </div>
 
-                    {showButtons && (
-                        <div className="quiz-buttons">
-                            <div className="d-flex justify-content-between mt-3 button-group mb-4">
-                                <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
-                                    Previous
+                    <div className={`quiz-buttons fixed-bottom ${showButtons ? 'visible' : ''}`}>
+
+                        <div className="d-flex justify-content-between mt-3 button-group mb-4">
+                            <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
+                                Previous
+                            </button>
+                            {currentQuestion === questions.length - 1 ? (
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={checkAnswers}
+                                >
+                                    Check Answers
                                 </button>
-                                {currentQuestion === questions.length - 1 ? (
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={checkAnswers}
-                                    >
-                                        Check Answers
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={moveToNextQuestion}
-                                    >
-                                        Next
-                                    </button>
-                                )}
-                            </div>
+                            ) : (
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={moveToNextQuestion}
+                                >
+                                    Next
+                                </button>
+                            )}
                         </div>
-                    )}
+                    </div>
+
 
 
                 </div>

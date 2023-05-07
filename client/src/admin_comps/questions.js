@@ -6,6 +6,7 @@ import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
 import AuthAdmin from './authAdmin';
 import QuizForm from './addQuestion';
 import { toast } from 'react-toastify';
+import './questions.css'
 
 
 export default function QuestionsList() {
@@ -133,7 +134,7 @@ export default function QuestionsList() {
             <tr key={q._id}>
               <td>{q.cat_url}</td>
               <td>{q.level}</td>
-              <td>
+              <td colSpan={editQuestionId === q._id ? 4 : 1}>
                 {editQuestionId === q._id ? (
                   <>
                     <div className="mb-3">
@@ -226,24 +227,29 @@ export default function QuestionsList() {
                   </>
                 )}
               </td>
-              <td>
-                <button
-                  className="btn btn-outline-secondary ms-2"
-                  onClick={() => onEditClick(q._id, q)}
-                >
-                  Edit
-                </button>
-              </td>
-              <td>
-                <button
-                  onClick={() => {
-                    onXClick(q._id);
-                  }}
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
-              </td>
+              {editQuestionId !== q._id && (
+                <td>
+                  <button
+                    className="btn btn-outline-secondary ms-2"
+                    onClick={() => onEditClick(q._id, q)}
+                  >
+                    Edit
+                  </button>
+                </td>
+              )}
+              {editQuestionId !== q._id && (
+
+                <td>
+                  <button
+                    onClick={() => {
+                      onXClick(q._id);
+                    }}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

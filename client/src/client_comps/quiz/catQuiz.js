@@ -15,6 +15,8 @@ export default function CatQuiz() {
   const { cat, level } = useContext(LevelContext);
     const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
+    
+
   const location = useLocation();
 
   const [questions, setQuestions] = useState([]);
@@ -61,9 +63,8 @@ export default function CatQuiz() {
   useEffect(() => {
     console.log("Cat:", cat, "Level:", level);
     fetchQuestions();
-  }, [level]);
+  }, [level, userObj]);
   
-
   const handleArrowClick = () => {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();

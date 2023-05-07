@@ -102,10 +102,20 @@
   .button-group {
     position: fixed; /* Add this property */
     bottom: 1rem; /* Add this property */
-    left: 0;
+    left:0;
     right: 0;
     display: flex;
     justify-content: space-between;
-    padding: 0 1rem; /* Add horizontal padding for better appearance */
+    padding: 0 3rem; /* Add horizontal padding for better appearance */
     z-index: 10; /* Add this property to ensure buttons appear above other elements */
+}
+
+.quiz-buttons {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; /* Updated from 0.3s to 1s for a smoother transition */
+}
+
+
+.quiz-buttons.visible {
+  opacity: 1;
 }
