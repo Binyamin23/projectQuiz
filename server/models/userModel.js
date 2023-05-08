@@ -21,17 +21,24 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Question'
   }],
-  wrong_answers: {
-    type: Number,
-    default: 0
-  },
-  right_answers: {
-    type: Number,
-    default: 0
-  }
+  scores_array_byCat: [{
+    cat_url: {
+      type: String,
+      required: true
+    },
+    wrong_answers: {
+      type: Number,
+      default: 0
+    },
+    right_answers: {
+      type: Number,
+      default: 0
+    }
+  }],
 });
 
 exports.UserModel = mongoose.model("users", userSchema);
+
 
 // מייצר טוקן ומגביל אותו ל 60 דוקת
 // role - תפקיד הרשאות של משתמש במקרה שלנו יכול להיות

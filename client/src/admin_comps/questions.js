@@ -10,6 +10,7 @@ import './questions.css'
 
 
 export default function QuestionsList() {
+
   const [getQuery] = useSearchParams();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);

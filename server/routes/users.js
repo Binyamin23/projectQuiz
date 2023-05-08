@@ -28,6 +28,56 @@ router.get("/myInfo", auth, async (req, res) => {
   }
 })
 
+
+
+router.post("/updateScoresByCat", auth, async (req, res) => {
+  const { userId, cat, right, wrong } = req.body;
+  console.log(req.body);
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the score for the given category or create a new one
+    let score = user.scores_array_byCat.find(score => score.cat_url === cat);
+
+    if (!score) {
+      score = {
+        cat_url: cat,
+        right_answers: right,
+        wrong_answers: wrong
+      };
+      user.scores_array_byCat.push(score);
+      user.markModified("scores_array_byCat");
+      await user.save();
+    } else {
+      const updatedScore = {
+        cat_url: cat,
+        right_answers: score.right_answers + right,
+        wrong_answers: score.wrong_answers + wrong
+      };
+
+      await UserModel.findOneAndUpdate(
+        { _id: userId, "scores_array_byCat.cat_url": cat },
+        { $set: { "scores_array_byCat.$": updatedScore } }
+      );
+    }
+
+    res.json({ message: "User scores updated successfully" });
+  } catch (error) {
+    console.log("Error updating user scores:", error);
+    res.status(500).json({ message: "Error updating user scores", error });
+  }
+});
+
+
+
+
+
+
 router.post('/updateAnswerCount', auth, async (req, res) => {
   const { userId, isCorrect } = req.body;
 
@@ -49,6 +99,8 @@ router.post('/updateAnswerCount', auth, async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
+
+
 
 router.post("/updateWrongIds", auth, async (req, res) => {
   const { userId, questionId } = req.body;
@@ -96,7 +148,7 @@ router.delete('/:userId/wrong_ids/:questionId', auth, async (req, res) => {
 // ראוט שמחזיר את כל המשתמשים ורק משתמש עם טוקן אדמין
 // יוכל להגיע לכאן
 router.get("/allUsers", authAdmin, async (req, res) => {
-  
+
   let perPage = Number(req.query.perPage) || 20;
   let page = Number(req.query.page) || 1
   let sort = req.query.sort || "_id";

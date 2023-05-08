@@ -1,0 +1,23 @@
+.scores-overview {
+  width: 100%;
+}
+
+.category-score {
+  margin-bottom: 16px;
+}
+
+.progress-bar {
+  display: flex;
+  height: 24px;
+  background-color: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-right {
+  background-color: #4caf50;
+}
+
+.progress-wrong {
+  background-color: #f44336;
+}

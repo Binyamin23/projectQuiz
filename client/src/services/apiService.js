@@ -61,6 +61,27 @@ export const apiPostGPT = async (_url, _body = {}) => {
   }
 }
 
+export const updateUserScoresByCat = async (userId, cat, right, wrong) => {
+  // const token = localStorage.getItem(TOKEN_KEY);
+  // if (!token) {
+  //   console.error("Token not found in local storage");
+  //   return;
+  // }
+
+  const response = await fetch(API_URL + "/users/updateScoresByCat", {
+    method: "POST",
+    headers: {
+      "x-api-key": localStorage[TOKEN_KEY],
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ userId, cat, right, wrong }),
+  });
+  
+  const data = await response.json();
+  return data;
+};
+
+
 // Add this function to your API helper file
 export const updateUserWrongIds = async (userId, questionId) => {
   const token = localStorage.getItem(TOKEN_KEY);

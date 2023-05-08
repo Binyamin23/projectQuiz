@@ -3,16 +3,16 @@ import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { AuthContext, FavoritesUpdateContext } from '../../context/createContext';
-import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserWrongIds } from '../../services/apiService';
+import { AuthContext, FavoritesUpdateContext, LevelContext } from '../../context/createContext';
+import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
 // Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
 
-    const [showButtons, setShowButtons] = useState(false);
-
     const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
     const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
+    const { cat, level } = useContext(LevelContext);
+
 
     const handleScroll = () => {
         const windowHeight = window.innerHeight;
@@ -32,10 +32,6 @@ const Quiz = ({ questions }) => {
     };
 
 
-
-
-
-
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
 
@@ -43,8 +39,6 @@ const Quiz = ({ questions }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-
 
 
 
@@ -205,17 +199,26 @@ const Quiz = ({ questions }) => {
             }
         }
 
+        // Update the scores_array_byCat in the user model
+        if (userObj) {
+            
+            await updateUserScoresByCat(userObj._id, cat, correctAnswers, wrongAnswers);
+        }
+
         setShowResults(true);
-        if (correctAnswers == 0) {
+        if (correctAnswers === 0) {
             toast.error(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
         }
-        else if (wrongAnswers == 0) {
+        else if (wrongAnswers === 0) {
             toast.success(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
         }
         else {
             toast.info(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
         }
+        setUser(!user);
+
     };
+
 
 
 
@@ -264,7 +267,7 @@ const Quiz = ({ questions }) => {
                         <span className='text-light p-2'>Add to favs</span>
                     </div>
 
-                    <div className={`quiz-buttons fixed-bottom ${showButtons ? 'visible' : ''}`}>
+                    <div className={`quiz-buttons fixed-bottom`}>
 
                         <div className="d-flex justify-content-between mt-3 button-group mb-4">
                             <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>

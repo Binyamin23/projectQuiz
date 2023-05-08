@@ -41,7 +41,7 @@ export default function HeaderClient() {
           </div>
           <div className='col row align-items-center justify-content-between'>
             <ul className='col-auto menu'>
-              <li><Link className='li p-2' to="/userGameList">Scores</Link></li>
+              <li><Link className='li p-2' to="/scores">Scores</Link></li>
               <li><Link className='li p-2' to="/favs">Favs</Link></li>
               {admin ?
                 <li><Link className='li p-2' to="/admin/categories">Admin</Link></li>

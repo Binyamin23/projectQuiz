@@ -2,7 +2,6 @@ const express = require("express");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { GamesAppsModel, validateJoi, QuestionsModel } = require("../models/questionsModel")
 const { random } = require("lodash")
-const cron = require("node-cron");
 const _ = require("lodash");
 
 // // Run the updateRandom() function every day at midnight
@@ -90,6 +89,7 @@ router.get("/", auth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 
   // יחזיר את מספר הרשומות במערכת

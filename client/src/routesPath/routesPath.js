@@ -12,6 +12,7 @@ import FavoritesPage from "../client_comps/quiz/favsGamesList"
 import PrivacyPolicy from "../client_comps/userPages/privacyPolicy"
 import Signup from "../client_comps/userPages/signup"
 import QuestionsList from "../admin_comps/questions"
+import ScoresOverview from "../client_comps/quiz/scores"
 
 // פו
 export const clientRoutes = () => {
@@ -21,6 +22,7 @@ export const clientRoutes = () => {
        <Route path="/test" element={<h2>Test 4444</h2>} />
        <Route path="/category/:catName/level/:level" element={<CatQuiz/>} />
         <Route path="/favs" element={<FavoritesPage/>}/>
+        <Route path="/scores" element={<ScoresOverview/>}/>
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
