@@ -10,7 +10,7 @@ import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, up
 const Quiz = ({ questions }) => {
 
     const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
-    const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
+    const { user, admin, userObj, setUser, setAdmin, updateUserInfo } = useContext(AuthContext);
     const { cat, level } = useContext(LevelContext);
 
 
@@ -215,7 +215,6 @@ const Quiz = ({ questions }) => {
         else {
             toast.info(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
         }
-        setUser(!user);
 
     };
 
