@@ -6,7 +6,7 @@ import gsap from 'gsap';
 
 const ScoresOverview = () => {
     const [userObj, setUserObj] = useState({});
-    const { user, setUser } = useContext(AuthContext);
+    const { user, admin, setUser } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const location = useLocation();
     const rightRefs = useRef([]);
@@ -34,9 +34,11 @@ const ScoresOverview = () => {
     };
 
     useEffect(() => {
-        doApi();
-        updateUserInfo();
-        setUser(!user);
+        if (user || admin) {
+            doApi();
+            updateUserInfo();
+            setUser(!user);
+        }
     }, [location]);
 
     useEffect(() => {
@@ -50,13 +52,27 @@ const ScoresOverview = () => {
     }
     }, [userObj]);
 
+   
+
+    if (!user && !admin) {
+        return (
+            <div className="container my-4">
+                <h2>Scores Overview</h2>
+                <p className="empty-message" style={{ fontSize: '24px' }}>
+                    Only signed up members can use this feature.
+                </p>
+            </div>
+        );
+    }
+
     if (!userObj || !userObj.scores_array_byCat) {
         return <p>Loading scores...</p>;
     }
+    
 
     return (
-        <div className="container my-4">
-            <h2>Scores Overview</h2>
+        <div className="container mt-0 p-5">
+        <h2>Scores Overview</h2>
             {userObj.scores_array_byCat.map((score, index) => {
                 const totalAnswers = score.right_answers + score.wrong_answers;
                 const rightPercentage = totalAnswers ? (score.right_answers / totalAnswers) * 100 : 0;

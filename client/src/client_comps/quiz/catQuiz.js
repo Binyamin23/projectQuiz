@@ -40,7 +40,7 @@ export default function CatQuiz() {
       } else {
         // Extract wrong_ids from the user object in AuthContext and join them with a comma
         const wrongIds = userObj.wrong_ids.join(",");
-        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&wrongIds=${wrongIds}&limit=3`);
+        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&wrongIds=${wrongIds}&limit=10`);
       }
       console.log("quizCat - questions", data);
       if (data && data.length > 0) {

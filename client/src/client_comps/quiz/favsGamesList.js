@@ -42,12 +42,15 @@ function FavoritesPage() {
 
 
   useEffect(() => {
-    doApi();
+    if (user || admin) {
+      doApi();
+    }
   }, [favoritesUpdateFlag]);
 
   useEffect(() => {
-    doApi();
-  }, [favsLocal_ar]);
+    if (user || admin) {
+      doApi();
+    }  }, [favsLocal_ar]);
 
   useEffect(() => {
     if (!showModal) {
@@ -61,21 +64,20 @@ function FavoritesPage() {
     let url = `${API_URL}/questions/favorites`;
     let data = await doApiMethod(url, "POST", { ids: favsLocal_ar });
     console.log(data);
-    
+
     // sort the data array by cat_url in ascending order
     data.sort((a, b) => (a.cat_url > b.cat_url) ? 1 : -1);
-    
+
     setAr(data);
   }
-  
+
 
   if (!user && !admin) {
     return (
-      <div className="container mt-4">
-        <h2 className="text-primary starred-questions-title">My Starred Questions</h2>
+      <div className="container my-4">
+        <h2>My Starred Questions</h2>
         <p className="empty-message" style={{ fontSize: '24px' }}>
-          Only signed up members can use this feature.
-        </p>
+          Only signed up memebers can use this feature              </p>
       </div>
     );
   }
@@ -100,7 +102,7 @@ function FavoritesPage() {
         </Modal.Footer>
       </Modal>
 
-      <h2 style={{marginTop:"-2%"}} className="text-primary starred-questions-title">My Starred Questions</h2>
+      <h2>My Starred Questions</h2>
       {ar.length > 0 ? (
         <div className="starred-questions-list mt-4">
           {ar.map((question, index) => (
@@ -108,7 +110,7 @@ function FavoritesPage() {
               <h5>
                 {question.cat_url === 'js' && <span className="badge badge-warning">Javascript</span>}
                 {question.cat_url === 'c' && <span className="badge badge-success">C</span>}
-                {question.cat_url === 'java'  && <span className="badge badge-info">Java</span>}
+                {question.cat_url === 'java' && <span className="badge badge-info">Java</span>}
                 {question.question}
               </h5>
               <div className='mt-2'>
