@@ -69,7 +69,7 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const offset = window.innerWidth <= 768 ? 50 : 0; // adjust these values to fit your needs
+    const offset = window.innerWidth <= 768 ? 70 : 0; // adjust these values to fit your needs
     const top = rect.bottom + scrollTop + offset;
     window.scrollTo({ top, behavior: 'smooth' });
   };
