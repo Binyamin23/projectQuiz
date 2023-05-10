@@ -69,9 +69,11 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const top = rect.bottom + scrollTop;
+    const offset = window.innerWidth <= 768 ? 50 : 0; // adjust these values to fit your needs
+    const top = rect.bottom + scrollTop + offset;
     window.scrollTo({ top, behavior: 'smooth' });
   };
+  
 
   return (
     <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${API_URL + (category?.img_url || '../../images/logo.png')})` }}>

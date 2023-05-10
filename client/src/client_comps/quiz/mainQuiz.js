@@ -20,7 +20,7 @@ const Quiz = ({ questions }) => {
         const scrollPosition = window.scrollY;
 
         const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-        const showButtonsThreshold = 0.8; // Adjust this value as needed (0.8 means 80% of the page)
+        const showButtonsThreshold = 0.6; // Adjust this value as needed (0.8 means 80% of the page)
         const hideButtonsThreshold = 0.95; // Adjust this value as needed (0.9 means 90% of the page)
 
         const quizButtons = document.querySelector('.quiz-buttons');
