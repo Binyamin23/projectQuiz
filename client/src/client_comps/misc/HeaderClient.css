@@ -1,7 +1,7 @@
 .header {
   position: relative;
   width: 100%;
-  background: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(0,123,255,0.6) 70%, rgba(0,123,255,0) 100%);
+  background: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(0,123,255,0.6) 70%, rgba(0, 123, 255, 0.806) 100%);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -26,7 +26,7 @@
 }
 
 .logo {
-  width: 8rem;
+  width: 7rem;
   border-radius: 0cm;
   border: 1px none #ccc;
   transition: all 0.2s ease-in-out;
@@ -54,7 +54,7 @@
 }
 
 .user-icon {
-    color: rgb(60, 126, 250);
+    color: rgb(55, 118, 237);
     font-size: 1.6rem;
     transition: all 0.2s ease-in-out;
 }
