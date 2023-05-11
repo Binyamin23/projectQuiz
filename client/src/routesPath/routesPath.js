@@ -13,6 +13,8 @@ import PrivacyPolicy from "../client_comps/userPages/privacyPolicy"
 import Signup from "../client_comps/userPages/signup"
 import QuestionsList from "../admin_comps/questions"
 import ScoresOverview from "../client_comps/quiz/scores"
+import ResetPassword from "../client_comps/userPages/restPaswword"
+import ForgotPassword from "../client_comps/userPages/forgotPassword"
 
 // פו
 export const clientRoutes = () => {
@@ -26,7 +28,9 @@ export const clientRoutes = () => {
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />       
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
+        <Route path='/resetPassword' element={<ResetPassword />} />
   
     </React.Fragment>
   )

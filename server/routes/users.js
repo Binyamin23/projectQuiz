@@ -1,7 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { auth, authAdmin } = require("../middlewares/auth");
-
+const { sendResetPasswordEmail } = require("../helpers/sendEmail");
+const { PasswordResetModel } = require("../models/passwordResetModel");
 const { validteUser, UserModel, validteLogin, createToken } = require("../models/userModel");
 const router = express.Router();
 
@@ -215,6 +216,52 @@ router.post("/login", async (req, res) => {
     console.log(err);
     res.status(500).json(err);
   }
+})
+
+router.post('/requestPasswordReset', async(req, res) => {
+  try {
+      const { email, redirectUrl } = req.body;
+      if (!email || !redirectUrl) {
+          return res.status(400).json({ status: "failed", message: "Please provide email and redirectUrl" });
+      }
+      const user = await UserModel.findOne({ email });
+      if (!user) {
+          return res.status(401).json({ status: "failed", message: "No account with the supplied email found. Please try again" });
+      }
+      sendResetPasswordEmail(user, redirectUrl, res);
+  } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+  }
+})
+
+
+router.post('/resetPassword', async(req, res) => {
+  const { userId, resetString, newPassword } = req.body;
+  let result = await PasswordResetModel.findOne({ userId });
+  if (!result) {
+      return res.status(401).json({ msg: "Invalid password details or Password reset request not found 1" });
+  }
+  const { expiresAt } = result;
+  //If Expired
+  if (expiresAt < Date.now() + 2 * 60 * 60 * 1000) {
+      // checking if link expired
+      await PasswordResetModel.deleteOne({ userId });
+      return res.status(401).json({ err_msg: "Password reset link as expired 2" });
+  }
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  result =await bcrypt.compare(resetString, result.resetString);
+  if (!result) {
+      return res.status(400).json({ err_msg: "Invalid password details or Password reset request not found 3" });
+  }
+  const update = await UserModel.updateOne({ _id: userId }, { password: hashedPassword });
+  if (update.matchedCount == 0) {
+      return res.status(500).json({ err_msg: "Internal Error 4" });
+  } else if (update.modifiedCount == 0) {
+      return res.status(500).json({ err_msg: "Internal Error 5" });
+  }
+  await PasswordResetModel.deleteOne({ userId });
+  return res.status(200).json({ status: "Success", msg: "Password updated successfully 6" });
 })
 
 router.put("/edit/:id", auth, async (req, res) => {

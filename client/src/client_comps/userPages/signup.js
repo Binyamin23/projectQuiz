@@ -16,7 +16,9 @@ export default function Signup() {
   const doApi = async (bodyData) => {
     try {
       let url = API_URL + '/users/signUp';
+      console.log(url);
       let data = await doApiMethod(url, "POST", bodyData);
+      console.log(data);
       if (data._id) {
         nav("/login");
         toast.success("You signed up successfully. Now you can sign in.")
@@ -40,17 +42,17 @@ export default function Signup() {
         <div className="col-11 col-md-6 p-4 bg-white shadow rounded-2">
           <h1 className="text-center mb-4">Sign up to our site</h1>
           <form onSubmit={handleSubmit(onSubForm)}>
-            <div className="form-group">
+            <div className="form-group fw-bold">
               <label>Name:</label>
               <input {...register("name", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="text" />
               {errors.name && <div className="text-danger">* Enter a valid name (min 2 chars)</div>}
             </div>
-            <div className="form-group">
+            <div className="form-group fw-bold">
               <label>Email:</label>
               <input {...register("email", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="email" />
               {errors.email && <div className="text-danger">* Enter a valid email (min 2 chars)</div>}
             </div>
-            <div className="form-group">
+            <div className="form-group fw-bold">
               <label>Password:</label>
               <input {...register("password", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="password" />
               {errors.password && <div className="text-danger">* Enter a valid password (min 2 chars)</div>}

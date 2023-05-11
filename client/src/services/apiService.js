@@ -7,6 +7,9 @@ export const TOKEN_KEY = "apps_tok";
 
 export const OPEN_AI_KEY = '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';
 
+export const REQUSET_RESET_PASSWORD = API_URL + '/users/requestPasswordReset'
+export const RESET_PASSWORD = API_URL + '/users/resetPassword'
+
 // for Get only
 export const doApiGet = async(_url) => {
   try{
@@ -22,6 +25,26 @@ export const doApiGet = async(_url) => {
   catch(err){
     console.log(err);
     throw err;
+  }
+}
+
+export const doApiPost = async(_url, _body = {}) => {
+  console.log(JSON.stringify(_body));
+
+  try {
+      let resp = await axios({
+          url: _url,
+          method: 'POST',
+          data: JSON.stringify(_body),
+          headers: {
+              "x-api-key": localStorage[TOKEN_KEY],
+              'Content-Type': "application/json"
+
+          }
+      })
+      return resp;
+  } catch (err) {
+      throw err;
   }
 }
 
