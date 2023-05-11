@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
       default: 0
     }
   }],
+  agreeToPrivacy: {
+    type: Boolean,
+    required: true
+  }
 });
 
 exports.UserModel = mongoose.model("users", userSchema);
@@ -52,7 +56,8 @@ exports.validteUser = (reqBody) => {
   let joiSchema = Joi.object({
     name: Joi.string().min(2).max(150).required(),
     email: Joi.string().min(2).max(150).email().required(),
-    password: Joi.string().min(3).max(150).required()
+    password: Joi.string().min(3).max(150).required(),
+    agreeToPrivacy: Joi.boolean().required().valid(true).messages({ 'any.only': 'You must agree to the privacy policy and terms of service' })
   })
   return joiSchema.validate(reqBody);
 }

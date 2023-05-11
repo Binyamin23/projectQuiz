@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { API_URL, doApiGet } from '../../services/apiService';
 
 const Sidebar = () => {
+  
   const [isOpen, setIsOpen] = useState(false);
   const nav = useNavigate();
   const location = useLocation();
@@ -52,7 +53,7 @@ const Sidebar = () => {
       setCat('c');
     }
   }, [location, setCat]);
-  
+
 
   const handleLevelClick = async (newLevel) => {
     await setLevel(newLevel);
@@ -66,7 +67,7 @@ const Sidebar = () => {
     try {
       let url = API_URL + "/categories/all";
       let data = await doApiGet(url);
-      console.log("cats sidebar:",data);
+      console.log("cats sidebar:", data);
       setCategories(data)
     }
     catch (err) {
@@ -86,7 +87,7 @@ const Sidebar = () => {
       </button>
       <ul className="sidebar-menu">
         <li>
-        <select onChange={changeCategory} value={cat}>
+          <select onChange={changeCategory} value={cat}>
             {categories.map((category) => (
               <option key={category._id} value={category.url_code} >{category.name}
               </option>

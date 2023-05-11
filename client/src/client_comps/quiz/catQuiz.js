@@ -40,7 +40,7 @@ export default function CatQuiz() {
       } else {
         // Extract wrong_ids from the user object in AuthContext and join them with a comma
         const wrongIds = userObj.wrong_ids.join(",");
-        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&wrongIds=${wrongIds}&limit=3`);
+        data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&wrongIds=${wrongIds}&limit=10`);
       }
       console.log("quizCat - questions", data);
       if (data && data.length > 0) {
@@ -69,9 +69,11 @@ export default function CatQuiz() {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const top = rect.bottom + scrollTop;
+    const offset = window.innerWidth <= 768 ? 70 : 0; // adjust these values to fit your needs
+    const top = rect.bottom + scrollTop + offset;
     window.scrollTo({ top, behavior: 'smooth' });
   };
+  
 
   return (
     <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${API_URL + (category?.img_url || '../../images/logo.png')})` }}>

@@ -56,7 +56,7 @@ const UserAuth = ({ children }) => {
       }
 
     return (
-        <AuthContext.Provider value={{ user, admin, userObj, setUser, setAdmin }}>
+        <AuthContext.Provider value={{ user, admin, userObj, setUser, setAdmin, updateUserInfo }}>
             {children}
         </AuthContext.Provider>
     )

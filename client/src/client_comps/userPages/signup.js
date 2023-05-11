@@ -14,6 +14,7 @@ export default function Signup() {
   }
 
   const doApi = async (bodyData) => {
+
     try {
       let url = API_URL + '/users/signUp';
       console.log(url);
@@ -25,16 +26,24 @@ export default function Signup() {
       }
     }
     catch (err) {
-      if (err.response.data.code == 11000) {
-        toast.error("Email already in system. Please log in instead.");
-        nav('/login');
+      console.log(err);
+      if (err.response && err.response.data) {
+        if (err.response.data.code == 11000) {
+          toast.error("Email already in system. Please log in instead.");
+          nav('/login');
+        }
+        else if (err.response.status === 400 && Array.isArray(err.response.data.details)) {
+          // This is a validation error
+          const message = err.response.data.details.map(detail => detail.message).join(', ');
+          toast.error(message);
+        }
       }
       else {
-        alert("There is a problem. Please try again later.");
-        console.log(err);
+        toast.error("There is a problem. Please try again later.");
       }
     }
-  }
+}
+
 
   return (
     <div className="container-fluid p-4 bg-light">
