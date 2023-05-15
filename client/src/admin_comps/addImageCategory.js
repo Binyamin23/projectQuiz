@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { API_URL, TOKEN_KEY } from '../services/apiService';
-import { Button, Form } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
 const AddPictureToCategory = ({ categoryId, setPictureComp }) => {
-
   const [picture, setPicture] = useState(null);
 
   const handlePictureChange = (event) => {
@@ -22,21 +19,19 @@ const AddPictureToCategory = ({ categoryId, setPictureComp }) => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      toast.success('Picture uploaded successfully.');
+      alert('Picture uploaded successfully!');
     } catch (error) {
       console.log(error);
-      toast.error('Error uploading picture.');
+      alert('Error uploading picture.');
     }
-    setPictureComp(null)
+    setPictureComp(false)
   };
 
   return (
-    <div className="p-3 mt-3 border rounded bg-light">
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label className='text-dark'>Choose a picture to upload:</Form.Label>
-        <Form.Control type="file" onChange={handlePictureChange} />
-      </Form.Group>
-      <Button variant="primary" onClick={handlePictureUpload}>Upload</Button>
+    <div>
+      <label htmlFor="picture">Choose a picture to upload:</label>
+      <input type="file" id="picture" onChange={handlePictureChange} />
+      <button onClick={handlePictureUpload}>Upload</button>
     </div>
   );
 };

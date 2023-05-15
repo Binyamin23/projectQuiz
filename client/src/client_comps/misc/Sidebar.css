@@ -90,7 +90,7 @@ select {
   color: white;
   font-size: 1.5rem;
   padding: 10px 10px;
-  width: 100%;
+  width: min-content;
   text-align: center;
 }
 

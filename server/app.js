@@ -3,7 +3,7 @@ const path = require("path");
 const http = require("http");
 const cors = require("cors");
 
-const { routesInit } = require("./routes/configRoutes");
+const {routesInit} = require("./routes/configRoutes");
 const fileUpload = require("express-fileupload");
 require("./db/mongoConnect")
 
@@ -11,21 +11,19 @@ const app = express();
 // מאפשר גם לדומיין שלא קשור לשרת לבצע בקשה 
 app.use(cors());
 app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: '/tmp/', // temporary directory path
-  limits: { fileSize: 1024 * 1024 * 5 }
+    limits: {fileSize: 1024 * 1024 * 5}
 }))
 // מגדיר לשרת שהוא יכול לקבל מידע מסוג ג'ייסון בבאדי בבקשות שהם לא גט
 app.use(express.json());
 
 // דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname,"public")));
 
 app.get('/public/images/categories/:imageName', (req, res) => {
-  const imageName = req.params.imageName;
-  const imagePath = path.join(__dirname, 'public', 'images', 'categories', imageName);
-  res.sendFile(imagePath);
-});
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'public', 'images','categories', imageName);
+    res.sendFile(imagePath);
+  });
 
 // פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
 // צד שרת שלנו
