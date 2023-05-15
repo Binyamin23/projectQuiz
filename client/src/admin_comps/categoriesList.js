@@ -3,7 +3,9 @@ import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
 import AddPictureToCategory from './addImageCategory';
 import { AuthContext } from '../context/createContext';
-
+import { Button, Table } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import useWindowWidth from '../comps_general/useWidth';
 
 // delete option
 
@@ -13,11 +15,18 @@ import { AuthContext } from '../context/createContext';
 
 
 export default function CategoriesList() {
+
   const [ar, setAr] = useState([]);
-  const [showPictureComp, setPictureComp] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const nav = useNavigate();
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
+  let width = useWindowWidth();
+  const [isMobile, setIsMobile] = useState(width < 500);
+
+  useEffect(() => {
+    setIsMobile(width < 500);
+  }, [width])
 
   useEffect(() => {
     if (admin) {
@@ -38,7 +47,6 @@ export default function CategoriesList() {
       console.log(err)
       alert("There problem , come back late")
     }
-
   }
 
   const onXClick = async (_delId) => {
@@ -46,31 +54,33 @@ export default function CategoriesList() {
     try {
       let data = await doApiMethod(url, "DELETE");
       if (data.deletedCount) {
-        alert("Category deleted");
+        toast.success("Category deleted");
         doApi();
       }
     }
     catch (err) {
       console.log(err)
-      alert("There problem , come back late")
+      toast.error("There problem , come back later");
     }
 
   }
 
   return (
-    <div className='container'>
+    <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       {admin ?
         <>
-          <h1>List of categories in system:</h1>
-          <Link className='btn btn-info' to="/admin/categories/new">Add new category</Link>
-          <table className='table table-striped table-hover'>
+          <h1 className='m-3'>List of Categories</h1>
+          <Link className="btn btn-primary"
+            to="/admin/categories/new">Add new category</Link>
+          <Table striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
             <thead>
               <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>url_code</th>
                 <th>info</th>
-                <th>del/edit</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -82,23 +92,23 @@ export default function CategoriesList() {
                     <td>{item.url_code}</td>
                     <td title={item.info}>{item.info.substring(0, 15)}...</td>
                     <td>
-                      <button onClick={() => {
+                      <Button variant='danger' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
                         window.confirm("Delete item?") && onXClick(item._id)
-                      }} className='bg-danger'>X</button>
-                      <button onClick={() => {
+                      }}>Delete</Button>
+                      <Button variant='info' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
                         nav("/admin/categories/edit/" + item._id)
-                      }} className='bg-info ms-2'>Edit</button>
-                      <button onClick={() => setPictureComp(true)}>img</button>
-                      {showPictureComp ? <AddPictureToCategory categoryId={item._id} setPictureComp={setPictureComp} /> : ''}
+                      }}>Edit</Button>
+                      <Button variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => setSelectedCategory(item._id)}>Add Image</Button>
+                      {selectedCategory === item._id ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
                     </td>
                   </tr>
                 )
               })}
             </tbody>
-          </table>
+          </Table>
         </>
         : 'login...'
-        }
+      }
     </div>
   )
 }

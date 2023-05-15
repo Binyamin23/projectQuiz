@@ -13,9 +13,9 @@ export default function CatQuiz() {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
   const { cat, level } = useContext(LevelContext);
-    const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
+  const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
-    
+
 
   const location = useLocation();
 
@@ -53,8 +53,8 @@ export default function CatQuiz() {
       console.log(err);
     }
   };
-  
-  
+
+
 
   useEffect(() => {
     fetchCats();
@@ -64,7 +64,7 @@ export default function CatQuiz() {
     console.log("Cat:", cat, "Level:", level);
     fetchQuestions();
   }, [level, userObj]);
-  
+
   const handleArrowClick = () => {
     const welcomeElement = document.querySelector('.welcome-container');
     const rect = welcomeElement.getBoundingClientRect();
@@ -73,10 +73,10 @@ export default function CatQuiz() {
     const top = rect.bottom + scrollTop + offset;
     window.scrollTo({ top, behavior: 'smooth' });
   };
-  
+
 
   return (
-    <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${API_URL + (category?.img_url || '../../images/logo.png')})` }}>
+    <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
       <div className="welcome-container">
         <div className="inner-welcome">
           <h1 className="welcome-title">{category.name}</h1>
