@@ -7,6 +7,7 @@ import AuthAdmin from './authAdmin';
 import QuizForm from './addQuestion';
 import { toast } from 'react-toastify';
 import './questions.css'
+import { Table } from 'react-bootstrap';
 
 
 export default function QuestionsList() {
@@ -26,11 +27,20 @@ export default function QuestionsList() {
   const doApi = async () => {
     let perPage = getQuery.get('perPage') || 5;
     let page = getQuery.get('page') || 1;
-
+  
     let url = `${API_URL}/questions/all`;
     try {
       let data = await doApiGet(url);
-      data.sort((a, b) => a.cat_url.localeCompare(b.cat_url));
+      data.sort((a, b) => {
+        let catComparison = a.cat_url.localeCompare(b.cat_url);
+        if (catComparison !== 0) {
+          // if 'cat_url' is not the same, sort by 'cat_url'
+          return catComparison;
+        } else {
+          // if 'cat_url' is the same, sort by 'level'
+          return a.level - b.level;
+        }
+      });
       setQuestions(data);
       setLoading(false);
     } catch (err) {
@@ -38,6 +48,7 @@ export default function QuestionsList() {
       alert('There is a problem. Please try again later.');
     }
   };
+  
 
   const onXClick = async (_delId) => {
     if (!window.confirm('Are you sure you want to delete this question?')) {
@@ -105,22 +116,18 @@ export default function QuestionsList() {
 
   return (
     <div className="container">
-      <AuthAdmin />
-      <h1>List of questions in the system</h1>
+      <h1 className='m-3'>List of Questions</h1>
       <button
-        className="btn btn-primary mb-3"
+        className="btn btn-primary "
         onClick={() => setShowForm(!showForm)}
       >
         {showForm ? 'Close' : 'Add Question'}
       </button>
-      <PagesComp
-        apiPages={API_URL + '/questions/count?perPage=5'}
-        linkTo={'/admin/apps?page='}
-        linkCss={'btn btn-warning me-2'}
-      />
+      
       {showForm && <QuizForm />}
       {loading && <Loading />}
-      <table className="table table-striped table-hover">
+      <div className="table-responsive">
+      <Table striped bordered hover style={{ borderRadius: '30px', marginTop: '20px' }}>
         <thead>
           <tr>
             <th>Category</th>
@@ -254,7 +261,8 @@ export default function QuestionsList() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
+      </div>
     </div>
   );
 }

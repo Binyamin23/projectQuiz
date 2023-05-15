@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/createContext';
 
 
 export default function HeaderClient() {
+
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   let width = useWindowWidth();
@@ -27,8 +28,6 @@ export default function HeaderClient() {
     toast.info("You logged out, see you soon!");
     nav("/")
   }
-
-
 
   return (
     <header className="container-fluid bg-dark-subtle p-2 shadow ">
@@ -85,7 +84,7 @@ export default function HeaderClient() {
                   <ul>
                     <li>
 
-                      <Link className='btn btn-logout m-0' onClick={() => {
+                      <Link  onClick={() => {
                         setShowDropdown(!showDropdown)
                         onLogOut()
                       }} to="/signup">Log out</Link>
