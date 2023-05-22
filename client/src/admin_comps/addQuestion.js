@@ -35,7 +35,7 @@ const QuizForm = () => {
     };
 
     return (
-        <div className="container quiz-form-container">
+        <div className="container quiz-form-container mb-4">
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
@@ -116,7 +116,7 @@ const QuizForm = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <button type="submit" className="btn btn-primary quiz-form-submit">
+                                <button type="submit" className="btn btn-outline-dark quiz-form-submit">
                                     Add Question
                                 </button>
                             </form>

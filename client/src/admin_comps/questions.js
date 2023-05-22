@@ -18,17 +18,22 @@ export default function QuestionsList() {
   const [showForm, setShowForm] = useState(false);
   const [editQuestionId, setEditQuestionId] = useState(null);
   const [editQuestion, setEditQuestion] = useState({});
+  const [filterCat, setFilterCat] = useState('');
+  const [filterLevel, setFilterLevel] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    doApi();
-  }, [getQuery]);
+    doApi(filterCat, filterLevel);
+  }, [getQuery, filterCat, filterLevel]); 
 
-  const doApi = async () => {
+  const doApi = async (filterCat, filterLevel) => {
     let perPage = getQuery.get('perPage') || 5;
     let page = getQuery.get('page') || 1;
   
     let url = `${API_URL}/questions/all`;
+    if (filterCat || filterLevel) {
+      url += `?cat=${filterCat}&level=${filterLevel}`;
+    }    
     try {
       let data = await doApiGet(url);
       data.sort((a, b) => {
@@ -46,6 +51,15 @@ export default function QuestionsList() {
     } catch (err) {
       console.log(err);
       alert('There is a problem. Please try again later.');
+    }
+  };
+
+  const onFilterChange = (event, field) => {
+    const value = event.target.value;
+    if (field === 'category') {
+      setFilterCat(value);
+    } else if (field === 'level') {
+      setFilterLevel(value);
     }
   };
   
@@ -115,19 +129,43 @@ export default function QuestionsList() {
   };
 
   return (
-    <div className="container">
+    <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
       <h1 className='m-3'>List of Questions</h1>
-      <button
-        className="btn btn-primary "
-        onClick={() => setShowForm(!showForm)}
-      >
-        {showForm ? 'Close' : 'Add Question'}
-      </button>
+      
+      <div className="mb-3">
+        <button
+          className="btn btn-outline-dark "
+          onClick={() => setShowForm(!showForm)}
+        >
+          {showForm ? 'Close' : 'Add Question'}
+        </button>
+      </div>
       
       {showForm && <QuizForm />}
+
+      <div className="mb-3 row g-3 align-items-center">
+        <div className="col-auto">
+          <label htmlFor="category" className="col-form-label">Filter by Category</label>
+        </div>
+        <div className="col-auto">
+          <input type="text" id="category" className="form-control" onChange={(event) => onFilterChange(event, 'category')} />
+        </div>
+        <div className="col-auto">
+          <label htmlFor="level" className="col-form-label">Filter by Level</label>
+        </div>
+        <div className="col-auto">
+          <select id="level" className="form-select" onChange={(event) => onFilterChange(event, 'level')}>
+            <option value="">Select Level</option>
+            <option value="1">Easy</option>
+            <option value="2">Medium</option>
+            <option value="3">Hard</option>
+          </select>
+        </div>
+      </div>
+      
       {loading && <Loading />}
       <div className="table-responsive">
-      <Table striped bordered hover style={{ borderRadius: '30px', marginTop: '20px' }}>
+      <Table striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
         <thead>
           <tr>
             <th>Category</th>
@@ -238,7 +276,7 @@ export default function QuestionsList() {
               {editQuestionId !== q._id && (
                 <td>
                   <button
-                    className="btn btn-outline-secondary ms-2"
+                    className="btn btn-outline-light ms-2"
                     onClick={() => onEditClick(q._id, q)}
                   >
                     Edit
