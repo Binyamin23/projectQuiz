@@ -13,7 +13,11 @@ const router = express.Router();
 
 router.get("/all", auth, async (req, res) => {
   try {
-    let data = await QuestionsModel.find();
+    let query = {};
+    if (req.query.cat) query.cat_url = new RegExp(req.query.cat, 'i');
+    if (req.query.level) query.level = req.query.level;
+
+    let data = await QuestionsModel.find(query);
     res.json(data);
   }
   catch (err) {
@@ -21,6 +25,7 @@ router.get("/all", auth, async (req, res) => {
     res.status(500).json(err);
   }
 })
+
 
 
 router.get("/levelOne/category/:cat", async (req, res) => {

@@ -1,0 +1,6 @@
+td {
+    max-width: 150px; /* Or whatever max-width you want */
+    overflow: auto; /* Or 'hidden' if you prefer */
+    word-wrap: break-word; /* This will break words onto the next line */
+  }
+  

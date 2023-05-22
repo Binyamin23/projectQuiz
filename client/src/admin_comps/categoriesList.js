@@ -7,17 +7,12 @@ import { Button, Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import useWindowWidth from '../comps_general/useWidth';
 
-// delete option
-
-// new categories
-
-// TODO:Edit categories
-
 
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showPicture, setShowPicture] = useState(false);
   const nav = useNavigate();
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
@@ -50,10 +45,10 @@ export default function CategoriesList() {
   }
 
   const onXClick = async (_delId) => {
-    let url = API_URL + "/categories/" + _delId;
+    let url = API_URL + "/categories/delete/" + _delId;
     try {
       let data = await doApiMethod(url, "DELETE");
-      if (data.deletedCount) {
+      if (data.deletedCount == 1) {
         toast.success("Category deleted");
         doApi();
       }
@@ -67,11 +62,11 @@ export default function CategoriesList() {
 
   return (
     <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+     
       {admin ?
         <>
           <h1 className='m-3'>List of Categories</h1>
-          <Link className="btn btn-primary"
+          <Link className="btn btn-outline-dark"
             to="/admin/categories/new">Add new category</Link>
           <Table striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
             <thead>
@@ -92,14 +87,29 @@ export default function CategoriesList() {
                     <td>{item.url_code}</td>
                     <td title={item.info}>{item.info.substring(0, 15)}...</td>
                     <td>
-                      <Button variant='danger' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
+                      <Button variant='danger' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
                         window.confirm("Delete item?") && onXClick(item._id)
                       }}>Delete</Button>
-                      <Button variant='info' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
+                      <Button variant='info' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
                         nav("/admin/categories/edit/" + item._id)
                       }}>Edit</Button>
-                      <Button variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => setSelectedCategory(item._id)}>Add Image</Button>
-                      {selectedCategory === item._id ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
+                      <Button style={isMobile ? { padding: "7.5%" } : {}} variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
+                        if (selectedCategory != item._id) {
+                          setSelectedCategory(item._id);
+                          setShowPicture(true);
+                        }
+                        else {
+                          if(selectedCategory === item._id){
+                            setShowPicture(true);
+                          }
+                          if(selectedCategory === item._id && showPicture){
+                            setShowPicture(false);
+
+                          }
+                          
+                        }
+                      }}>Add Image</Button>
+                      {showPicture && (selectedCategory === item._id) ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
                     </td>
                   </tr>
                 )
