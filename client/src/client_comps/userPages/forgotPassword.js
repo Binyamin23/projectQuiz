@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { REQUSET_RESET_PASSWORD, doApiPost } from '../../services/apiService';
+import { API_URL, REQUSET_RESET_PASSWORD, doApiPost } from '../../services/apiService';
 import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
@@ -18,7 +18,9 @@ const ForgotPassword = () => {
       console.log(REQUSET_RESET_PASSWORD);
       const { data } = await doApiPost(REQUSET_RESET_PASSWORD, {
         email: emailRef.current.value,
-        redirectUrl: 'http://localhost:3000/resetPassword'
+        redirectUrl: API_URL+'/resetPassword',
+        created:Date.now() + 2 * 60 * 60 * 1000,
+        expired:Date.now() + 2.25 * 60 * 60 * 1000
       });
       setToggle(true);
       console.log(data);

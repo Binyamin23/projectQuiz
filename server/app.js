@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const { routesInit } = require("./routes/configRoutes");
 const fileUpload = require("express-fileupload");
+const { log } = require("console");
 require("./db/mongoConnect")
 
 const app = express();
