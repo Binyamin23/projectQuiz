@@ -5,6 +5,7 @@ import AddPictureToCategory from './addImageCategory';
 import { AuthContext } from '../context/createContext';
 import { Button, Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import './categoriesList.css'
 import useWindowWidth from '../comps_general/useWidth';
 
 
@@ -66,12 +67,12 @@ export default function CategoriesList() {
       {admin ?
         <>
           <h1 className='m-3'>List of Categories</h1>
+
           <Link className="btn btn-outline-dark"
             to="/admin/categories/new">Add new category</Link>
-          <Table striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
+          <Table className='table-cat' striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
             <thead>
               <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>url_code</th>
                 <th>info</th>
@@ -82,7 +83,6 @@ export default function CategoriesList() {
               {ar.map((item, i) => {
                 return (
                   <tr key={item._id}>
-                    <td>{i + 1}</td>
                     <td>{item.name}</td>
                     <td>{item.url_code}</td>
                     <td title={item.info}>{item.info.substring(0, 15)}...</td>

@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-
-import { API_URL, doApiGet, doApiMethod, TOKEN_KEY } from '../services/apiService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
+import { AuthContext } from '../context/createContext';
+import useWindowWidth from '../comps_general/useWidth';
 import AuthAdmin from './authAdmin';
 
 export default function EditCategory() {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { user, admin } = useContext(AuthContext);
   const nav = useNavigate();
   const params = useParams();
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState({});
+  let width = useWindowWidth();
+  const [isMobile, setIsMobile] = useState(width < 500);
 
   useEffect(() => {
-    doApiInit();
-  }, [])
+    setIsMobile(width < 500);
+  }, [width])
 
-  // TODO: load the data of the document to the input of the recode we want to edit
-  // request for get the info of the item we want to edit
+  useEffect(() => {
+    if (admin) {
+      doApiInit();
+    } else {
+      nav('/login');
+    }
+  }, [admin, nav]);
+
   const doApiInit = async () => {
     let url = API_URL + "/categories/single/" + params["id"]
     try {
@@ -28,7 +39,7 @@ export default function EditCategory() {
     }
     catch (err) {
       console.log(err);
-      alert("There problem , come back later")
+      toast.error("A problem occured")
     }
   }
 
@@ -39,69 +50,63 @@ export default function EditCategory() {
 
   const doApi = async (bodyData) => {
     try {
-      let url = API_URL + "/edit/" + params["id"];
+      let url = API_URL + "/categories/edit/" + params["id"];
       let data = await doApiMethod(url, "PUT", bodyData);
       console.log(data)
       if (data.modifiedCount == 1) {
-        // alert("category updated");
         toast.info("Category updated")
-        // כמו ללחוץ בק/אחורה בדפדפן עצמו
         nav(-1);
       }
       else {
-        toast.error("You didn't change nothing from the last update")
-        // alert("You not change nothing from the last update")
+        toast.error("You didn't change anything since the last update")
       }
-
-
     }
     catch (err) {
       console.log(err);
-      alert("There problem come back later");
+      toast.error("There problem come back later");
     }
 
   }
 
   return (
-    <div className='container'>
+    <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
       <AuthAdmin />
-      <h1 className='display-5'>Edit category</h1>
-      {/* נציג את הטופס רק אחרי שבקשת האיי פי איי הסתיימה וקיבלנו את כל המידע
-      ...ובינתיים נציג לואדינג  */}
+
+      <h1 className='m-3 text-dark'>Edit category</h1>
+
       {!info._id ? <h2>Loading...</h2> :
         <form onSubmit={handleSubmit(onSub)} id="id_form" className='col-lg-6 col-md-8 col-sm-12 shadow p-2 mx-auto' >
-          <label>name</label>
+          <label>Name</label>
           <input defaultValue={info.name} {...register("name", { minLength: 1, required: true })} className="form-control" type="text" />
           {errors.name && <div className='text-danger'>
             * Enter valid name (min 1 chars)
           </div>}
 
-          {/* <label>url_code</label> */}
-          {/* לא אמורים לשנות את היו אר אל קוד שמשמש לחיבור לקולקשן של המשחקים/אפלי */}
-          {/* type="hidden" מסתיר את האינפוט */}
           <input defaultValue={info.url_code} {...register("url_code", { minLength: 1, required: true })} className="form-control" type="hidden" />
           {errors.url_code && <div className='text-danger'>
-            * Enter valid url_code (min 2 chars)
+            * Enter valid url_code (min 1 chars)
           </div>}
+
           <label>img_url</label>
           <input defaultValue={info.img_url} {...register("img_url", { minLength: 2, required: false })} className="form-control" type="text" />
           {info.img_url.length > 1 && <img src={info.img_url} alt="img" className='w-25 d-block' />}
           {errors.img_url && <div className='text-danger'>
             * Enter valid img_url (min 2 chars)
           </div>}
+
           <label>info</label>
           <input defaultValue={info.info} {...register("info", { minLength: 2, required: true })} className="form-control" type="text" />
           {errors.info && <div className='text-danger'>
             * Enter valid info (min 2 chars)
           </div>}
+
           <div>Url code: {info.url_code}</div>
+
           <div className='mt-4'>
-            <button className='btn btn-warning'>Update</button>
+            <button className='btn btn-info'>Update</button>
           </div>
         </form>
       }
     </div>
   )
 }
-
-

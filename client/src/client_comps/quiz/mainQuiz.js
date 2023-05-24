@@ -13,6 +13,11 @@ const Quiz = ({ questions }) => {
     const { user, admin, userObj, setUser, setAdmin, updateUserInfo } = useContext(AuthContext);
     const { cat, level } = useContext(LevelContext);
 
+    const [submitting, setSubmitting] = useState(false);
+    const [quizComplete, setQuizComplete] = useState(false);
+
+
+
 
     const handleScroll = () => {
         const windowHeight = window.innerHeight;
@@ -164,6 +169,9 @@ const Quiz = ({ questions }) => {
 
 
     const checkAnswers = async () => {
+        // Disable the button
+        setSubmitting(true);
+
         let correctAnswers = 0;
         let wrongAnswers = 0;
 
@@ -201,7 +209,7 @@ const Quiz = ({ questions }) => {
 
         // Update the scores_array_byCat in the user model
         if (userObj) {
-            
+
             await updateUserScoresByCat(userObj._id, cat, correctAnswers, wrongAnswers);
         }
 
@@ -216,9 +224,18 @@ const Quiz = ({ questions }) => {
             toast.info(`You answered ${correctAnswers} questions correctly and ${wrongAnswers} questions incorrectly.`);
         }
 
+        // Quiz is now complete
+        setQuizComplete(true);
+
+        // Enable the button
+        setSubmitting(false);
+
     };
 
-
+    // Function to reload the component
+    const reloadComponent = () => {
+        window.location.reload();
+    }
 
 
 
@@ -275,9 +292,11 @@ const Quiz = ({ questions }) => {
                             {currentQuestion === questions.length - 1 ? (
                                 <button
                                     className="btn btn-secondary"
-                                    onClick={checkAnswers}
+                                    onClick={quizComplete ? reloadComponent : checkAnswers}
+                                    disabled={submitting} // Disable the button when submitting
+
                                 >
-                                    Check Answers
+                                    {quizComplete ? "Play Again" : "Check Answers"}
                                 </button>
                             ) : (
                                 <button

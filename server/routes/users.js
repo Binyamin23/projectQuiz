@@ -297,7 +297,7 @@ router.patch("/role/", authAdmin, async (req, res) => {
     let role = req.query.role;
     // לא מאפשר למשתמש עצמו לשנות את התפקיד שלו
     // או לשנות את הסופר אדמין
-    if (user_id == req.tokenData._id || user_id == "63ecb540acd5f1e9699cef53") {
+    if (user_id == req.tokenData._id || user_id == "646e5b064f3cff656e6fdfbf") {
       return res.status(401).json({ msg: "You cannot change your own role" })
     }
     let data = await UserModel.updateOne({ _id: user_id }, { role })
@@ -315,8 +315,8 @@ router.delete("/:idDel", authAdmin, async (req, res) => {
     let idDel = req.params.idDel;
     // בודק שהאיי די שנרצה למחוק לא האיי די של המשתמש
     // המחובר או של הסופר אדמין
-    // 63b13b2750267011bebf32be -> id of admin@walla.com (super admin)
-    if (idDel == req.tokenData._id || idDel == "63ecb540acd5f1e9699cef53") {
+    // 646e5b064f3cff656e6fdfbf -> id of jaron.111@hotmail.com (super admin)
+    if (idDel == req.tokenData._id || idDel == "646e5b064f3cff656e6fdfbf") {
       return res.status(401).json({ msg: "You canot delete yourself, or you cannot delete the admin (yourself)" })
     }
     let data = await UserModel.deleteOne({ _id: idDel });

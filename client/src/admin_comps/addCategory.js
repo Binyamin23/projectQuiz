@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
@@ -12,8 +12,10 @@ export default function AddCategory() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const nav = useNavigate();
   const fileRef = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSub = (bodyData) => {
+    setIsSubmitting(true);
     const formData = new FormData();
     for(let key in bodyData){
       formData.append(key, bodyData[key]);
@@ -40,12 +42,14 @@ export default function AddCategory() {
         toast.error("There was a problem. Please come back later");
       }
     }
+    finally {
+      setIsSubmitting(false);
+    }
   }
-
   return (
     <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
       <AuthAdmin />
-      <h1 className='my-3 text-center'>Add new Category to the system</h1>
+      <h1 className='m-3'>Add new Category to the system</h1>
       <form onSubmit={handleSubmit(onSub)} id="id_form" className='col-lg-6 mx-auto shadow p-5 rounded' >
         <label>Name</label>
         <input {...register("name", { minLength: 2, required: true })} className="form-control" type="text" />
@@ -57,7 +61,7 @@ export default function AddCategory() {
 
         <label>Upload Image</label>
         <div className="form-group">
-          <input ref={fileRef} type="file" className="form-control-file" />
+          <input ref={fileRef} type="file" className="form-control-fil" />
         </div>
 
         <label>info</label>
@@ -65,7 +69,7 @@ export default function AddCategory() {
         {errors.info && <div className='text-danger'>* Enter valid info (min 2 chars)</div>}
 
         <div className='mt-4'>
-          <button className='btn btn-success'>Add new</button>
+        <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
         </div>
       </form>
     </div>
