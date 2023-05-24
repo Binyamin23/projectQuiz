@@ -39,7 +39,7 @@ export default function EditCategory() {
 
   const doApi = async (bodyData) => {
     try {
-      let url = API_URL + "/categories/" + params["id"];
+      let url = API_URL + "/edit/" + params["id"];
       let data = await doApiMethod(url, "PUT", bodyData);
       console.log(data)
       if (data.modifiedCount == 1) {
@@ -71,15 +71,15 @@ export default function EditCategory() {
       {!info._id ? <h2>Loading...</h2> :
         <form onSubmit={handleSubmit(onSub)} id="id_form" className='col-lg-6 col-md-8 col-sm-12 shadow p-2 mx-auto' >
           <label>name</label>
-          <input defaultValue={info.name} {...register("name", { minLength: 2, required: true })} className="form-control" type="text" />
+          <input defaultValue={info.name} {...register("name", { minLength: 1, required: true })} className="form-control" type="text" />
           {errors.name && <div className='text-danger'>
-            * Enter valid name (min 2 chars)
+            * Enter valid name (min 1 chars)
           </div>}
 
           {/* <label>url_code</label> */}
           {/* לא אמורים לשנות את היו אר אל קוד שמשמש לחיבור לקולקשן של המשחקים/אפלי */}
           {/* type="hidden" מסתיר את האינפוט */}
-          <input defaultValue={info.url_code} {...register("url_code", { minLength: 2, required: true })} className="form-control" type="hidden" />
+          <input defaultValue={info.url_code} {...register("url_code", { minLength: 1, required: true })} className="form-control" type="hidden" />
           {errors.url_code && <div className='text-danger'>
             * Enter valid url_code (min 2 chars)
           </div>}
