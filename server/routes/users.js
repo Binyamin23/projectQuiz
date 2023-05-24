@@ -220,7 +220,7 @@ router.post("/login", async (req, res) => {
 
 router.post('/requestPasswordReset', async(req, res) => {
   try {
-      const { email, redirectUrl } = req.body;
+      const { email, redirectUrl , created , expired } = req.body;
       if (!email || !redirectUrl) {
           return res.status(400).json({ status: "failed", message: "Please provide email and redirectUrl" });
       }
@@ -228,7 +228,7 @@ router.post('/requestPasswordReset', async(req, res) => {
       if (!user) {
           return res.status(401).json({ status: "failed", message: "No account with the supplied email found. Please try again" });
       }
-      sendResetPasswordEmail(user, redirectUrl, res);
+      sendResetPasswordEmail(user, redirectUrl,created,expired,res);
   } catch (err) {
       console.log(err);
       res.status(500).json(err);
