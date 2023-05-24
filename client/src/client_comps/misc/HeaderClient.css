@@ -25,6 +25,7 @@
     color:rgba(60, 126, 250, 0.483);
 }
 
+
 .logo {
   width: 7rem;
   border-radius: 0cm;
@@ -34,7 +35,6 @@
 
 .logo:hover {
   transform: scale(1);
-  border-radius: 1cm;
   border-color: #999;
 }
 
@@ -91,4 +91,28 @@
 .dropdown ul li a {
     text-decoration: none;
     color: white;
+}
+
+/* CSS file */
+.desktop-link {
+  font-size: 20px; /* Modify this value to increase or decrease the font size */
+}
+
+/* Add the following classes to style your user's image */
+.user-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.fa-duo {
+  font-size: 30px;
+}
+
+@media (max-width: 500px) {
+  .menu {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+  }
 }
