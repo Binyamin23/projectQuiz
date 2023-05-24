@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { REQUSET_RESET_PASSWORD, doApiPost } from '../../services/apiService';
+import { API_URL, REQUSET_RESET_PASSWORD, doApiPost } from '../../services/apiService';
 import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
@@ -18,12 +18,12 @@ const ForgotPassword = () => {
       console.log(REQUSET_RESET_PASSWORD);
       const { data } = await doApiPost(REQUSET_RESET_PASSWORD, {
         email: emailRef.current.value,
-        redirectUrl: 'http://localhost:3000/resetPassword'
+        redirectUrl: API_URL + '/resetPassword'
       });
       setToggle(true);
       console.log(data);
       setMsg(data.message);
-  
+
       setTimeout(() => {
         setToggle(true);
         nav('/login');
@@ -44,7 +44,7 @@ const ForgotPassword = () => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh' }}>
-    <div className='w-fit mx-auto p-5 shadow-2xl rounded-xl border mt-5'>
+      <div className='w-fit mx-auto p-5 shadow-2xl rounded-xl border mt-5'>
         <p className='text-base my-2'>Enter your email to reset your password:</p>
         <input
           ref={emailRef}
@@ -71,14 +71,15 @@ const ForgotPassword = () => {
             Try Again
           </button>
         )}
-  
+
         {msg && <p className='text-base text-success my-2'>{msg}</p>}
         {loading && (
-          <img
-            width={'100px'}
-            src='https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47hdd0ty1pa1pm3qy7lpp6da26d5wlp3l4k2uym0aw&rid=giphy.gif&ct=g'
-            alt=''
-          />
+          <div>
+         <iframe src="https://giphy.com/embed/3y0oCOkdKKRi0" width="480" height="350" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+         <p>
+          <a href="https://giphy.com/gifs/3y0oCOkdKKRi0">via GIPHY</a>
+          </p>
+          </div>
         )}
         {errMsg && (
           <pre className='text-base text-danger my-2 whitespace-pre-wrap overflow-auto'>

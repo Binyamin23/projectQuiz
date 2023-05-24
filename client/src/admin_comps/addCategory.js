@@ -15,9 +15,9 @@ export default function AddCategory() {
 
   const onSub = (bodyData) => {
     const formData = new FormData();
-    Object.entries(bodyData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    for(let key in bodyData){
+      formData.append(key, bodyData[key]);
+    }
     // Append the file
     formData.append('myFile', fileRef.current.files[0]);
     doApi(formData);

@@ -37,7 +37,7 @@ const mailOption = (_id = "", uniqueString = "", _email, _subject, _html) => {
     return mailOptions;
 }
 
-exports.sendResetPasswordEmail = async({ _id, email }, redirectUrl, res) => {
+exports.sendResetPasswordEmail = async({ _id, email }, redirectUrl , created , expired,res) => {
     const request = await PasswordResetModel.findOne({ userId: _id });
     if (request) await PasswordResetModel.deleteOne({ userId: _id });
     const resetString = uuidv4() + _id;
@@ -54,6 +54,8 @@ exports.sendResetPasswordEmail = async({ _id, email }, redirectUrl, res) => {
                     const newPasswordResetModel = new PasswordResetModel({
                         userId: _id,
                         resetString: hashedResetString,
+                        createdAt:created,
+                        expiresAt:expired
                     })
 
                     newPasswordResetModel.save()
@@ -70,7 +72,7 @@ exports.sendResetPasswordEmail = async({ _id, email }, redirectUrl, res) => {
         })
         .catch((error) => {
             console.log(error)
-            res.json({
+            return res.json({
                 status: "failed",
                 message: "Error while cleaning existing requests",
             });

@@ -35,12 +35,13 @@ export default function HeaderClient() {
         <div className="row align-items-center">
           <div className='col-auto'>
             <Link className='li' to="/">
-              <img className='logo' src={logo} />
+              <img className='logo' src={'https://res.cloudinary.com/dg4sxlbfs/image/upload/v1684913391/logoQuiz_c88ool.png'} />
+              
             </Link>
           </div>
           <div className='col row align-items-center justify-content-between'>
             <ul className='col-auto menu'>
-              <li><Link className='li p-2' to="/scores">Scores</Link></li>
+              <li><Link className='li p-2'  to="/scores">Scores</Link></li>
               <li><Link className='li p-2' to="/favs">Favs</Link></li>
               {admin ?
                 <li><Link className='li p-2' to="/admin/categories">Admin</Link></li>
