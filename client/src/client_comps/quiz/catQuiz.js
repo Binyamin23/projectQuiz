@@ -60,6 +60,9 @@ export default function CatQuiz() {
     fetchCats();
   }, [cat]);
 
+  useEffect(()=> {
+  }, [])
+
   useEffect(() => {
     console.log("Cat:", cat, "Level:", level);
     fetchQuestions();
