@@ -33,10 +33,12 @@ const AddPictureToCategory = ({ categoryId, setPictureComp }) => {
   return (
     <div className="p-3 mt-3 border rounded bg-light">
       <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label className='text-dark'>Choose a picture to upload:</Form.Label>
+        <Form.Label className='text-dark m-1'>Choose a picture to upload:</Form.Label>
         <Form.Control type="file" onChange={handlePictureChange} />
       </Form.Group>
-      <Button variant="primary" onClick={handlePictureUpload}>Upload</Button>
+      <Button className='m-1' variant="primary" onClick={handlePictureUpload}>Upload</Button>
+      <Button className='m-1' variant="danger" onClick={()=>{
+        setPictureComp(null)}}>X</Button>
     </div>
   );
 };

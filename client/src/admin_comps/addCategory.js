@@ -17,15 +17,18 @@ export default function AddCategory() {
   const onSub = (bodyData) => {
     setIsSubmitting(true);
     const formData = new FormData();
-    for(let key in bodyData){
+    for (let key in bodyData) {
       formData.append(key, bodyData[key]);
     }
     // Append the file
-    formData.append('myFile', fileRef.current.files[0]);
+    if (fileRef.current.files.length > 0) {
+      formData.append('myFile', fileRef.current.files[0]);
+    }
     doApi(formData);
   }
 
   const doApi = async (bodyData) => {
+    console.log(bodyData)
     try {
       let url = API_URL + "/categories/newCat";
       let data = await doApiMethod(url, "POST", bodyData);
@@ -37,7 +40,7 @@ export default function AddCategory() {
     catch (err) {
       console.log(err);
       if (err.response) {
-        toast.error(`Error: ${err.response.data}`);
+        toast.error(`Error: ${err.response.data.err}`);
       } else {
         toast.error("There was a problem. Please come back later");
       }
@@ -68,8 +71,11 @@ export default function AddCategory() {
         <input {...register("info", { minLength: 2, required: true })} className="form-control" type="text" />
         {errors.info && <div className='text-danger'>* Enter valid info (min 2 chars)</div>}
 
-        <div className='mt-4'>
-        <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
+        <div className='mt-4 d-flex justify-content-between'>
+          <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
+          <button type='button' onClick={() => {
+            nav(-1)
+          }} className='btn btn-danger'>X</button>
         </div>
       </form>
     </div>

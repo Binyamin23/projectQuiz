@@ -57,44 +57,46 @@ router.get("/byCode/:url_code", async (req, res) => {
 
 router.post("/newCat", authAdmin, async (req, res) => {
   try {
-    let myFile = req.files.myFile;
-    if (myFile) {
-      if (myFile.size >= 1024 * 1024 * 5) {
-        return res.status(400).json({ err: "File too big , max 5MB" });
-      }
-      let exts_ar = [".jpg", ".png", ".jpeg", ".gif"];
-      if (!exts_ar.includes(path.extname(myFile.name))) {
-        return res.status(400).json({ err: "File must be an image of jpg, png, jpeg, or gif" });
-      }
-
-      const buffer = fs.readFileSync(myFile.tempFilePath);
-      // Upload buffer to Cloudinary
-      cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (err, result) => {
-        // Delete temp file in all cases
-        fs.unlink(myFile.tempFilePath, unlinkErr => {
-          if (unlinkErr) console.error('Error deleting temp file:', unlinkErr);
-          else console.log('Temp file deleted');
-        });
-
-        if (err) {
-          console.error('Cloudinary upload error:', err);
-          return res.status(500).json({ err: 'Error uploading to Cloudinary' });
+    if (req.files) {
+      let myFile = req.files.myFile;
+      if (myFile) {
+        if (myFile.size >= 1024 * 1024 * 5) {
+          return res.status(400).json({ err: "File too big , max 5MB" });
+        }
+        let exts_ar = [".jpg", ".png", ".jpeg", ".gif"];
+        if (!exts_ar.includes(path.extname(myFile.name))) {
+          return res.status(400).json({ err: "File must be an image of jpg, png, jpeg, or gif" });
         }
 
-        let data = {
-          name: req.body.name,
-          url_code: req.body.url_code,
-          info: req.body.info,
-          user_id: req.tokenData._id,
-          img_url: result.secure_url
-        };
+        const buffer = fs.readFileSync(myFile.tempFilePath);
+        // Upload buffer to Cloudinary
+        cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (err, result) => {
+          // Delete temp file in all cases
+          fs.unlink(myFile.tempFilePath, unlinkErr => {
+            if (unlinkErr) console.error('Error deleting temp file:', unlinkErr);
+            else console.log('Temp file deleted');
+          });
 
-        // Create a new category with the provided data
-        let newCategory = new CategoryModel(data);
-        await newCategory.save();
-        return res.json({ msg: "Category created!", status: 200, newCategory });
+          if (err) {
+            console.error('Cloudinary upload error:', err);
+            return res.status(500).json({ err: 'Error uploading to Cloudinary' });
+          }
 
-      }).end(buffer);
+          let data = {
+            name: req.body.name,
+            url_code: req.body.url_code,
+            info: req.body.info,
+            user_id: req.tokenData._id,
+            img_url: result.secure_url
+          };
+
+          // Create a new category with the provided data
+          let newCategory = new CategoryModel(data);
+          await newCategory.save();
+          return res.json({ msg: "Category created!", status: 200, newCategory });
+
+        }).end(buffer);
+      }
     } else {
       return res.status(400).json({ err: "No file provided" });
     }

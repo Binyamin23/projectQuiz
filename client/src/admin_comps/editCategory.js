@@ -59,6 +59,7 @@ export default function EditCategory() {
       }
       else {
         toast.error("You didn't change anything since the last update")
+        nav(-1)
       }
     }
     catch (err) {
@@ -102,8 +103,11 @@ export default function EditCategory() {
 
           <div>Url code: {info.url_code}</div>
 
-          <div className='mt-4'>
-            <button className='btn btn-info'>Update</button>
+          <div className='mt-4 d-flex justify-content-between'>
+            <button  className='btn btn-info'>Update</button>
+            <button type='button' onClick={()=>{
+              nav(-1)
+            }} className='btn btn-danger'>X</button>
           </div>
         </form>
       }
