@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ToastContainer } from "react-toastify";
-import AdminHeader from "./admin_comps/adminHeader";
 import HeaderClient from "./client_comps/misc/headerClient";
 
 import './App.css';
@@ -11,40 +10,44 @@ import Footer from "./client_comps/misc/footer";
 import Sidebar from "./client_comps/misc/sidebar";
 import UserAuth from "./comps_general/authClient";
 import UpdateLevel from "./comps_general/updateLevel";
+import AdminHeader from "./admin_comps/misc/adminHeader";
+import CategoryContext from "./comps_general/categoryContext";
 
 function App() {
   return (
     <BrowserRouter>
       <UserAuth>
-        <UpdateLevel>   {/* Routes of header what to show client or admin header... */}
-          <Routes>
-            <Route path="/admin/*" element={<AdminHeader />} />
-            <Route path="/*" element={
-              <>
-                <HeaderClient />
-                <Sidebar />
-              </>
-            } />
-          </Routes>
-          <main>
+        <CategoryContext>
+          <UpdateLevel>   {/* Routes of header what to show client or admin header... */}
             <Routes>
-              {/* client */}
-              {/* לא יכלנו לזמן כקומפנינטה מכיוון שראוטס
+              <Route path="/admin/*" element={<AdminHeader />} />
+              <Route path="/*" element={
+                <>
+                  <HeaderClient />
+                  <Sidebar />
+                </>
+              } />
+            </Routes>
+            <main>
+              <Routes>
+                {/* client */}
+                {/* לא יכלנו לזמן כקומפנינטה מכיוון שראוטס
         מצפה שבתוכו יגיע ישירות ריאקט פרגמט או ראוט
         אבל כן אפשר לעשות פונקציה שמחזיר קומפנינטות */}
-              {clientRoutes()}
-              {adminRoutes()}
-              <Route path="/*" element={<Page404 />} />
+                {clientRoutes()}
+                {adminRoutes()}
+                <Route path="/*" element={<Page404 />} />
+              </Routes>
+            </main>
+            <Routes>
+              <Route path="/*" element={<Footer />
+              } />
             </Routes>
-          </main>
-          <Routes>
-            <Route path="/*" element={<Footer />
-            } />
-          </Routes>
 
-          {/* The toast messages added here */}
-          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-        </UpdateLevel>
+            {/* The toast messages added here */}
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+          </UpdateLevel>
+        </CategoryContext>
       </UserAuth>
     </BrowserRouter>
   );

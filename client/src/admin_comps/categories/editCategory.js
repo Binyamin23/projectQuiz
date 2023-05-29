@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
-import { AuthContext } from '../context/createContext';
-import useWindowWidth from '../comps_general/useWidth';
-import AuthAdmin from './authAdmin';
+import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
+import { AuthContext } from '../../context/createContext';
+import useWindowWidth from '../../comps_general/useWidth';
+import AuthAdmin from '../middleware/authAdmin';
 
 export default function EditCategory() {
 
@@ -60,6 +60,8 @@ export default function EditCategory() {
       else {
         toast.error("You didn't change anything since the last update")
         nav(-1)
+        console.log()
+
       }
     }
     catch (err) {
@@ -76,7 +78,7 @@ export default function EditCategory() {
       <h1 className='m-3 text-dark'>Edit category</h1>
 
       {!info._id ? <h2>Loading...</h2> :
-        <form onSubmit={handleSubmit(onSub)} id="id_form" className='col-lg-6 col-md-8 col-sm-12 shadow p-2 mx-auto' >
+        <form onSubmit={handleSubmit(onSub)} id="id_form" className='col-lg-6 mx-auto shadow p-5 rounded' >
           <label>Name</label>
           <input defaultValue={info.name} {...register("name", { minLength: 1, required: true })} className="form-control" type="text" />
           {errors.name && <div className='text-danger'>
@@ -104,10 +106,10 @@ export default function EditCategory() {
           <div>Url code: {info.url_code}</div>
 
           <div className='mt-4 d-flex justify-content-between'>
-            <button  className='btn btn-info'>Update</button>
-            <button type='button' onClick={()=>{
+            <button className='btn btn-info text-light'>Update</button>
+            <button type='button' onClick={() => {
               nav(-1)
-            }} className='btn btn-danger'>X</button>
+            }} className='btn btn-outline-dark'>Close</button>
           </div>
         </form>
       }

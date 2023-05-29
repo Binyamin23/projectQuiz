@@ -6,3 +6,12 @@ td {
   
   .table-cat {
   }
+  .selected-category {
+    background-color: green !important;
+    /* transition: background-color 5s; */
+  }
+  
+  .not-selected-category {
+    transition: background-color 5s;
+  }
+  

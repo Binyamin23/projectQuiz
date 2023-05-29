@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { API_URL, doApiGet } from '../services/apiService'
+import { API_URL, doApiGet } from '../../services/apiService'
 import { useNavigate } from "react-router-dom"
 
 export default function AuthAdmin() {

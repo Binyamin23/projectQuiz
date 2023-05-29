@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { API_URL, doApiMethod, TOKEN_KEY } from '../services/apiService';
-import AuthAdmin from './authAdmin';
+import { API_URL, doApiMethod, TOKEN_KEY } from '../../services/apiService';
+import AuthAdmin from '../middleware/authAdmin';
 
 export default function AddCategory() {
 
@@ -75,7 +75,7 @@ export default function AddCategory() {
           <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
           <button type='button' onClick={() => {
             nav(-1)
-          }} className='btn btn-danger'>X</button>
+          }} className='btn btn-outline-dark'>Close</button>
         </div>
       </form>
     </div>
