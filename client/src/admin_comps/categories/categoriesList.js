@@ -7,14 +7,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, selectedEditCategory } from '../../context/createContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
   const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
-  const [selectedRow, setSelectedRow] = useState(null);
-
 
   const [showPicture, setShowPicture] = useState(false);
   const nav = useNavigate();
@@ -66,9 +67,7 @@ export default function CategoriesList() {
 
   }
 
-  const showCheckIcon = () => {
 
-  }
 
   return (
     <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
@@ -91,8 +90,14 @@ export default function CategoriesList() {
             <tbody>
               {ar.map((item, i) => {
                 return (
-                  <tr key={item._id} style={i === selectedRow ? { color: 'green' } : {}}>
-                    <td>{item.name}</td>
+                  <tr key={item._id}>
+                    <td>
+                      {item.name}
+                      {item._id == selectedCategory ?
+                        <FontAwesomeIcon className='ms-3' icon={faCircleCheck} flip style={{ color: "#23d138", transition: 'background-color 3s' }} />
+                        : ''
+                      }
+                    </td>
                     <td>{item.url_code}</td>
                     <td title={item.info}>{item.info.substring(0, 15)}...</td>
                     <td>
@@ -101,10 +106,18 @@ export default function CategoriesList() {
                       }}>Delete</Button>
                       <Button variant='info' className={isMobile ? 'w-100 mb-2 text-light' : 'm-2 text-light'} onClick={() => {
                         setSelectedCategory(item._id);
-                        setSelectedRow(i);
                         nav("/admin/categories/edit/" + item._id);
-                      }}>Edit</Button>
 
+                        // start a timer to reset both iconShown and selectedCategory after 5 seconds
+                        const timerId = setTimeout(() => {
+                          setSelectedCategory('');
+                        }, 10000);
+
+                        // clear the timer when the component unmounts
+                        return () => {
+                          clearTimeout(timerId);
+                        }
+                      }}>Edit</Button>
                       <Button style={isMobile ? { padding: "7.5%" } : {}} variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
                         if (selectedCategory != item._id) {
                           setSelectedCategory(item._id);
@@ -116,13 +129,14 @@ export default function CategoriesList() {
                           }
                           if (selectedCategory === item._id && showPicture) {
                             setShowPicture(false);
+
                           }
+
                         }
                       }}>Add Image</Button>
                       {showPicture && (selectedCategory === item._id) ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
                     </td>
                   </tr>
-
                 )
               })}
             </tbody>
