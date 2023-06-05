@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   img_url: String,
   wrong_ids: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question'
+    ref: 'questions'
   }],
   scores_array_byCat: [{
     cat_url: {

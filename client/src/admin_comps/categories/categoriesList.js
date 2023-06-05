@@ -6,20 +6,22 @@ import { Button, Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
-import { AuthContext, selectedEditCategory } from '../../context/createContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext, CategoryContext } from '../../context/createContext';
 
 
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
-  const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
-
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [showPicture, setShowPicture] = useState(false);
+
   const nav = useNavigate();
+
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
+  const { editCategory, setEditCategory } = useContext(CategoryContext);
+
 
   let width = useWindowWidth();
   const [isMobile, setIsMobile] = useState(width < 500);
@@ -29,7 +31,7 @@ export default function CategoriesList() {
   }, [width])
 
   useEffect(() => {
-    console.log(selectedCategory)
+    console.log("cat:", editCategory)
 
     if (admin) {
       doApi();
@@ -93,7 +95,7 @@ export default function CategoriesList() {
                   <tr key={item._id}>
                     <td>
                       {item.name}
-                      {item._id == selectedCategory ?
+                      {item._id == editCategory ?
                         <FontAwesomeIcon className='ms-3' icon={faCircleCheck} flip style={{ color: "#23d138", transition: 'background-color 3s' }} />
                         : ''
                       }
@@ -105,13 +107,13 @@ export default function CategoriesList() {
                         window.confirm("Delete item?") && onXClick(item._id)
                       }}>Delete</Button>
                       <Button variant='info' className={isMobile ? 'w-100 mb-2 text-light' : 'm-2 text-light'} onClick={() => {
-                        setSelectedCategory(item._id);
+                        setEditCategory(item._id);
                         nav("/admin/categories/edit/" + item._id);
 
                         // start a timer to reset both iconShown and selectedCategory after 5 seconds
                         const timerId = setTimeout(() => {
-                          setSelectedCategory('');
-                        }, 10000);
+                          setEditCategory('');
+                        }, 5000);
 
                         // clear the timer when the component unmounts
                         return () => {

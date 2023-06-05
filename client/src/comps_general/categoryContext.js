@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { selectedEditCategory } from '../context/createContext';
+import { CategoryContext } from '../context/createContext';
 
-const CategoryContext = ({ children }) => {
+const CategoryEdit = ({ children }) => {
    
-const [selectedCategory, setSelectedCategory] = useState();
+const [editCategory, setEditCategory] = useState();
 
     return (
-        <selectedEditCategory.Provider value={{selectedCategory, setSelectedCategory }}>
+        <CategoryContext.Provider value={{editCategory, setEditCategory }}>
             {children}
-        </selectedEditCategory.Provider>
+        </CategoryContext.Provider>
     )
 }
 
-export default CategoryContext
+export default CategoryEdit
