@@ -6,7 +6,13 @@ import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, selectedEditCategory } from '../../context/createContext';
+<<<<<<< HEAD
 import Row from './Row';
+=======
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+>>>>>>> 0975c0bd7e9fc34504ce30ee2f8f3faaf1678e83
 
 
 export default function CategoriesList() {
@@ -87,6 +93,7 @@ export default function CategoriesList() {
             <tbody>
               {ar.map((item) => {
                 return (
+<<<<<<< HEAD
                   <Row
                   key={item._id}
                     item={item}
@@ -97,6 +104,56 @@ export default function CategoriesList() {
                     showPicture={showPicture}
                     isMobile={isMobile}
                   />)
+=======
+                  <tr key={item._id}>
+                    <td>
+                      {item.name}
+                      {item._id == selectedCategory ?
+                        <FontAwesomeIcon className='ms-3' icon={faCircleCheck} flip style={{ color: "#23d138", transition: 'background-color 3s' }} />
+                        : ''
+                      }
+                    </td>
+                    <td>{item.url_code}</td>
+                    <td title={item.info}>{item.info.substring(0, 15)}...</td>
+                    <td>
+                      <Button variant='danger' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
+                        window.confirm("Delete item?") && onXClick(item._id)
+                      }}>Delete</Button>
+                      <Button variant='info' className={isMobile ? 'w-100 mb-2 text-light' : 'm-2 text-light'} onClick={() => {
+                        setSelectedCategory(item._id);
+                        nav("/admin/categories/edit/" + item._id);
+
+                        // start a timer to reset both iconShown and selectedCategory after 5 seconds
+                        const timerId = setTimeout(() => {
+                          setSelectedCategory('');
+                        }, 10000);
+
+                        // clear the timer when the component unmounts
+                        return () => {
+                          clearTimeout(timerId);
+                        }
+                      }}>Edit</Button>
+                      <Button style={isMobile ? { padding: "7.5%" } : {}} variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
+                        if (selectedCategory != item._id) {
+                          setSelectedCategory(item._id);
+                          setShowPicture(true);
+                        }
+                        else {
+                          if (selectedCategory === item._id) {
+                            setShowPicture(true);
+                          }
+                          if (selectedCategory === item._id && showPicture) {
+                            setShowPicture(false);
+
+                          }
+
+                        }
+                      }}>Add Image</Button>
+                      {showPicture && (selectedCategory === item._id) ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
+                    </td>
+                  </tr>
+                )
+>>>>>>> 0975c0bd7e9fc34504ce30ee2f8f3faaf1678e83
               })}
             </tbody>
           </Table>
