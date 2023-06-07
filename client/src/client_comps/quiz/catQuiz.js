@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, doApiGet } from '../../services/apiService';
 import Quiz from './mainQuiz';
 import './catQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext, LevelContext } from '../../context/createContext';
+import LevelSelect from './levelSelect';
 
 export default function CatQuiz() {
-  const params = useParams();
+
+  const nav = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
-  const { cat, level } = useContext(LevelContext);
+  const [categories, setCategories] = useState([]);
+  const { cat, setCat, level, setLevel } = useContext(LevelContext);
   const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
 
 
@@ -30,6 +33,18 @@ export default function CatQuiz() {
       setCategory({ img_url: '../../images/logo.png' }); //set default image URL or null
     }
   };
+  const fetchCategories = async () => {
+    try {
+      let url = API_URL + "/categories/all";
+      let data = await doApiGet(url);
+      console.log("cats sidebar:", data);
+      setCategories(data)
+    }
+    catch (err) {
+      console.log(err)
+      alert("There's a problem, please try again later.")
+    }
+  }
 
   const fetchQuestions = async () => {
     let data;
@@ -60,7 +75,8 @@ export default function CatQuiz() {
     fetchCats();
   }, [cat]);
 
-  useEffect(()=> {
+  useEffect(() => {
+    fetchCategories();
   }, [])
 
   useEffect(() => {
@@ -68,13 +84,24 @@ export default function CatQuiz() {
     fetchQuestions();
   }, [level, userObj]);
 
-  const handleArrowClick = () => {
-    const welcomeElement = document.querySelector('.welcome-container');
-    const rect = welcomeElement.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const offset = window.innerWidth <= 768 ? 70 : 0; // adjust these values to fit your needs
-    const top = rect.bottom + scrollTop + offset;
-    window.scrollTo({ top, behavior: 'smooth' });
+
+  const handleArrowClick = (componentId) => {
+    const componentElement = document.querySelector(componentId);
+    const top = componentElement.offsetTop;
+    const componentHeight = componentElement.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    
+    const scrollPosition = top - viewportHeight + componentHeight + 150;
+    window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+};
+
+
+  const changeCategory = (e) => {
+    const selectedCat = e.target.value;
+    nav(`/category/${selectedCat}/level/1`);
+    setCat(selectedCat);
+    setLevel(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
 
@@ -82,16 +109,29 @@ export default function CatQuiz() {
     <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
       <div className="welcome-container">
         <div className="inner-welcome">
-          <h1 className="welcome-title">{category.name}</h1>
-          <p className="welcome-info">{category.info}</p>
+        <select onChange={changeCategory} value={cat}>
+            {categories.map((category) => (
+              <option key={category._id} value={category.url_code} >
+                <h1>{category.name}</h1>
+              </option>
+            ))}
+          </select>          <p className="welcome-info">{category.info}</p>
         </div>
-        <div className="welcome-arrow-container" onClick={handleArrowClick}>
+        <div className="welcome-arrow-container" onClick={() => handleArrowClick('.level-select-container')}>
           <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
         </div>
       </div>
+
+      <div className='level-select-container'>
+        <LevelSelect />
+        <div className="level-arrow-container" onClick={() => handleArrowClick('#quiz-component')}>
+          <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
+        </div>
+      </div>
+
       <div id="quiz-component" className="quiz-container">
         {!loading ? (
-          <Quiz key={questions[0]._id} questions={questions} />
+          < Quiz key={questions[0]._id} questions={questions} />
         ) : (
           'loading...'
         )}

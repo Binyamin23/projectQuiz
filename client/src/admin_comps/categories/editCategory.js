@@ -4,16 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
-import { AuthContext, CategoryContext } from '../../context/createContext';
+import { AuthContext, selectedEditCategory } from '../../context/createContext';
 import useWindowWidth from '../../comps_general/useWidth';
 import AuthAdmin from '../middleware/authAdmin';
 
 export default function EditCategory() {
 
-  const { editCategory, setEditCategory } = useContext(CategoryContext);
-
+  const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { user, admin } = useContext(AuthContext);
+  const [timerId, setTimerId] = useState(null);
+
   const nav = useNavigate();
   const params = useParams();
   const [info, setInfo] = useState({});
@@ -57,10 +58,11 @@ export default function EditCategory() {
       console.log(data)
       if (data.modifiedCount == 1) {
         toast.info("Category updated")
-        nav(-1);
+        nav(`/admin/categories?edited=${params["id"]}`);
+
       }
       else {
-        setEditCategory('')
+        setSelectedCategory('')
         toast.error("You didn't change anything since the last update")
         nav(-1)
         console.log()
@@ -109,9 +111,21 @@ export default function EditCategory() {
           <div>Url code: {info.url_code}</div>
 
           <div className='mt-4 d-flex justify-content-between'>
-            <button className='btn btn-info text-light'>Update</button>
+            <button className='btn btn-info text-light' onClick={() => {
+              console.log({ error: "running" })
+              if (selectedCategory != '') {
+                setTimeout(() => {
+                  setSelectedCategory('');
+                }, 3000);
+              }
+
+
+
+
+            }}>Update</button>
+
             <button type='button' onClick={() => {
-              setEditCategory('')
+              setSelectedCategory('')
               nav(-1)
             }} className='btn btn-outline-dark'>Close</button>
           </div>

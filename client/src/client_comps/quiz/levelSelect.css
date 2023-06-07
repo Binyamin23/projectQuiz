@@ -1,0 +1,44 @@
+.level-select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    
+    padding: 1.5em;
+    max-width: 600px;
+    background-color: #282c34;
+    border-radius: 8px;
+    box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.3);
+}
+
+.level-select-title {
+    color: #ffffff;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom:4rem;
+    text-align: center;
+}
+
+.level-options {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.level-option {
+    background: #61dafb;
+    border: none;
+    color: #282c34;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 1em;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.level-option:hover {
+    background: #35a6d6;
+}

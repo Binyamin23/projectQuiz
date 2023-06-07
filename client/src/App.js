@@ -24,7 +24,7 @@ function App() {
               <Route path="/*" element={
                 <>
                   <HeaderClient />
-                  <Sidebar />
+                  {/* <Sidebar /> */}
                 </>
               } />
             </Routes>

@@ -5,6 +5,7 @@ import { API_URL, doApiGet } from '../services/apiService';
 
 
 const UpdateLevel = ({ children }) => {
+
   const location = useLocation();
   const [cat, setCat] = useState('c');
   const [level, setLevel] = useState(1);
@@ -13,6 +14,7 @@ const UpdateLevel = ({ children }) => {
 
 
   useEffect(() => {
+
     const pathParts = location.pathname.split('/');
     const catFromUrl = pathParts[2];
     const levelFromUrl = pathParts[4];
@@ -26,7 +28,7 @@ const UpdateLevel = ({ children }) => {
         setLevel(levelFromUrl);
       }
     }
-  }, [location]);
+  }, []);
 
 
   return (

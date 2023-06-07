@@ -56,6 +56,23 @@
   z-index: 1;
 }
 
+
+.level-arrow-container {
+  position: absolute;
+  bottom: 1rem;
+  margin-top:33vh;
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  margin-left: 4rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  animation: arrow-bounce 1.5s infinite;
+  z-index: 1;
+}
+
+
 .welcome-arrow {
   color: aliceblue;
   position: absolute;
@@ -66,8 +83,15 @@
   height: 2rem;
 }
 
+.level-select-container {
+  position: relative; /* change from absolute to relative */
+  width: 100%;
+  min-height: 70vh;
+  /* Your other styles for LevelSelect here */
+}
+
 .quiz-container {
-  position: relative;
+  position: relative; /* change from absolute to relative */
   min-height: 100vh;
 }
 
