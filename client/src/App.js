@@ -12,12 +12,13 @@ import UserAuth from "./comps_general/authClient";
 import UpdateLevel from "./comps_general/updateLevel";
 import AdminHeader from "./admin_comps/misc/adminHeader";
 import CategoryContext from "./comps_general/categoryContext";
+import CategoryProvider from "./comps_general/categoryContext";
 
 function App() {
   return (
     <BrowserRouter>
       <UserAuth>
-        <CategoryContext>
+        <CategoryProvider>
           <UpdateLevel>   {/* Routes of header what to show client or admin header... */}
             <Routes>
               <Route path="/admin/*" element={<AdminHeader />} />
@@ -47,7 +48,7 @@ function App() {
             {/* The toast messages added here */}
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
           </UpdateLevel>
-        </CategoryContext>
+        </CategoryProvider>
       </UserAuth>
     </BrowserRouter>
   );

@@ -5,14 +5,14 @@ import {Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
-import { AuthContext, selectedEditCategory } from '../../context/createContext';
+import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import Row from './Row';
 
 
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
-  const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
+  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
 
   const [showPicture, setShowPicture] = useState(false);
   const nav = useNavigate();

@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
-import { AuthContext, selectedEditCategory } from '../../context/createContext';
+import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import useWindowWidth from '../../comps_general/useWidth';
 import AuthAdmin from '../middleware/authAdmin';
 
 export default function EditCategory() {
 
-  const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
+  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { user, admin } = useContext(AuthContext);
   const [timerId, setTimerId] = useState(null);
