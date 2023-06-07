@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
-import AddPictureToCategory from './addImageCategory';
-import { Button, Table } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import {Table } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, selectedEditCategory } from '../../context/createContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import Row from './Row';
 
 
 export default function CategoriesList() {
@@ -88,56 +85,18 @@ export default function CategoriesList() {
               </tr>
             </thead>
             <tbody>
-              {ar.map((item, i) => {
+              {ar.map((item) => {
                 return (
-                  <tr key={item._id}>
-                    <td>
-                      {item.name}
-                      {item._id == selectedCategory ?
-                        <FontAwesomeIcon className='ms-3' icon={faCircleCheck} flip style={{ color: "#23d138", transition: 'background-color 3s' }} />
-                        : ''
-                      }
-                    </td>
-                    <td>{item.url_code}</td>
-                    <td title={item.info}>{item.info.substring(0, 15)}...</td>
-                    <td>
-                      <Button variant='danger' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
-                        window.confirm("Delete item?") && onXClick(item._id)
-                      }}>Delete</Button>
-                      <Button variant='info' className={isMobile ? 'w-100 mb-2 text-light' : 'm-2 text-light'} onClick={() => {
-                        setSelectedCategory(item._id);
-                        nav("/admin/categories/edit/" + item._id);
-
-                        // start a timer to reset both iconShown and selectedCategory after 5 seconds
-                        const timerId = setTimeout(() => {
-                          setSelectedCategory('');
-                        }, 10000);
-
-                        // clear the timer when the component unmounts
-                        return () => {
-                          clearTimeout(timerId);
-                        }
-                      }}>Edit</Button>
-                      <Button style={isMobile ? { padding: "7.5%" } : {}} variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
-                        if (selectedCategory != item._id) {
-                          setSelectedCategory(item._id);
-                          setShowPicture(true);
-                        }
-                        else {
-                          if (selectedCategory === item._id) {
-                            setShowPicture(true);
-                          }
-                          if (selectedCategory === item._id && showPicture) {
-                            setShowPicture(false);
-
-                          }
-
-                        }
-                      }}>Add Image</Button>
-                      {showPicture && (selectedCategory === item._id) ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
-                    </td>
-                  </tr>
-                )
+                  <Row
+                  key={item._id}
+                    item={item}
+                    onXClick={() => onXClick(item._id)}
+                    setSelectedCategory={() => setSelectedCategory(item._id)}
+                    setShowPicture={() => setShowPicture(true)}
+                    selectedCategory={selectedCategory}
+                    showPicture={showPicture}
+                    isMobile={isMobile}
+                  />)
               })}
             </tbody>
           </Table>
