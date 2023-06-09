@@ -21,10 +21,10 @@ const UserAuth = ({ children }) => {
         }
       }
       
-      useEffect(() => {
+      useEffect(() => { 
+        updateUserInfo();     
         doApi();
-        updateUserInfo();
-
+            
       }, [user])
 
     
@@ -36,27 +36,29 @@ const UserAuth = ({ children }) => {
           let data = await doApiGet(url);
           if (data.role === "admin") {
             setAdmin(true)
-            setUserObj(data); // Set the user object
+           
           }
           else if (data.role === "user") {
             setUser(true)
-            setUserObj(data); // Set the user object
+            
           }
           else {
             setUser(false)
             setAdmin(false)
             setUserObj(null);
+           
           }
         }
         catch (err) {
           setUser(false)
           setAdmin(false)
           setUserObj(null);
+          
         }
       }
 
     return (
-        <AuthContext.Provider value={{ user, admin, userObj, setUser, setAdmin, updateUserInfo }}>
+        <AuthContext.Provider value={{ user, admin, userObj, setUser, setAdmin, updateUserInfo   }}>
             {children}
         </AuthContext.Provider>
     )

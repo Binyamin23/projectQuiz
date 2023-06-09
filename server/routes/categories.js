@@ -29,7 +29,6 @@ router.get("/all", async (req, res) => {
   }
 })
 
-// יודע לשלוף רק אחד ... ישמש אותנו לעריכה לקבלת מידע עליו
 router.get("/single/:id", async (req, res) => {
   try {
     let id = req.params.id;
@@ -42,7 +41,7 @@ router.get("/single/:id", async (req, res) => {
   }
 })
 
-//שולף קטגוריה לפי השם שלה
+//category by name
 router.get("/byCode/:url_code", async (req, res) => {
   try {
     let url_code = req.params.url_code;
@@ -56,6 +55,7 @@ router.get("/byCode/:url_code", async (req, res) => {
 })
 
 router.post("/newCat", authAdmin, async (req, res) => {
+  console.log(req.body)
   try {
     if (req.files) {
       let myFile = req.files.myFile;
@@ -73,8 +73,10 @@ router.post("/newCat", authAdmin, async (req, res) => {
         cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (err, result) => {
           // Delete temp file in all cases
           fs.unlink(myFile.tempFilePath, unlinkErr => {
-            if (unlinkErr) console.error('Error deleting temp file:', unlinkErr);
-            else console.log('Temp file deleted');
+            if (unlinkErr) 
+               console.error('Error deleting temp file:', unlinkErr);
+            else 
+               console.log('Temp file deleted');
           });
 
           if (err) {
@@ -86,7 +88,6 @@ router.post("/newCat", authAdmin, async (req, res) => {
             name: req.body.name,
             url_code: req.body.url_code,
             info: req.body.info,
-            user_id: req.tokenData._id,
             img_url: result.secure_url
           };
 
