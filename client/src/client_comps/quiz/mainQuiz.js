@@ -19,38 +19,37 @@ const Quiz = ({ questions }) => {
 
 
 
-    const handleScroll = () => {
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollPosition = window.scrollY;
+    // const handleScroll = () => {
+    //     const windowHeight = window.innerHeight;
+    //     const documentHeight = document.documentElement.scrollHeight;
+    //     const scrollPosition = window.scrollY;
 
-        const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-        const showButtonsThreshold = 0.6; // Adjust this value as needed (0.8 means 80% of the page)
-        const hideButtonsThreshold = 0.95; // Adjust this value as needed (0.9 means 90% of the page)
+    //     const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+    //     const showButtonsThreshold = 0.6; // Adjust this value as needed (0.8 means 80% of the page)
+    //     const hideButtonsThreshold = 0.95; // Adjust this value as needed (0.9 means 90% of the page)
 
-        const quizButtons = document.querySelector('.quiz-buttons');
-        if (scrollPercentage >= showButtonsThreshold && scrollPercentage < hideButtonsThreshold) {
-            quizButtons.classList.add('visible');
-        } else {
-            quizButtons.classList.remove('visible');
-        }
-    };
+    //     const quizButtons = document.querySelector('.quiz-buttons');
+    //     if (scrollPercentage >= showButtonsThreshold && scrollPercentage < hideButtonsThreshold) {
+    //         quizButtons.classList.add('visible');
+    //     } else {
+    //         quizButtons.classList.remove('visible');
+    //     }
+    // };
 
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
 
 
     const getFontSize = (text) => {
         const length = text.length;
         const screenWidth = window.innerWidth;
-
         if (screenWidth > 576) { // Adjust the breakpoint as needed
             if (length < 100) return '1.5rem';
             if (length < 200) return '1.2rem';
@@ -120,34 +119,12 @@ const Quiz = ({ questions }) => {
     const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('userAnswers')) || Array(questions.length).fill(null));
     const [showResults, setShowResults] = useState(false);
 
-    // const getStoredAnswers = () => {
-    //     const storedAnswers = JSON.parse(localStorage.getItem('userAnswers'));
-    //     const expiration = localStorage.getItem('userAnswersExpiration');
-
-    //     if (!storedAnswers || !expiration) {
-    //         return Array(questions.length).fill(null);
-    //     }
-
-    //     const currentTime = new Date().getTime();
-    //     if (currentTime >= Number(expiration)) {
-    //         localStorage.removeItem('userAnswers');
-    //         localStorage.removeItem('userAnswersExpiration');
-    //         return Array(questions.length).fill(null);
-    //     }
-
-    //     return storedAnswers;
-    // };
 
 
     const handleAnswer = (index, answer) => {
         const newAnswers = [...answers];
         newAnswers[index] = answer;
         setAnswers(newAnswers);
-
-        const currentTime = new Date().getTime();
-        const expirationTime = currentTime + 2 * 60 * 60 * 1000; // 2 hours later
-        localStorage.setItem('userAnswers', JSON.stringify(newAnswers));
-        localStorage.setItem('userAnswersExpiration', expirationTime);
     };
 
     const moveToNextQuestion = () => {
@@ -169,6 +146,7 @@ const Quiz = ({ questions }) => {
 
 
     const checkAnswers = async () => {
+
         // Disable the button
         setSubmitting(true);
 
@@ -209,7 +187,6 @@ const Quiz = ({ questions }) => {
 
         // Update the scores_array_byCat in the user model
         if (userObj) {
-
             await updateUserScoresByCat(userObj._id, cat, correctAnswers, wrongAnswers);
         }
 
@@ -247,23 +224,23 @@ const Quiz = ({ questions }) => {
 
     return (
         <div className="quiz-container container center-vertically" id="quiz-component">
-            <div className='row'>
+            <div className='row' style={{ width: '100vw' }}>
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
                 </div>
-                <div className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-4'>
+                <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-2'>
 
                     {/* Set the font size for the question based on its length */}
-                    <h3 className='mt-3 text-light question-title mt-1' style={{ fontSize: getFontSize(Questions[currentQuestion].question), height: '2rem' }}>{Questions[currentQuestion].question}</h3>
-                    <div className="btn-group-container d-flex justify-content-center align-items-center">
-                        <div className="btn-group-vertical rounded-2  mt-4 text-light">
+                    <h3 className='mt-3 text-light question-title' style={{ fontSize: getFontSize(Questions[currentQuestion].question), maxHeight: '3rem' }}>{Questions[currentQuestion].question}</h3>
+                    <div  className="btn-group-container d-flex justify-content-center align-items-center">
+                        <div className="btn-group-vertical rounded-2  mt-3 text-light">
                             {Questions[currentQuestion].answers.map((answer, index) => (
                                 <button
                                     key={index}
                                     className={`answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-secondary')) : (answers[currentQuestion] === index ? 'primary' : 'outline-secondary')}`}
                                     onClick={() => !showResults && handleAnswer(currentQuestion, index)}
                                 >
-                                    <h5>{answer}</h5>
+                                    <h5 style={{ fontSize: getFontSize(answer) }}>{answer}</h5>
                                 </button>
 
                             ))}
@@ -282,25 +259,22 @@ const Quiz = ({ questions }) => {
                         <br></br>
                         <span className='text-light p-2'>Add to favs</span>
                     </div>
-
-                    <div className={`quiz-buttons fixed-bottom`}>
-
+                    <div className={`quiz-buttons `}>
                         <div className="d-flex justify-content-between mt-3 button-group mb-4">
-                            <button className="btn btn-secondary" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
+                            <button className="btn btn-secondary button-left" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
                                 Previous
                             </button>
                             {currentQuestion === questions.length - 1 ? (
                                 <button
-                                    className="btn btn-secondary"
+                                    className="btn btn-secondary button-right"
                                     onClick={quizComplete ? reloadComponent : checkAnswers}
                                     disabled={submitting} // Disable the button when submitting
-
                                 >
                                     {quizComplete ? "Play Again" : "Check Answers"}
                                 </button>
                             ) : (
                                 <button
-                                    className="btn btn-secondary"
+                                    className="btn btn-secondary button-right"
                                     onClick={moveToNextQuestion}
                                 >
                                     Next
@@ -308,10 +282,8 @@ const Quiz = ({ questions }) => {
                             )}
                         </div>
                     </div>
-
-
-
                 </div>
+
             </div>
         </div>
     );

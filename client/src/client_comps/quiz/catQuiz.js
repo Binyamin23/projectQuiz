@@ -17,11 +17,7 @@ export default function CatQuiz() {
   const [categories, setCategories] = useState([]);
   const { cat, setCat, level, setLevel } = useContext(LevelContext);
   const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
-
-
-
-  const location = useLocation();
-
+  
   const [questions, setQuestions] = useState([]);
 
   const fetchCats = async () => {
@@ -37,7 +33,7 @@ export default function CatQuiz() {
     try {
       let url = API_URL + "/categories/all";
       let data = await doApiGet(url);
-      console.log("cats sidebar:", data);
+      console.log("cat quit fetch cats:", data);
       setCategories(data)
     }
     catch (err) {
@@ -49,6 +45,7 @@ export default function CatQuiz() {
   const fetchQuestions = async () => {
     let data;
     console.log(userObj)
+    console.log("check cat and level:", cat, level)
     try {
       if (!user && !admin) {
         data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
@@ -80,9 +77,8 @@ export default function CatQuiz() {
   }, [])
 
   useEffect(() => {
-    console.log("Cat:", cat, "Level:", level);
     fetchQuestions();
-  }, [level, userObj]);
+  }, [cat, level, userObj]);
 
   const handleArrowClick = (componentId) => {
     const componentElement = document.querySelector(componentId);
@@ -90,7 +86,7 @@ export default function CatQuiz() {
     const componentHeight = componentElement.offsetHeight;
     const viewportHeight = window.innerHeight;
 
-    const scrollPosition = top - viewportHeight + componentHeight + 100;
+    const scrollPosition = top - viewportHeight + componentHeight + 150;
     window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
   };
 
@@ -100,8 +96,9 @@ export default function CatQuiz() {
     nav(`/category/${selectedCat}/level/1`);
     setCat(selectedCat);
     setLevel(1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  
 
   return (
 
@@ -109,7 +106,7 @@ export default function CatQuiz() {
       <div style={{display:"flex", justifyContent:"center"}} >
         <div className="welcome-container">
           <div className="inner-welcome">
-            <select className='' onChange={changeCategory} value={cat}>
+            <select className='select-cat' onChange={changeCategory} value={cat}>
               {categories.map((category) => (
                 <option key={category._id} value={category.url_code}>
                   {category.name}
