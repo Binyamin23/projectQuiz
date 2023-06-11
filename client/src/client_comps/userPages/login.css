@@ -85,7 +85,7 @@
   .input_text{
       width: 95%;
       height: 30px;
-      background: transparent;
+      /* background: transparent; */
       border: none;
       outline: none;
       border-bottom: 1px solid  #000000;
@@ -149,7 +149,7 @@
   }
 
   .fotter a:hover{
-    color: #00000070;
+    color:#0000009d;
   }
   .glowIcon {
       text-shadow: 0 0 10px  #000000;
