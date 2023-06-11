@@ -63,7 +63,7 @@ export default function HeaderClient() {
 
           </div>
           <ul className='col-auto fixed-end user-icon'>
-            {!isMobile && user || !isMobile && admin ?
+            {user || admin ?
               <button onClick={onLogOut} className='btn btn-logout m-0' >Log out</button>
               : ''
             }
