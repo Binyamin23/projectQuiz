@@ -15,7 +15,7 @@ export default function LevelSelect() {
             setLevel(newLevel);
             window.history.pushState({}, '', `/category/${cat}/level/${newLevel}`);
         } else {
-            toast.info('Please log in or sign up to access this level.');
+            toast.info('Please log in or sign up to access this level');
             nav('/signup')
         };
     };
@@ -25,9 +25,9 @@ export default function LevelSelect() {
             <div className='background-half'>
                 <h2 className="level-select-title">Select Level</h2>
                 <div className="level-options">
-                    <button className="level-option" onClick={() => handleLevelChange(1)}>Level 1</button>
-                    <button className="level-option" onClick={() => handleLevelChange(2)}>Level 2</button>
-                    <button className="level-option" onClick={() => handleLevelChange(3)}>Level 3</button>
+                    <button className={level == 1 ? 'level-option-selected' : 'level-option'} onClick={() => handleLevelChange(1)}>Level 1</button>
+                    <button className={level == 2 ? 'level-option-selected' : 'level-option'} onClick={() => handleLevelChange(2)}>Level 2</button>
+                    <button className={level == 3 ? 'level-option-selected' : 'level-option'} onClick={() => handleLevelChange(3)}>Level 3</button>
                 </div>
             </div>
         </div>

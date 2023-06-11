@@ -30,26 +30,59 @@
   padding: 2rem;
 }
 
-select {
+.select-cat {
   max-width: 50%;
   background-color: #282c34;
   color: #f5f5f5;
   font-weight: bold;
   border: 2px solid #282c34;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   appearance: none;
   text-align: center;
-  /* for Chrome */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 0 0 0 rgba(245, 245, 245, 1);
+  animation: pulse 2s infinite;
 }
 
-select:hover {
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 245, 245, 1);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 245, 245, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 245, 245, 0);
+  }
+}
+
+.select-cat:hover, select.selected {
   background-color: #f5f5f5;
+  color: #282c34;
 }
 
-select option {
+.select-cat option {
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+  color: #282c34;
+}
+
+
+.select-cat:focus {
+  background-color: #282c34;
+  color: #f5f5f5;
+  outline: none;
+  box-shadow: 0 0 10px #719ECE; /*Change the color as needed*/
+}
+
+
+/* select:hover {
+  background-color: #f5f5f5;
+} */
+
+.select-cat option {
   padding: 0.5rem;
 }
 
