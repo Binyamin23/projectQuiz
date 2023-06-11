@@ -20,13 +20,15 @@ export default function LevelSelect() {
         };
     };
 
-    return (
-        <div id="level-select-component" className="level-select-container mb-5">
-            <h2 className="level-select-title">Select Level</h2>
-            <div className="level-options">
-                <button className="level-option" onClick={() => handleLevelChange(1)}>Level 1</button>
-                <button className="level-option" onClick={() => handleLevelChange(2)}>Level 2</button>
-                <button className="level-option" onClick={() => handleLevelChange(3)}>Level 3</button>
+     return (
+        <div id="level-select-component" className="level-select-container">
+            <div className='background-half'>
+                <h2 className="level-select-title">Select Level</h2>
+                <div className="level-options">
+                    <button className="level-option" onClick={() => handleLevelChange(1)}>Level 1</button>
+                    <button className="level-option" onClick={() => handleLevelChange(2)}>Level 2</button>
+                    <button className="level-option" onClick={() => handleLevelChange(3)}>Level 3</button>
+                </div>
             </div>
         </div>
     );

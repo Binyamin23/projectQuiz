@@ -1,26 +1,28 @@
 .container-quiz {
   position: relative;
+  justify-content: center;
+  align-items: center;
   transition: background-image 0.3s ease-in-out;
   background-size: cover;
   min-height: 100vh;
 }
 
 .welcome-container {
+  
   position: relative;
   min-height: 100vh;
-  max-width: 100%;
+  max-width: 90%;
   padding: 0rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: -5rem;
 }
 
+
 .inner-welcome {
-  margin-top: -30vh;
-  margin-left: 15vw;
-  margin-right: 5vw;
   max-height: min-content;
   max-width: max-content;
   background-color: rgba(255, 255, 255, 0.7);
@@ -28,22 +30,54 @@
   padding: 2rem;
 }
 
+select {
+  max-width: 50%;
+  background-color: #282c34;
+  color: #f5f5f5;
+  font-weight: bold;
+  border: 2px solid #282c34;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  appearance: none;
+  text-align: center;
+  /* for Chrome */
+}
+
+select:hover {
+  background-color: #f5f5f5;
+}
+
+select option {
+  padding: 0.5rem;
+}
+
+
+
 .welcome-title {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
+  color: #282c34;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  text-align: center;
 }
 
 .welcome-info {
+  color: #282c34;
   font-size: 1.5rem;
-  line-height: 2rem;
+  font-weight: bold;
   margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  text-align: center;
 }
+
 
 .welcome-arrow-container {
   position: absolute;
   bottom: 1rem;
-  margin-top:8vh;
-  margin-left: 5vw;
+  margin-top: 28vh;
   left: 50%;
   transform: translateX(-50%);
   display: inline-block;
@@ -60,7 +94,7 @@
 .level-arrow-container {
   position: absolute;
   bottom: 1rem;
-  margin-top:33vh;
+  margin-top: 33vh;
   display: inline-block;
   width: 4rem;
   height: 4rem;
@@ -84,15 +118,21 @@
 }
 
 .level-select-container {
-  position: relative; /* change from absolute to relative */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* change from absolute to relative */
   width: 100%;
-  min-height: 70vh;
+  min-height: 100vh;
   /* Your other styles for LevelSelect here */
 }
 
 .quiz-container {
-  position: relative; /* change from absolute to relative */
+  position: relative;
+  /* change from absolute to relative */
+  width: 100%;
   min-height: 100vh;
+  /* Your other styles for LevelSelect here */
 }
 
 @keyframes arrow-bounce {
@@ -100,10 +140,12 @@
     top: 50%;
     transform: translate(-50%, -50%);
   }
+
   50% {
     top: 50%;
     transform: translate(-50%, -80%);
   }
+
   100% {
     top: 50%;
     transform: translate(-50%, -50%);

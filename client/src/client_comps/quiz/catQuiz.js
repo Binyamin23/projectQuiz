@@ -84,16 +84,15 @@ export default function CatQuiz() {
     fetchQuestions();
   }, [level, userObj]);
 
-
   const handleArrowClick = (componentId) => {
     const componentElement = document.querySelector(componentId);
     const top = componentElement.offsetTop;
     const componentHeight = componentElement.offsetHeight;
     const viewportHeight = window.innerHeight;
-    
-    const scrollPosition = top - viewportHeight + componentHeight + 150;
+
+    const scrollPosition = top - viewportHeight + componentHeight + 100;
     window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-};
+  };
 
 
   const changeCategory = (e) => {
@@ -104,25 +103,29 @@ export default function CatQuiz() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
   return (
-    <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
-      <div className="welcome-container">
-        <div className="inner-welcome">
-        <select onChange={changeCategory} value={cat}>
-            {categories.map((category) => (
-              <option key={category._id} value={category.url_code} >
-                <h1>{category.name}</h1>
-              </option>
-            ))}
-          </select>          <p className="welcome-info">{category.info}</p>
-        </div>
-        <div className="welcome-arrow-container" onClick={() => handleArrowClick('.level-select-container')}>
-          <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
+
+    <div className="container-fluid container-quiz justify-content-center" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
+      <div style={{display:"flex", justifyContent:"center"}} >
+        <div className="welcome-container">
+          <div className="inner-welcome">
+            <select className='' onChange={changeCategory} value={cat}>
+              {categories.map((category) => (
+                <option key={category._id} value={category.url_code}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <p className="welcome-info">{category.info}</p>
+          </div>
+          <div className="welcome-arrow-container" onClick={() => handleArrowClick('#level-select-container')}>
+            <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
+          </div>
         </div>
       </div>
 
-      <div className='level-select-container'>
+
+      <div id='level-select-container' className='level-select-container'>
         <LevelSelect />
         <div className="level-arrow-container" onClick={() => handleArrowClick('#quiz-component')}>
           <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
