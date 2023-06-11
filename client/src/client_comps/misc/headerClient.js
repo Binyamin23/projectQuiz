@@ -4,7 +4,6 @@ import { TOKEN_KEY } from '../../services/apiService'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTie } from '@fortawesome/free-solid-svg-icons'
 import './HeaderClient.css'
-import logo from '../../images/logo.png'
 import { useContext, useState } from 'react';
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext } from '../../context/createContext';
@@ -12,7 +11,8 @@ import { AuthContext } from '../../context/createContext';
 
 export default function HeaderClient() {
 
-  const { user, admin, setUser, setAdmin } = useContext(AuthContext);
+  const { user, admin, setUser, setAdmin , userObj } = useContext(AuthContext);
+  console.log(userObj)
 
   let width = useWindowWidth();
 
@@ -67,7 +67,10 @@ export default function HeaderClient() {
               <button onClick={onLogOut} className='btn btn-logout m-0' >Log out</button>
               : ''
             }
-            <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />
+            {userObj && userObj.img_url 
+            ? <img src={userObj.img_url} style={{width: "50px", height: "50px", borderRadius: "50%"}} /> 
+            :  <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />}
+           
             {isMobile && showDropdown && !user && !admin ? (
 
               <div className="dropdown border rounded-2">
