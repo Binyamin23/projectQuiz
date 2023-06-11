@@ -4,6 +4,7 @@ import { API_URL, doApiMethod, TOKEN_KEY } from '../../services/apiService';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/createContext';
+import './login.css'
 
 export default function Login() {
   const { user, setUser } = useContext(AuthContext);
@@ -33,50 +34,31 @@ export default function Login() {
   }
 
   return (
-    <div className="container-fluid p-4 bg-light">
-      <div className="row justify-content-center">
-        <div className="col-11 col-md-6 p-4 bg-white shadow">
-          <h1 className="text-center mb-4">Sign in to our site</h1>
-          <form onSubmit={handleSubmit(onSub)}>
-            <div className="form-group fw-bold">
-              <label>Email:</label>
-              <input {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i })} type="text" className="form-control" />
-              {errors.email && <div className="text-danger">* Enter valid email</div>}
-            </div>
-            <div className="form-group fw-bold">
-              <label>Password:</label>
-              <input {...register("password", { required: true, minLength: 3 })} type="password" className="form-control" />
-              {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
-            </div>
-            <div className="d-flex justify-content-between mt-2">
-              <div className="div_checkbox align-items-center">
-                <div className="d-flex align-items-center">
-                  <div className="form-check">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="form-check-input"
-                    />
-                    <label htmlFor="remember-me" className="form-check-label">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div className="div_link">
-                <Link to={'/forgotPassword'} className="fw-bold text-decoration-none" style={{ color: '#007BFF' }}>
-                  Forgot your password?
-                </Link>
-              </div>
-            </div>
-
-            <div className="text-center mt-4">
-              <button className="btn btn-primary w-50">Sign in</button>
-            </div>
-
-          </form>
-        </div>
+    <div className="bodyy">
+      <div className="login_form_container">
+        <form className="login_form" onSubmit={handleSubmit(onSub)}>
+          <h2>Login</h2>
+          <div className="input_group">
+            <i class="fa fa-user"></i>
+            <input {...register("email", {
+              required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+            })} type="email" placeholder="Username" className="input_text" autocomplete="off" />
+            {errors.email && <div className="text-danger">* Enter valid email</div>}
+          </div>
+          <div className="input_group">
+            <i class="fa fa-lock"></i>
+            <input {...register("password", { required: true, minLength: 3 })} type="password"
+              className="input_text" placeholder="Password" autocomplete="off" />
+            {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
+          </div>
+          <div class="button_group" id="login_button">
+            <button>Submit</button>
+          </div>
+          <div class="fotter">
+            <Link to={'/forgotPassword'}>Forgot Password ?</Link>
+            <Link to={'/signUp'}>SingUp</Link>
+          </div>
+        </form>
       </div>
     </div>
   )
