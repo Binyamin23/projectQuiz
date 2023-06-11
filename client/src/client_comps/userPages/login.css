@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
   }
-  .bodyy{
+  .body{
       width: 100%;
       height: 100%;
       display: flex;
@@ -12,7 +12,6 @@
       letter-spacing: 1px;
       /* background-color: #0c1022; */
       background-color: #ffffff;
-      font-family: initial;
   }
   .login_form_container{
       position: relative;
