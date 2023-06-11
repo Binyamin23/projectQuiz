@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,20 +6,27 @@ import { API_URL, doApiMethod } from '../../services/apiService';
 
 export default function Signup() {
   const nav = useNavigate();
+  const fileRef = useRef();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubForm = (bodyData) => {
-    console.log(bodyData);
-    doApi(bodyData);
+    const formData = new FormData();
+    for (let key in bodyData) {
+        formData.append(key, bodyData[key]);
+    }
+    // Append the file
+    if (fileRef.current.files.length > 0) {
+      formData.append('myFile', fileRef.current.files[0]);
+    }
+    console.log(formData)
+    doApi(formData);
   }
 
   const doApi = async (bodyData) => {
 
     try {
       let url = API_URL + '/users/signUp';
-      console.log(url);
       let data = await doApiMethod(url, "POST", bodyData);
-      console.log(data);
       if (data._id) {
         nav("/login");
         toast.success("You signed up successfully. Now you can sign in.")
@@ -65,6 +72,10 @@ export default function Signup() {
               <label>Password:</label>
               <input {...register("password", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="password" />
               {errors.password && <div className="text-danger">* Enter a valid password (min 2 chars)</div>}
+            </div>
+            <div className="form-group fw-bold">
+              <label>img</label>
+              <input ref={fileRef} className="form-control" type="file" />
             </div>
             <div className="mt-4 text-center">
               <div className="form-check d-flex justify-content-center">

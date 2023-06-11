@@ -57,8 +57,6 @@ const Sidebar = () => {
 
   const handleLevelClick = async (newLevel) => {
     await setLevel(newLevel);
-    console.log('cat:', cat);
-    console.log('level:', level);
     nav(`/category/${cat}/level/${newLevel}`);
     toggleSidebarClose(newLevel);
   }

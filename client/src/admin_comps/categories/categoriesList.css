@@ -1,0 +1,17 @@
+td {
+    max-width: 200px; /* Or whatever max-width you want */
+    overflow: auto; /* Or 'hidden' if you prefer */
+    word-wrap: break-word; /* This will break words onto the next line */
+  }
+  
+  .table-cat {
+  }
+  .selected-category {
+    background-color: green !important;
+    /* transition: background-color 5s; */
+  }
+  
+  .not-selected-category {
+    transition: background-color 5s;
+  }
+  

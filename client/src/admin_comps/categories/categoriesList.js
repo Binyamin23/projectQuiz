@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
+import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
-import AddPictureToCategory from './addImageCategory';
-import { AuthContext } from '../context/createContext';
-import { Button, Table } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import {Table } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import './categoriesList.css'
-import useWindowWidth from '../comps_general/useWidth';
+import useWindowWidth from '../../comps_general/useWidth';
+import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
+import Row from './Row';
 
 
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
+
   const [showPicture, setShowPicture] = useState(false);
   const nav = useNavigate();
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
@@ -25,6 +26,8 @@ export default function CategoriesList() {
   }, [width])
 
   useEffect(() => {
+    console.log(selectedCategory)
+
     if (admin) {
       doApi();
     } else {
@@ -61,9 +64,11 @@ export default function CategoriesList() {
 
   }
 
+
+
   return (
     <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
-     
+
       {admin ?
         <>
           <h1 className='m-3'>List of Categories</h1>
@@ -80,39 +85,18 @@ export default function CategoriesList() {
               </tr>
             </thead>
             <tbody>
-              {ar.map((item, i) => {
+              {ar.map((item) => {
                 return (
-                  <tr key={item._id}>
-                    <td>{item.name}</td>
-                    <td>{item.url_code}</td>
-                    <td title={item.info}>{item.info.substring(0, 15)}...</td>
-                    <td>
-                      <Button variant='danger' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
-                        window.confirm("Delete item?") && onXClick(item._id)
-                      }}>Delete</Button>
-                      <Button variant='info' className={isMobile ? 'w-100 mb-2' : 'm-2'} onClick={() => {
-                        nav("/admin/categories/edit/" + item._id)
-                      }}>Edit</Button>
-                      <Button style={isMobile ? { padding: "7.5%" } : {}} variant='secondary' className={isMobile ? 'w-100' : 'm-2'} onClick={() => {
-                        if (selectedCategory != item._id) {
-                          setSelectedCategory(item._id);
-                          setShowPicture(true);
-                        }
-                        else {
-                          if(selectedCategory === item._id){
-                            setShowPicture(true);
-                          }
-                          if(selectedCategory === item._id && showPicture){
-                            setShowPicture(false);
-
-                          }
-                          
-                        }
-                      }}>Add Image</Button>
-                      {showPicture && (selectedCategory === item._id) ? <AddPictureToCategory categoryId={item._id} setPictureComp={setSelectedCategory} /> : ''}
-                    </td>
-                  </tr>
-                )
+                  <Row
+                  key={item._id}
+                    item={item}
+                    onXClick={() => onXClick(item._id)}
+                    setSelectedCategory={() => setSelectedCategory(item._id)}
+                    setShowPicture={() => setShowPicture(true)}
+                    selectedCategory={selectedCategory}
+                    showPicture={showPicture}
+                    isMobile={isMobile}
+                  />)
               })}
             </tbody>
           </Table>

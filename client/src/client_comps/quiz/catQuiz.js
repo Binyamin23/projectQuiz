@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, doApiGet } from '../../services/apiService';
 import Quiz from './mainQuiz';
 import './catQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext, LevelContext } from '../../context/createContext';
+import LevelSelect from './levelSelect';
 
 export default function CatQuiz() {
-  const params = useParams();
+
+  const nav = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
-  const { cat, level } = useContext(LevelContext);
+  const [categories, setCategories] = useState([]);
+  const { cat, setCat, level, setLevel } = useContext(LevelContext);
   const { user, admin, userObj, setUser, setAdmin } = useContext(AuthContext);
-
-
-
-  const location = useLocation();
-
+  
   const [questions, setQuestions] = useState([]);
 
   const fetchCats = async () => {
@@ -30,10 +29,23 @@ export default function CatQuiz() {
       setCategory({ img_url: '../../images/logo.png' }); //set default image URL or null
     }
   };
+  const fetchCategories = async () => {
+    try {
+      let url = API_URL + "/categories/all";
+      let data = await doApiGet(url);
+      console.log("cat quit fetch cats:", data);
+      setCategories(data)
+    }
+    catch (err) {
+      console.log(err)
+      alert("There's a problem, please try again later.")
+    }
+  }
 
   const fetchQuestions = async () => {
     let data;
     console.log(userObj)
+    console.log("check cat and level:", cat, level)
     try {
       if (!user && !admin) {
         data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
@@ -61,34 +73,65 @@ export default function CatQuiz() {
   }, [cat]);
 
   useEffect(() => {
-    console.log("Cat:", cat, "Level:", level);
-    fetchQuestions();
-  }, [level, userObj]);
+    fetchCategories();
+  }, [])
 
-  const handleArrowClick = () => {
-    const welcomeElement = document.querySelector('.welcome-container');
-    const rect = welcomeElement.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const offset = window.innerWidth <= 768 ? 70 : 0; // adjust these values to fit your needs
-    const top = rect.bottom + scrollTop + offset;
-    window.scrollTo({ top, behavior: 'smooth' });
+  useEffect(() => {
+    fetchQuestions();
+  }, [cat, level, userObj]);
+
+  const handleArrowClick = (componentId) => {
+    const componentElement = document.querySelector(componentId);
+    const top = componentElement.offsetTop;
+    const componentHeight = componentElement.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    const scrollPosition = top - viewportHeight + componentHeight + 150;
+    window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
   };
 
 
+  const changeCategory = (e) => {
+    const selectedCat = e.target.value;
+    nav(`/category/${selectedCat}/level/1`);
+    setCat(selectedCat);
+    setLevel(1);
+  };
+
+  
+
   return (
-    <div className="container-fluid container-quiz" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
-      <div className="welcome-container">
-        <div className="inner-welcome">
-          <h1 className="welcome-title">{category.name}</h1>
-          <p className="welcome-info">{category.info}</p>
+
+    <div className="container-fluid container-quiz justify-content-center" style={{ backgroundImage: `url(${category?.img_url || '../../images/logo.png'})` }}>
+      <div style={{display:"flex", justifyContent:"center"}} >
+        <div className="welcome-container">
+          <div className="inner-welcome">
+            <select className='select-cat' onChange={changeCategory} value={cat}>
+              {categories.map((category) => (
+                <option key={category._id} value={category.url_code}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <p className="welcome-info">{category.info}</p>
+          </div>
+          <div className="welcome-arrow-container" onClick={() => handleArrowClick('#level-select-container')}>
+            <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
+          </div>
         </div>
-        <div className="welcome-arrow-container" onClick={handleArrowClick}>
+      </div>
+
+
+      <div id='level-select-container' className='level-select-container'>
+        <LevelSelect />
+        <div className="level-arrow-container" onClick={() => handleArrowClick('#quiz-component')}>
           <FontAwesomeIcon className='welcome-arrow' icon={faCircleArrowDown} />
         </div>
       </div>
+
       <div id="quiz-component" className="quiz-container">
         {!loading ? (
-          <Quiz key={questions[0]._id} questions={questions} />
+          < Quiz key={questions[0]._id} questions={questions} />
         ) : (
           'loading...'
         )}

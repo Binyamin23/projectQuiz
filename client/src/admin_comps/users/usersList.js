@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
-import AuthAdmin from './authAdmin';
+import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
+import AuthAdmin from '../middleware/authAdmin';
 import Table from 'react-bootstrap/Table';
 import './userList.css'
 import { toast } from 'react-toastify';
-import useWindowWidth from '../comps_general/useWidth';
+import useWindowWidth from '../../comps_general/useWidth';
 import { Button, Modal } from 'react-bootstrap';
 
 export default function UsersList() {
@@ -81,7 +81,7 @@ export default function UsersList() {
 
       <Modal show={showModal} onHide={closeModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Remove Question</Modal.Title>
+          <Modal.Title>Remove User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to delete this user from your database?

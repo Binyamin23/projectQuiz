@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { API_URL, doApiMethod, TOKEN_KEY } from '../services/apiService';
-import AuthAdmin from './authAdmin';
+import { API_URL, doApiMethod, TOKEN_KEY } from '../../services/apiService';
+import AuthAdmin from '../middleware/authAdmin';
 
 export default function AddCategory() {
 
@@ -17,11 +17,13 @@ export default function AddCategory() {
   const onSub = (bodyData) => {
     setIsSubmitting(true);
     const formData = new FormData();
-    for(let key in bodyData){
+    for (let key in bodyData) {
       formData.append(key, bodyData[key]);
     }
     // Append the file
-    formData.append('myFile', fileRef.current.files[0]);
+    if (fileRef.current.files.length > 0) {
+      formData.append('myFile', fileRef.current.files[0]);
+    }
     doApi(formData);
   }
 
@@ -37,7 +39,7 @@ export default function AddCategory() {
     catch (err) {
       console.log(err);
       if (err.response) {
-        toast.error(`Error: ${err.response.data}`);
+        toast.error(`Error: ${err.response.data.err}`);
       } else {
         toast.error("There was a problem. Please come back later");
       }
@@ -61,15 +63,18 @@ export default function AddCategory() {
 
         <label>Upload Image</label>
         <div className="form-group">
-          <input ref={fileRef} type="file" className="form-control-fil" />
+          <input ref={fileRef} type="file" className="form-control-file" />
         </div>
 
         <label>info</label>
         <input {...register("info", { minLength: 2, required: true })} className="form-control" type="text" />
         {errors.info && <div className='text-danger'>* Enter valid info (min 2 chars)</div>}
 
-        <div className='mt-4'>
-        <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
+        <div className='mt-4 d-flex justify-content-between'>
+          <button className='btn btn-success' disabled={isSubmitting}>Add new</button>
+          <button type='button' onClick={() => {
+            nav(-1)
+          }} className='btn btn-outline-dark'>Close</button>
         </div>
       </form>
     </div>

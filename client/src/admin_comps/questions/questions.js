@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Loading from '../comps_general/loading';
-import PagesComp from '../comps_general/pagesComp';
-import { API_URL, doApiGet, doApiMethod } from '../services/apiService';
-import AuthAdmin from './authAdmin';
+import Loading from '../../comps_general/loading';
+import PagesComp from '../../comps_general/pagesComp';
+import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
+import AuthAdmin from '../middleware/authAdmin';
 import QuizForm from './addQuestion';
 import { toast } from 'react-toastify';
 import './questions.css'
 import { Table } from 'react-bootstrap';
-import useWindowWidth from '../comps_general/useWidth';
+import useWindowWidth from '../../comps_general/useWidth';
 
 
 export default function QuestionsList() {
+
 
   const [getQuery] = useSearchParams();
   const [questions, setQuestions] = useState([]);
@@ -262,12 +263,20 @@ export default function QuestionsList() {
                           </div>
                         ))}
                       </div>
-                      <button
-                        className="btn btn-success"
-                        onClick={() => onSaveEditClick()}
-                      >
-                        Save
-                      </button>
+
+                      <div className='mt-4 justify-content-between'>
+                        <button
+                          className="btn btn-success me-2"
+                          onClick={() => onSaveEditClick()}
+                        >
+                          Save
+                        </button>  
+                                              
+                        <button type='button' onClick={() => {
+                          setEditQuestionId(null)
+                        }} className='btn btn-outline-light'>Close</button>
+                      </div>
+
                     </>
                   ) : (
                     <>
