@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../comps_general/loading';
-import PagesComp from '../../comps_general/pagesComp';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
 import AuthAdmin from '../middleware/authAdmin';
 import QuizForm from './addQuestion';
@@ -9,6 +8,7 @@ import { toast } from 'react-toastify';
 import './questions.css'
 import { Table } from 'react-bootstrap';
 import useWindowWidth from '../../comps_general/useWidth';
+import { AuthContext } from '../../context/createContext';
 
 
 export default function QuestionsList() {
@@ -22,19 +22,24 @@ export default function QuestionsList() {
   const [editQuestion, setEditQuestion] = useState({});
   const [filterCat, setFilterCat] = useState('');
   const [filterLevel, setFilterLevel] = useState('');
+  const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   let width = useWindowWidth();
   const [isMobile, setIsMobile] = useState(width < 500);
 
   useEffect(() => {
+    setIsMobile(width < 500);
+  }, [width])
+
+  useEffect(() => {
     setLoading(true);
     doApi(filterCat, filterLevel);
+   
   }, [getQuery, filterCat, filterLevel]);
 
-  const doApi = async (filterCat, filterLevel) => {
-    let perPage = getQuery.get('perPage') || 5;
-    let page = getQuery.get('page') || 1;
 
+  const doApi = async (filterCat, filterLevel) => {
+  
     let url = `${API_URL}/questions/all`;
     if (filterCat || filterLevel) {
       url += `?cat=${filterCat}&level=${filterLevel}`;

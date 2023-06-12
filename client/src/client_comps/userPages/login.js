@@ -39,24 +39,24 @@ export default function Login() {
         <form className="login_form" onSubmit={handleSubmit(onSub)}>
           <h2>Login</h2>
           <div className="input_group">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-envelope-o"></i>
             <input {...register("email", {
               required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-            })} type="email" placeholder="Username" className="input_text" autocomplete="off" />
+            })} type="email" placeholder="Email" className="input_text" />
             {errors.email && <div className="text-danger">* Enter valid email</div>}
           </div>
           <div className="input_group">
             <i class="fa fa-lock"></i>
             <input {...register("password", { required: true, minLength: 3 })} type="password"
-              className="input_text" placeholder="Password" autocomplete="off" />
+              className="input_text" placeholder="Password" />
             {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
           </div>
           <div class="button_group" id="login_button">
             <button>Submit</button>
           </div>
           <div class="fotter">
-            <Link to={'/forgotPassword'}>Forgot Password ?</Link>
-            <Link to={'/signUp'}>SingUp</Link>
+            <Link to={'/forgotPassword'}><strong>Forgot Password ?</strong></Link>
+            <Link to={'/signUp'}><strong>SingUp</strong></Link>
           </div>
         </form>
       </div>

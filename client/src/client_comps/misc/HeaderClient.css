@@ -1,14 +1,22 @@
 .header {
   position: relative;
   width: 100%;
-  background: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(0,123,255,0.6) 70%, rgba(0, 123, 255, 0.806) 100%);
+  background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 123, 255, 0.6) 70%, rgba(0, 123, 255, 0.806) 100%);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 @keyframes gradient {
-  0% {background-position: 0%}
-  50% {background-position: 100%}
-  100% {background-position: 0%}
+  0% {
+    background-position: 0%
+  }
+
+  50% {
+    background-position: 100%
+  }
+
+  100% {
+    background-position: 0%
+  }
 }
 
 .bg-dark-subtle {
@@ -18,11 +26,12 @@
 }
 
 .container-fluid {
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
-.li, h2 {
-    color:rgba(60, 126, 250, 0.483);
+.li,
+h2 {
+  color: rgba(60, 126, 250, 0.483);
 }
 
 
@@ -49,53 +58,54 @@
 }
 
 .li {
-    font-size: 1.2rem;
-    font-weight: 400;
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 .user-icon {
-    color: rgb(55, 118, 237);
-    font-size: 1.6rem;
-    transition: all 0.2s ease-in-out;
+  color: rgb(55, 118, 237);
+  font-size: 1.6rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-logout {
-    color: rgb(60, 126, 250);
-    margin-right: 6px;
+  color: rgb(60, 126, 250);
+  margin-right: 6px;
 }
 
 .dropdown {
-    position: absolute;
-    top:120px;
-    right: 20px;
-    background-color: rgba(60, 126, 250, 0.94);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.34);
-    padding: 2px;
-    z-index: 999;
+  position: absolute;
+  top: 120px;
+  right: 20px;
+  background-color: rgba(60, 126, 250, 0.94);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.34);
+  padding: 2px;
+  z-index: 999;
 }
 
 .dropdown ul {
-    list-style: none;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 20px;
-    margin: 0;
-    padding: 0;
-    color: white;
+  list-style: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  color: white;
 }
 
 .dropdown ul li {
-    margin-bottom: 0px;
-    color: white;
+  margin-bottom: 0px;
+  color: white;
 }
 
 .dropdown ul li a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 /* CSS file */
 .desktop-link {
-  font-size: 20px; /* Modify this value to increase or decrease the font size */
+  font-size: 20px;
+  /* Modify this value to increase or decrease the font size */
 }
 
 /* Add the following classes to style your user's image */
@@ -113,6 +123,5 @@
   .menu {
     display: flex;
     flex-wrap: nowrap;
-    overflow: auto;
   }
 }

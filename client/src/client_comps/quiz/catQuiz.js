@@ -86,7 +86,7 @@ export default function CatQuiz() {
     const componentHeight = componentElement.offsetHeight;
     const viewportHeight = window.innerHeight;
 
-    const scrollPosition = top - viewportHeight + componentHeight + 150;
+    const scrollPosition = top - viewportHeight + componentHeight + 130;
     window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
   };
 

@@ -72,7 +72,7 @@ export default function HeaderClient() {
               : ''
             }
             {userObj && userObj.img_url
-              ? <img src={userObj.img_url} style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
+              ? <img src={userObj.img_url} className='user-image' />
               : <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />}
 
             {isMobile && showDropdown && !user && !admin ? (

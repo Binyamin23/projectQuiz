@@ -11,7 +11,7 @@ const _ = require("lodash");
 
 const router = express.Router();
 
-router.get("/all", auth, async (req, res) => {
+router.get("/all", authAdmin, async (req, res) => {
   try {
     let query = {};
     if (req.query.cat) query.cat_url = new RegExp(req.query.cat, 'i');

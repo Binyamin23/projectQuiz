@@ -4,7 +4,6 @@ import HeaderClient from "./client_comps/misc/headerClient";
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { adminRoutes, clientRoutes } from "./routesPath/routesPath";
 import Page404 from "./comps_general/page404";
 import Footer from "./client_comps/misc/footer";
 import Sidebar from "./client_comps/misc/sidebar";
@@ -13,31 +12,40 @@ import UpdateLevel from "./comps_general/updateLevel";
 import AdminHeader from "./admin_comps/misc/adminHeader";
 import CategoryContext from "./comps_general/categoryContext";
 import CategoryProvider from "./comps_general/categoryContext";
+import { adminRoutes, clientRoutes } from "./routesPath/routesPath";
+import { useContext } from "react";
+import { AuthContext } from "./context/createContext";
 
 function App() {
+
+  const { user, admin } = useContext(AuthContext);
+
   return (
     <BrowserRouter>
       <UserAuth>
         <CategoryProvider>
-          <UpdateLevel>   {/* Routes of header what to show client or admin header... */}
+          <UpdateLevel>
             <Routes>
-              <Route path="/admin/*" element={<AdminHeader />} />
+              {user && admin ?
+                <Route path="/admin/*" element={<AdminHeader />} />
+                : 
               <Route path="/*" element={
                 <>
                   <HeaderClient />
                   {/* <Sidebar /> */}
                 </>
               } />
+            }
             </Routes>
             <main>
               <Routes>
-                {/* client */}
-                {/* לא יכלנו לזמן כקומפנינטה מכיוון שראוטס
-        מצפה שבתוכו יגיע ישירות ריאקט פרגמט או ראוט
-        אבל כן אפשר לעשות פונקציה שמחזיר קומפנינטות */}
                 {clientRoutes()}
-                {adminRoutes()}
+                {user && admin ?
+                adminRoutes()
+                :''
+              }
                 <Route path="/*" element={<Page404 />} />
+
               </Routes>
             </main>
             <Routes>
