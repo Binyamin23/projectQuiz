@@ -34,8 +34,8 @@ export default function Login() {
   }
 
   return (
-    <div className="body">
-      <div className="login_form_container">
+    <div className="bodyy">
+      <div className="login_form_container ">
         <form className="login_form" onSubmit={handleSubmit(onSub)}>
           <h2>Login</h2>
           <div className="input_group">
@@ -52,10 +52,10 @@ export default function Login() {
             {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
           </div>
           <div class="button_group" id="login_button">
-            <button>Submit</button>
+            <button>Login</button>
           </div>
           <div class="fotter">
-            <Link to={'/forgotPassword'}><strong>Forgot Password ?</strong></Link>
+            <Link to={'/forgotPassword'}><strong>Forgot Password?</strong></Link>
             <Link to={'/signUp'}><strong>SingUp</strong></Link>
           </div>
         </form>
