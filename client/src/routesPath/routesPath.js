@@ -13,8 +13,6 @@ import AddCategory from "../admin_comps/categories/addCategory"
 import EditCategory from "../admin_comps/categories/editCategory"
 import ForgotPassword from "../client_comps/userPages/forgotPassword.js"
 import ResetPassword from "../client_comps/userPages/resetPassword"
-import { AuthContext } from "../context/createContext"
-import Loading from "../comps_general/loading"
 
 export const clientRoutes = () => {
   return (
@@ -37,15 +35,13 @@ export const clientRoutes = () => {
 export const adminRoutes = () => {
 
   return (
-  
-        <React.Fragment>
 
+        <React.Fragment>
           <Route path="/admin/categories" element={<CategoriesList />} />
           <Route path="/admin/categories/new" element={<AddCategory />} />
           <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
           <Route path="/admin/questions" element={<QuestionsList />} />
           <Route path="/admin/users" element={<UsersList />} />
         </React.Fragment>
-    
   )
 }
