@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
-import {Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import Row from './Row';
-import Loading from '../../comps_general/loading';
 
 
 export default function CategoriesList() {
@@ -17,7 +16,7 @@ export default function CategoriesList() {
 
   const [showPicture, setShowPicture] = useState(false);
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
-
+  const nav = useNavigate();
   let width = useWindowWidth();
   const [isMobile, setIsMobile] = useState(width < 500);
 
@@ -26,8 +25,12 @@ export default function CategoriesList() {
   }, [width])
 
   useEffect(() => {
+    if (user && admin) {
       doApi();
-
+    }
+    else {
+      nav("/");
+    }
   }, []);
 
   const doApi = async () => {
@@ -62,38 +65,40 @@ export default function CategoriesList() {
 
 
   return (
-    <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
-        <>
-          <h1 className='m-3'>List of Categories</h1>
+    <>
+    {user && admin ?
+      <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
+        <h1 className='m-3'>List of Categories</h1>
 
-          <Link className="btn btn-outline-dark"
-            to="/admin/categories/new">Add new category</Link>
-          <Table className='table-cat' striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>url_code</th>
-                <th>info</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ar.map((item) => {
-                return (
-                  <Row
+        <Link className="btn btn-outline-dark"
+          to="/admin/categories/new">Add new category</Link>
+        <Table className='table-cat' striped bordered hover variant="dark" style={{ borderRadius: '30px', marginTop: '20px' }}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>url_code</th>
+              <th>info</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ar.map((item) => {
+              return (
+                <Row
                   key={item._id}
-                    item={item}
-                    onXClick={() => onXClick(item._id)}
-                    setSelectedCategory={() => setSelectedCategory(item._id)}
-                    setShowPicture={() => setShowPicture(true)}
-                    selectedCategory={selectedCategory}
-                    showPicture={showPicture}
-                    isMobile={isMobile}
-                  />)
-              })}
-            </tbody>
-          </Table>
-        </>
-    </div>
+                  item={item}
+                  onXClick={() => onXClick(item._id)}
+                  setSelectedCategory={() => setSelectedCategory(item._id)}
+                  setShowPicture={() => setShowPicture(true)}
+                  selectedCategory={selectedCategory}
+                  showPicture={showPicture}
+                  isMobile={isMobile}
+                />)
+            })}
+          </tbody>
+        </Table>
+      </div>
+      :''}
+    </>
   )
 }

@@ -37,7 +37,6 @@ function App() {
               <Routes>
                 {clientRoutes()}
                 {adminRoutes()}
-                <Route path="/*" element={<Page404 />} />
               </Routes>
             </main>
             <Routes>
