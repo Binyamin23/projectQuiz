@@ -7,6 +7,7 @@ import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import Row from './Row';
 import Loading from '../../comps_general/loading';
+import { AuthContext, CategoryContext } from '../../context/createContext';
 
 
 export default function CategoriesList() {
