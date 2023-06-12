@@ -80,7 +80,7 @@ export default function Signup() {
           </div>
           <div className="input_group">
             <i class="fa fa-picture-o"></i>
-            <input ref={fileRef} style={{border:'none'}} className="input_text" type="file" />
+            <input ref={fileRef} style={{border:'none'}} className="input_text form-control" type="file" />
           </div>
           <div className="input_group">
             <input type="checkbox" {...register('agreeToPrivacy', { required: true })} />
