@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import Row from './Row';
+import { AuthContext, CategoryContext } from '../../context/createContext';
 
 
 export default function CategoriesList() {
