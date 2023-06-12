@@ -23,7 +23,7 @@ export default function Login() {
       let data = await doApiMethod(url, "POST", bodyData);
       console.log(data);
       localStorage.setItem(TOKEN_KEY, data.token);
-      setUser(true);
+      setUser(true)
       nav("/");
       toast.info("You logged in");
     }

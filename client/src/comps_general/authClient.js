@@ -9,12 +9,12 @@ const UserAuth = ({ children }) => {
     const [admin, setAdmin] = useState(false);
     const [userObj, setUserObj] = useState({}); // Add a new state variable for the user object
 
+
     const updateUserInfo = async () => {
         let url = API_URL + "/users/myInfo"
         try {
           let data = await doApiGet(url);
           setUserObj(data);
-        
         }
         catch (err) {
           setUserObj(null);

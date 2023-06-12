@@ -37,15 +37,14 @@ export const clientRoutes = () => {
 export const adminRoutes = () => {
 
   return (
-  
-        <React.Fragment>
 
-          <Route path="/admin/categories" element={<CategoriesList />} />
-          <Route path="/admin/categories/new" element={<AddCategory />} />
-          <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
-          <Route path="/admin/questions" element={<QuestionsList />} />
-          <Route path="/admin/users" element={<UsersList />} />
-        </React.Fragment>
-    
+    <React.Fragment>
+      <Route path="/admin/categories" element={<CategoriesList />} />
+      <Route path="/admin/categories/new" element={<AddCategory />} />
+      <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
+      <Route path="/admin/questions" element={<QuestionsList />} />
+      <Route path="/admin/users" element={<UsersList />} />
+    </React.Fragment>
+
   )
 }
