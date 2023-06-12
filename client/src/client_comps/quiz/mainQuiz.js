@@ -3,48 +3,16 @@ import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { AuthContext, FavoritesUpdateContext, LevelContext } from '../../context/createContext';
+import { AuthContext, LevelContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
-// Import your icon library here, for example: import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Quiz = ({ questions }) => {
 
-    const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
     const { user, admin, userObj, setUser, setAdmin, updateUserInfo } = useContext(AuthContext);
     const { cat, level } = useContext(LevelContext);
 
     const [submitting, setSubmitting] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
-
-
-
-
-    // const handleScroll = () => {
-    //     const windowHeight = window.innerHeight;
-    //     const documentHeight = document.documentElement.scrollHeight;
-    //     const scrollPosition = window.scrollY;
-
-    //     const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-    //     const showButtonsThreshold = 0.6; // Adjust this value as needed (0.8 means 80% of the page)
-    //     const hideButtonsThreshold = 0.95; // Adjust this value as needed (0.9 means 90% of the page)
-
-    //     const quizButtons = document.querySelector('.quiz-buttons');
-    //     if (scrollPercentage >= showButtonsThreshold && scrollPercentage < hideButtonsThreshold) {
-    //         quizButtons.classList.add('visible');
-    //     } else {
-    //         quizButtons.classList.remove('visible');
-    //     }
-    // };
-
-
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-    // }, []);
-
 
 
     const getFontSize = (text) => {
@@ -62,7 +30,6 @@ const Quiz = ({ questions }) => {
             return '0.7rem';
         }
     };
-
 
     const addToLocalStorage = (_id) => {
         if (!user && !admin) {
@@ -82,16 +49,12 @@ const Quiz = ({ questions }) => {
 
             // Show a success toast message
             toast.success('Question added to favorites');
-            setFavoritesUpdateFlag(!favoritesUpdateFlag);
 
         } else {
             // Show a toast message when the question is already in favorites
             toast.info('Question already saved in favorites');
         }
     };
-
-
-
 
     const shuffleArray = (array) => {
         const newArr = [...array];

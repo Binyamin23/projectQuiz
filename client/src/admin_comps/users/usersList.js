@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
 import AuthAdmin from '../middleware/authAdmin';
 import Table from 'react-bootstrap/Table';
@@ -6,6 +6,8 @@ import './userList.css'
 import { toast } from 'react-toastify';
 import useWindowWidth from '../../comps_general/useWidth';
 import { Button, Modal } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/createContext';
 
 export default function UsersList() {
   const [ar, setAr] = useState([]);
@@ -13,6 +15,11 @@ export default function UsersList() {
   const [isMobile, setIsMobile] = useState(width < 500);
   const [showModal, setShowModal] = useState(false);
   const [questionToDelete, setQuestionToDelete] = useState(null);
+
+  useEffect(() => {
+      doApi();
+
+  }, []);
 
   useEffect(() => {
     doApi();

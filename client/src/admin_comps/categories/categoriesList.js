@@ -7,6 +7,7 @@ import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import Row from './Row';
+import Loading from '../../comps_general/loading';
 
 
 export default function CategoriesList() {
@@ -15,7 +16,6 @@ export default function CategoriesList() {
   const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
 
   const [showPicture, setShowPicture] = useState(false);
-  const nav = useNavigate();
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
 
   let width = useWindowWidth();
@@ -26,14 +26,9 @@ export default function CategoriesList() {
   }, [width])
 
   useEffect(() => {
-    console.log(selectedCategory)
-
-    if (admin) {
       doApi();
-    } else {
-      nav('/login');
-    }
-  }, [admin, nav]);
+
+  }, []);
 
   const doApi = async () => {
     try {
@@ -68,8 +63,6 @@ export default function CategoriesList() {
 
   return (
     <div className='container' style={{ maxWidth: "100%", overflowX: "hidden" }}>
-
-      {admin ?
         <>
           <h1 className='m-3'>List of Categories</h1>
 
@@ -101,8 +94,6 @@ export default function CategoriesList() {
             </tbody>
           </Table>
         </>
-        : 'login...'
-      }
     </div>
   )
 }

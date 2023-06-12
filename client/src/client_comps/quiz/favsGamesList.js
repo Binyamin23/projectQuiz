@@ -11,6 +11,7 @@ import './favsCss.css'
 
 
 function FavoritesPage() {
+
   const [starredQuestions, setStarredQuestions] = useState([]);
   const { user, admin } = useContext(AuthContext);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(null);
@@ -18,8 +19,6 @@ function FavoritesPage() {
   const [questionToDelete, setQuestionToDelete] = useState(null);
 
 
-
-  const { favoritesUpdateFlag, setFavoritesUpdateFlag } = useContext(FavoritesUpdateContext);
 
 
   const [ar, setAr] = useState([]);
@@ -45,7 +44,7 @@ function FavoritesPage() {
     if (user || admin) {
       doApi();
     }
-  }, [favoritesUpdateFlag]);
+  }, []);
 
   useEffect(() => {
     if (user || admin) {

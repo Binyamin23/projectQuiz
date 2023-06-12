@@ -10,9 +10,6 @@ const UpdateLevel = ({ children }) => {
   const [cat, setCat] = useState('c');
   const [level, setLevel] = useState(1);
 
-  const [favoritesUpdateFlag, setFavoritesUpdateFlag] = useState(false);
-
-
   useEffect(() => {
 
     const pathParts = location.pathname.split('/');
@@ -32,11 +29,9 @@ const UpdateLevel = ({ children }) => {
 
 
   return (
-    <FavoritesUpdateContext.Provider value={{ favoritesUpdateFlag, setFavoritesUpdateFlag }}>
       <LevelContext.Provider value={{ cat, level, setCat, setLevel }}>
         {children}
       </LevelContext.Provider>
-    </FavoritesUpdateContext.Provider>
   );
 };
 
