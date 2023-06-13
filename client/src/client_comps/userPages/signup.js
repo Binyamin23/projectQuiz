@@ -96,7 +96,7 @@ export default function Signup() {
             <button>Submit</button>
           </div>
           <div class="fotter">
-            <label style={{fontSize:"18px"}}>Do you have an account??&nbsp;&nbsp;<Link to={'/login'}><strong>SignIn</strong></Link></label>
+            <label style={{fontSize:"18px"}}>Do you have an account??&nbsp;<Link to={'/login'}><strong>SignIn</strong></Link></label>
           </div>
 
         </form>
