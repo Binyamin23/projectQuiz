@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/createContext';
 
 export default function UsersList() {
+  
   const [ar, setAr] = useState([]);
   let width = useWindowWidth();
   const [isMobile, setIsMobile] = useState(width < 500);
