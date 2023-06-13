@@ -56,9 +56,9 @@ export default function HeaderClient() {
 
             {!isMobile ?
               !user && !admin ?
-                <ul className='col-auto '>
-                  <li><Link className='li' to="/login">Log in</Link></li>
-                  <li><Link className='li' to="/signup">Sign up</Link></li>
+                <ul className='col-auto'>
+                  <li><Link className='li ml-3 button-38' to="/login">Log in</Link></li>
+                  <li><Link className='li button-33 mr-3' to="/signup">Sign up</Link></li>
                 </ul> :
                 ''
 

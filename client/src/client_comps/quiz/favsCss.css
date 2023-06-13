@@ -71,3 +71,13 @@
   }
   
   
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+
+  .btn-answer{
+    min-width: 100px;
+  }

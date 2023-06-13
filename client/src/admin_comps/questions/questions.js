@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../comps_general/loading';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
-import AuthAdmin from '../middleware/authAdmin';
 import QuizForm from './addQuestion';
 import { toast } from 'react-toastify';
 import './questions.css'
