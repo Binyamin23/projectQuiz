@@ -108,12 +108,13 @@ h2 {
   /* Modify this value to increase or decrease the font size */
 }
 
-/* Add the following classes to style your user's image */
 .user-image {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
+
 
 .fa-duo {
   font-size: 30px;

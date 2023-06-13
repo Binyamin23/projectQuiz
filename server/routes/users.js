@@ -8,6 +8,7 @@ const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const path = require("path");
 const fs = require('fs');
+const { QuestionsModel } = require("../models/questionsModel");
 
 router.get("/", async (req, res) => {
   res.json({ msg: "Users work" });
@@ -102,7 +103,6 @@ router.post('/updateAnswerCount', auth, async (req, res) => {
 });
 
 
-
 router.post("/updateWrongIds", auth, async (req, res) => {
   const { userId, questionId } = req.body;
   // console.log("Received userId:", userId); // Debug
@@ -143,6 +143,73 @@ router.delete('/:userId/wrong_ids/:questionId', auth, async (req, res) => {
   }
 });
 
+// Add a favorite question
+router.post("/addFavorite", auth, async (req, res) => {
+  const { userId, questionId } = req.body;
+
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      // Check if question is already favorited
+      if (!user.favorite_ids.includes(questionId)) {
+        user.favorite_ids.push(questionId);
+        await user.save();
+        res.status(200).json({ success: true, message: "Added to favorites" });
+      } else {
+        res.status(200).json({ success: false, message: "Question already in favorites" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (err) {
+    console.log("Error updating user's favorites:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
+router.get("/favorites", auth, async (req, res) => {
+  try {
+    let user = await UserModel.findOne({ _id: req.tokenData._id });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find all questions where _id is in user.favorite_ids
+    let favoriteQuestions = await QuestionsModel.find({ _id: { $in: user.favorite_ids } });
+
+    res.json(favoriteQuestions);
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+});
+
+
+router.delete("/removeFavorite", auth, async (req, res) => {
+  const { questionId } = req.body;
+
+  try {
+      const user = await UserModel.findById(req.tokenData._id); // Extract user ID from the token
+      if (user) {
+          const index = user.favorite_ids.indexOf(questionId);
+
+          if (index > -1) {
+              user.favorite_ids.splice(index, 1);
+              await user.save();
+              res.status(200).json({ success: true, message: "Removed from favorites" });
+          } else {
+              res.status(200).json({ success: false, message: "Question not found in favorites" });
+          }
+      } else {
+          res.status(404).json({ success: false, message: "User not found" });
+      }
+  } catch (err) {
+      console.log("Error updating user's favorites:", err);
+      res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 
 

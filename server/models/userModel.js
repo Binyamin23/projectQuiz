@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'questions'
   }],
+  favorite_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'questions'
+  }],
   scores_array_byCat: [{
     cat_url: {
       type: String,
@@ -53,7 +57,7 @@ exports.validteUser = (reqBody) => {
     name: Joi.string().min(2).max(150).required(),
     email: Joi.string().min(2).max(150).email().required(),
     password: Joi.string().min(3).max(150).required(),
-    img_url: Joi.string().min(1).max(500).allow(null,""),
+    img_url: Joi.string().min(1).max(500).allow(null, ""),
     agreeToPrivacy: Joi.boolean().required().valid(true).messages({ 'any.only': 'You must agree to the privacy policy and terms of service' })
   })
   return joiSchema.validate(reqBody);

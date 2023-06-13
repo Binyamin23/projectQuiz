@@ -14,7 +14,7 @@ const Quiz = ({ questions }) => {
     const [submitting, setSubmitting] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
 
-
+    // Function to determine the font size of the question based on its length
     const getFontSize = (text) => {
         const length = text.length;
         const screenWidth = window.innerWidth;
@@ -31,31 +31,28 @@ const Quiz = ({ questions }) => {
         }
     };
 
-    const addToLocalStorage = (_id) => {
+    // Function to add a question to favorites
+    const addToFavorites = async (_id) => {
         if (!user && !admin) {
             toast.warning('Only signed up members can use this feature');
             return;
         }
-        // Get the current list of starred questions from local storage or initialize an empty array
-        const currentStarredQuestions = JSON.parse(localStorage.getItem('starredQuestions') || '[]');
-
-        // Check if the question ID already exists in the array
-        if (!currentStarredQuestions.includes(_id)) {
-            // Add the new question ID to the array
-            currentStarredQuestions.push(_id);
-
-            // Save the updated array back to local storage
-            localStorage.setItem('starredQuestions', JSON.stringify(currentStarredQuestions));
-
-            // Show a success toast message
-            toast.success('Question added to favorites');
-
-        } else {
-            // Show a toast message when the question is already in favorites
-            toast.info('Question already saved in favorites');
+        try {
+            const response = await doApiMethod(API_URL + '/users/addFavorite', 'POST', { userId: userObj._id, questionId: _id });
+    
+            if (response.success) {
+                toast.success('Question added to favorites');
+            } else {
+                toast.info('Question already saved in favorites');
+            }
+    
+        } catch (err) {
+            console.error(err);
+            toast.error('Something went wrong, please try again');
         }
     };
-
+    
+    // Function to shuffle the answers of a question
     const shuffleArray = (array) => {
         const newArr = [...array];
         for (let i = newArr.length - 1; i > 0; i--) {
@@ -65,6 +62,7 @@ const Quiz = ({ questions }) => {
         return newArr;
     };
 
+    // Randomize the order of questions and their answers
     const randomizedQuestions = questions.map((question) => {
         const shuffledAnswers = shuffleArray(question.answers);
         const correctIndex = shuffledAnswers.indexOf(question.answers[0]);
@@ -76,28 +74,29 @@ const Quiz = ({ questions }) => {
         };
     });
 
-
     const [Questions, setQuestions] = useState(randomizedQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('userAnswers')) || Array(questions.length).fill(null));
     const [showResults, setShowResults] = useState(false);
 
-
-
+    // Function to handle selecting an answer
     const handleAnswer = (index, answer) => {
         const newAnswers = [...answers];
         newAnswers[index] = answer;
         setAnswers(newAnswers);
     };
 
+    // Function to move to the next question
     const moveToNextQuestion = () => {
         setCurrentQuestion(currentQuestion + 1);
     };
 
+    // Function to move to the previous question
     const moveToPreviousQuestion = () => {
         setCurrentQuestion(currentQuestion - 1);
     };
 
+    // Function to update the answer count on the server
     const updateAnswerCount = async (userId, isCorrect) => {
         try {
             await doApiMethod(API_URL + '/users/updateAnswerCount', 'POST', { userId, isCorrect });
@@ -106,10 +105,8 @@ const Quiz = ({ questions }) => {
         }
     };
 
-
-
+    // Function to check the answers and update scores
     const checkAnswers = async () => {
-
         // Disable the button
         setSubmitting(true);
 
@@ -169,21 +166,17 @@ const Quiz = ({ questions }) => {
 
         // Enable the button
         setSubmitting(false);
-
     };
 
     // Function to reload the component
     const reloadComponent = () => {
         window.location.reload();
-    }
-
-
+    };
 
     useEffect(() => {
         console.log(Questions)
         console.log(userObj)
-    }, [Questions])
-
+    }, [Questions]);
 
     return (
         <div className="quiz-container container center-vertically" id="quiz-component">
@@ -192,11 +185,10 @@ const Quiz = ({ questions }) => {
                     Question {currentQuestion + 1} of {Questions.length}
                 </div>
                 <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-2'>
-
                     {/* Set the font size for the question based on its length */}
                     <h3 className='mt-3 text-light question-title' style={{ fontSize: getFontSize(Questions[currentQuestion].question), maxHeight: '3rem' }}>{Questions[currentQuestion].question}</h3>
-                    <div  className="btn-group-container d-flex justify-content-center align-items-center">
-                        <div className="btn-group-vertical rounded-2  mt-3 text-light">
+                    <div className="btn-group-container d-flex justify-content-center align-items-center">
+                        <div className="btn-group-vertical rounded-2 mt-3 text-light">
                             {Questions[currentQuestion].answers.map((answer, index) => (
                                 <button
                                     key={index}
@@ -205,24 +197,20 @@ const Quiz = ({ questions }) => {
                                 >
                                     <h5 style={{ fontSize: getFontSize(answer) }}>{answer}</h5>
                                 </button>
-
                             ))}
                         </div>
-
-
-
                     </div>
                     {/* Add a CSS class to fix the position of the quiz footer */}
                     <div className="quiz-footer p-2">
                         <FontAwesomeIcon
-                            onClick={() => addToLocalStorage(Questions[currentQuestion]._id)}
+                            onClick={() => addToFavorites(Questions[currentQuestion]._id)}
                             className="mr-3 quiz-icon"
                             icon={faStar}
                         />
-                        <br></br>
+                        <br />
                         <span className='text-light p-2'>Add to favs</span>
                     </div>
-                    <div className={`quiz-buttons `}>
+                    <div className={`quiz-buttons`}>
                         <div className="d-flex justify-content-between mt-3 button-group mb-4">
                             <button className="btn btn-secondary button-left" onClick={moveToPreviousQuestion} disabled={currentQuestion === 0}>
                                 Previous
@@ -246,7 +234,6 @@ const Quiz = ({ questions }) => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
