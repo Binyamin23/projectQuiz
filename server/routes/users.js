@@ -8,8 +8,8 @@ const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const path = require("path");
 const fs = require('fs');
+<<<<<<< HEAD
 const { log } = require("console");
-const { QuestionsModel } = require("../models/questionsModel");
 
 router.get("/", async (req, res) => {
   res.json({ msg: "Users work" });
@@ -49,7 +49,52 @@ router.get("/favorites", auth, async (req, res) => {
   }
 });
 
-// Return all users
+
+
+router.post("/updateWrongIds", auth, async (req, res) => {
+  const { userId, questionId } = req.body;
+  // console.log("Received userId:", userId); // Debug
+  // console.log("Received questionId:", questionId); // Debug
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      if (!user.wrong_ids.includes(questionId)) {
+        user.wrong_ids.push(questionId);
+        await user.save();
+        res.status(200).json({ success: true });
+      } else {
+        res.status(200).json({ success: false, message: "Question already in wrong_ids" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (err) {
+    console.log("Error updating user's wrong_ids:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+router.delete('/:userId/wrong_ids/:questionId', auth, async (req, res) => {
+  const { userId, questionId } = req.params;
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      user.wrong_ids = user.wrong_ids.filter(id => !id.equals(questionId));
+      await user.save();
+      res.status(200).json({ success: true });
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (err) {
+    console.log("Error removing question ID from user's wrong_ids:", err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+
+
+
+//return the all users
 router.get("/allUsers", authAdmin, async (req, res) => {
 
   let perPage = Number(req.query.perPage) || 20;
@@ -141,7 +186,8 @@ router.post("/signUp", async (req, res) => {
   }
 });
 
-// User login route
+
+
 router.post("/login", async (req, res) => {
   let validBody = validteLogin(req.body);
   if (validBody.error) {
@@ -165,7 +211,7 @@ router.post("/login", async (req, res) => {
     console.error("Error logging in user:", err);
     res.status(500).json(err);
   }
-});
+})
 
 // Route for requesting a password reset
 router.post('/requestPasswordReset', async (req, res) => {
@@ -186,7 +232,7 @@ router.post('/requestPasswordReset', async (req, res) => {
   }
 })
 
-// Route for resetting the password
+
 router.post('/resetPassword', async (req, res) => {
   const { userId, resetString, newPassword } = req.body;
   let result = await PasswordResetModel.findOne({ userId });
@@ -215,129 +261,6 @@ router.post('/resetPassword', async (req, res) => {
   return res.status(200).json({ status: "Success", msg: "Password updated successfully 6" });
 })
 
-// Add a favorite question
-router.post("/addFavorite", auth, async (req, res) => {
-  const { userId, questionId } = req.body;
-  // Validate userId and questionId
-  if (!userId || !questionId) {
-    return res.status(400).json({ error: 'userId and questionId are required.' });
-  }
-
-  try {
-    const user = await UserModel.findById(userId);
-    if (user) {
-      // Check if question is already favorited
-      if (!user.favorite_ids.includes(questionId)) {
-        user.favorite_ids.push(questionId);
-        await user.save();
-        res.status(200).json({ success: true, message: "Added to favorites" });
-      } else {
-        res.status(200).json({ success: false, message: "Question already in favorites" });
-      }
-    } else {
-      res.status(404).json({ success: false, message: "User not found" });
-    }
-  } catch (err) {
-    console.error("Error updating user's favorites:", err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-// This route is designed to update the array of incorrect question IDs for a particular user
-router.post("/updateWrongIds", auth, async (req, res) => {
-  try {
-    const { userId, questionId } = req.body;
-
-    // Finding the user by ID in the database
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      // If the user does not exist, return a 404 status
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Checking if the question ID is already in the user's incorrect question array
-    if (user.wrong_ids.includes(questionId)) {
-      // If it is, return a 400 status because this is an invalid operation
-      return res.status(400).json({ message: "This question ID is already in the user's wrong answers array" });
-    }
-
-    // If everything checks out, add the question ID to the user's incorrect questions array and save the user
-    user.wrong_ids.push(questionId);
-    await user.save();
-    return res.status(200).json({ message: "Wrong answer ID updated successfully" });
-  } catch (err) {
-    console.error(err);
-    // Return a 500 status for general server errors
-    return res.status(500).json({ error: 'Server error, unable to update wrong answer IDs' });
-  }
-});
-
-router.post("/updateScoresByCat", auth, async (req, res) => {
-  const { userId, cat, right, wrong } = req.body;
-  console.log(req.body);
-
-  try {
-    const user = await UserModel.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Find the score for the given category or create a new one
-    let score = user.scores_array_byCat.find(score => score.cat_url === cat);
-
-    if (!score) {
-      score = {
-        cat_url: cat,
-        right_answers: right,
-        wrong_answers: wrong
-      };
-      user.scores_array_byCat.push(score);
-      user.markModified("scores_array_byCat");
-      await user.save();
-    } else {
-      const updatedScore = {
-        cat_url: cat,
-        right_answers: score.right_answers + right,
-        wrong_answers: score.wrong_answers + wrong
-      };
-
-      await UserModel.findOneAndUpdate(
-        { _id: userId, "scores_array_byCat.cat_url": cat },
-        { $set: { "scores_array_byCat.$": updatedScore } }
-      );
-    }
-
-    res.json({ message: "User scores updated successfully" });
-  } catch (error) {
-    console.log("Error updating user scores:", error);
-    res.status(500).json({ message: "Error updating user scores", error });
-  }
-});
-
-router.post('/updateAnswerCount', auth, async (req, res) => {
-  const { userId, isCorrect } = req.body;
-
-  try {
-    const user = await UserModel.findById(userId);
-    if (user) {
-      if (isCorrect) {
-        user.right_answers++;
-      } else {
-        user.wrong_answers++;
-      }
-      await user.save();
-      res.status(200).json({ success: true });
-    } else {
-      res.status(404).json({ success: false, message: 'User not found' });
-    }
-  } catch (err) {
-    console.log('Error updating user\'s answer count:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
-// Route for editing user data
 router.put("/edit/:id", auth, async (req, res) => {
   let validBody = validteUser(req.body);
   if (validBody.error) {
@@ -376,61 +299,7 @@ router.patch("/role/", authAdmin, async (req, res) => {
     console.error("Error updating user role:", err);
     res.status(500).json(err);
   }
-});
-
-// Remove a favorite question from a user
-router.delete("/removeFavorite", auth, async (req, res) => {
-  const { questionId } = req.body;
-
-  // Validate questionId
-  if (!questionId) {
-    return res.status(400).json({ error: 'questionId is required.' });
-  }
-
-  try {
-    const user = await UserModel.findById(req.tokenData._id);
-    if (user) {
-      const index = user.favorite_ids.indexOf(questionId);
-      if (index > -1) {
-        user.favorite_ids.splice(index, 1);
-        await user.save();
-        res.status(200).json({ success: true, message: "Removed from favorites" });
-      } else {
-        res.status(404).json({ success: false, message: "Question not found in favorites" });
-      }
-    } else {
-      res.status(404).json({ success: false, message: "User not found" });
-    }
-  } catch (err) {
-    console.error("Error updating user's favorites:", err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-// Delete a question ID from the user's wrong_ids
-router.delete('/:userId/wrong_ids/:questionId', auth, async (req, res) => {
-  const { userId, questionId } = req.params;
-
-  // Validate userId and questionId
-  if (!userId || !questionId) {
-    return res.status(400).json({ error: 'userId and questionId are required.' });
-  }
-
-  try {
-    const user = await UserModel.findById(userId);
-    if (user) {
-      user.wrong_ids = user.wrong_ids.filter(id => !id.equals(questionId));
-      await user.save();
-      res.status(200).json({ success: true });
-    } else {
-      res.status(404).json({ success: false, message: 'User not found' });
-    }
-  } catch (err) {
-    console.error("Error removing question ID from user's wrong_ids:", err);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
+})
 
 // Delete a user
 router.delete("/:idDel", authAdmin, async (req, res) => {
