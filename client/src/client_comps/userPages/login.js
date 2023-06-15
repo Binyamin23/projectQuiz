@@ -13,7 +13,6 @@ export default function Login() {
   const nav = useNavigate();
 
   const onSub = (bodyData) => {
-    console.log(bodyData);
     doApi(bodyData);
   }
 
@@ -21,7 +20,6 @@ export default function Login() {
     try {
       let url = API_URL + "/users/login";
       let data = await doApiMethod(url, "POST", bodyData);
-      console.log(data);
       localStorage.setItem(TOKEN_KEY, data.token);
       setUser(true)
       nav("/");

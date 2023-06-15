@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { API_URL, doApiMethod } from '../../services/apiService';
 
 const QuizForm = () => {

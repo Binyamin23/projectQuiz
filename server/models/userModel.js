@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'questions'
   }],
+  favorite_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'questions'
+  }],
   scores_array_byCat: [{
     cat_url: {
       type: String,
