@@ -13,6 +13,7 @@ import AddCategory from "../admin_comps/categories/addCategory"
 import EditCategory from "../admin_comps/categories/editCategory"
 import ForgotPassword from "../client_comps/userPages/forgotPassword.js"
 import ResetPassword from "../client_comps/userPages/resetPassword"
+import About from "../client_comps/userPages/about"
 
 export const clientRoutes = () => {
   return (
@@ -21,9 +22,9 @@ export const clientRoutes = () => {
       <Route path="/category/:catName/level/:level" element={<CatQuiz />} />
       <Route path="/favs" element={<FavoritesPage />} />
       <Route path="/scores" element={<ScoresOverview />} />
-
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/about" element={<About/>} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path='/forgotPassword' element={<ForgotPassword />} />
       <Route path='/resetPassword' element={<ResetPassword />} />
