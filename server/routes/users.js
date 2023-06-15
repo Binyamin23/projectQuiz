@@ -8,7 +8,7 @@ const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const path = require("path");
 const fs = require('fs');
-<<<<<<< HEAD
+const { QuestionsModel } = require("../models/questionsModel");
 const { log } = require("console");
 
 router.get("/", async (req, res) => {
