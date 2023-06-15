@@ -118,10 +118,6 @@ export default function EditCategory() {
                   setSelectedCategory('');
                 }, 3000);
               }
-
-
-
-
             }}>Update</button>
 
             <button type='button' onClick={() => {

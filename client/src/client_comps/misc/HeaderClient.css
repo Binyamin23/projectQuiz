@@ -102,10 +102,17 @@ h2 {
 }
 
 .user-image {
+<<<<<<< HEAD
   width: 50px;
   height: 50px;
+=======
+  width: 40px;
+  height: 40px;
+>>>>>>> 132b64dc77a104dd2515ed3d9d2be15983711d7b
   border-radius: 50%;
+  object-fit: cover;
 }
+
 
 .fa-duo {
   font-size: 40px;

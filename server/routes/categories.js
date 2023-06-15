@@ -57,6 +57,13 @@ router.get("/byCode/:url_code", async (req, res) => {
 router.post("/newCat", authAdmin, async (req, res) => {
   console.log(req.body)
   try {
+    let data = {
+      name: req.body.name,
+      url_code: req.body.url_code,
+      info: req.body.info,
+      img_url: "default/placeholder/img/url"  // Default image URL
+    };
+
     if (req.files) {
       let myFile = req.files.myFile;
       if (myFile) {
@@ -84,12 +91,7 @@ router.post("/newCat", authAdmin, async (req, res) => {
             return res.status(500).json({ err: 'Error uploading to Cloudinary' });
           }
 
-          let data = {
-            name: req.body.name,
-            url_code: req.body.url_code,
-            info: req.body.info,
-            img_url: result.secure_url
-          };
+          data.img_url = result.secure_url;
 
           // Create a new category with the provided data
           let newCategory = new CategoryModel(data);
@@ -99,13 +101,17 @@ router.post("/newCat", authAdmin, async (req, res) => {
         }).end(buffer);
       }
     } else {
-      return res.status(400).json({ err: "No file provided" });
+      // Create a new category with the provided data even if no file is uploaded
+      let newCategory = new CategoryModel(data);
+      await newCategory.save();
+      return res.json({ msg: "Category created!", status: 200, newCategory });
     }
   } catch (err) {
     console.log(err);
     return res.status(502).json({ err: "An unexpected error occurred" });
   }
 });
+
 
 
 router.put("/edit/:id", authAdmin, async (req, res) => {
@@ -115,14 +121,18 @@ router.put("/edit/:id", authAdmin, async (req, res) => {
   }
   try {
     let id = req.params.id;
-    let data = await CategoryModel.updateOne({ _id: id }, req.body);
-    res.json(data);
+    let updatedCategory = await CategoryModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedCategory) {
+      return res.status(404).json({ err: "Category not found" });
+    }
+    res.json(updatedCategory);
   }
   catch (err) {
     console.log(err);
     res.status(502).json({ err })
   }
-})
+});
+
 
 
 router.delete("/delete/:id", authAdmin, async (req, res) => {
