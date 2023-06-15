@@ -52,9 +52,7 @@ const ResetPassword = () => {
                 </div>
                 <div className="form-group">
                     <label className="sr-only">Confirm Password</label>
-                    <input
-                        {...register('confirmPassword', {
-                            required: { value: true, message: 'Confirm password is required' },
+                    <input {...register('confirmPassword', {required: { value: true, message: 'Confirm password is required' },maxLength:20,
                             validate: validateConfirmPassword
                         })}
                         type="password"

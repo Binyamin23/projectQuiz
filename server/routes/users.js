@@ -8,6 +8,7 @@ const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const path = require("path");
 const fs = require('fs');
+const { log } = require("console");
 
 router.get("/", async (req, res) => {
   res.json({ msg: "Users work" });
@@ -268,6 +269,7 @@ router.post("/login", async (req, res) => {
 
 router.post('/requestPasswordReset', async (req, res) => {
   try {
+    console.log(req.body);
     const { email, redirectUrl, created, expired } = req.body;
     if (!email || !redirectUrl) {
       return res.status(400).json({ status: "failed", message: "Please provide email and redirectUrl" });

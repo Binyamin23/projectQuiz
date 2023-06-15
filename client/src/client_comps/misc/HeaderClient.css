@@ -54,23 +54,18 @@ h2 {
 }
 
 .menu {
-  margin-left: -2rem;
+  margin-left: 30px;
 }
 
 .li {
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .user-icon {
   color: rgb(55, 118, 237);
   font-size: 1.6rem;
   transition: all 0.2s ease-in-out;
-}
-
-.btn-logout {
-  color: rgb(60, 126, 250);
-  margin-right: 6px;
 }
 
 .dropdown {
@@ -102,21 +97,18 @@ h2 {
   color: white;
 }
 
-/* CSS file */
 .desktop-link {
   font-size: 20px;
-  /* Modify this value to increase or decrease the font size */
 }
 
-/* Add the following classes to style your user's image */
 .user-image {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
 .fa-duo {
-  font-size: 30px;
+  font-size: 40px;
 }
 
 @media (max-width: 500px) {
@@ -126,37 +118,3 @@ h2 {
   }
 }
 
-
-.button-38 {
-  background-color: #FFFFFF;
-  border: 0;
-  border-radius: .5rem;
-  box-sizing: border-box;
-  color: #111827;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: .875rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  padding: .75rem 1rem;
-  text-align: center;
-  text-decoration: none #D1D5DB solid;
-  text-decoration-thickness: auto;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button-38:hover {
-  background-color: rgb(249,250,251);
-}
-
-.button-38:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.button-38:focus-visible {
-  box-shadow: none;
-}

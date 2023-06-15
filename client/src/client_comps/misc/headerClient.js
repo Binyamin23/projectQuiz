@@ -45,32 +45,33 @@ export default function HeaderClient() {
           </div>
           <div className='col row align-items-center justify-content-between'>
             <ul className='col-auto menu'>
-              <li><Link className='li p-2' to="/scores">Scores</Link></li>
-              <li><Link className='li p-2' to="/favs">Favs</Link></li>
+              <li><Link className='li  btn btn-outline-primary ms-2' to="/">Home</Link></li>
+              <li><Link className='li  btn btn-outline-primary ms-2' to="/scores">Scores</Link></li>
+              <li><Link className='li  btn btn-outline-primary ms-2' to="/favs">Favs</Link></li>
+              <li><Link className='li  btn btn-outline-primary ms-2' to="/about">About</Link></li>
+
               {admin ?
-                <li><Link className='li p-2' to="/admin/categories">Admin</Link></li>
+                <li><Link className='li btn btn-outline-primary ms-2' to="/admin/categories">Admin</Link></li>
                 : ''}
               {/* <li><Link to="/">Apps</Link></li>
               <li><Link to="/">Users</Link></li> */}
             </ul>
 
-            {!isMobile ?
-              !user && !admin ?
+            {!isMobile &&
+              !user && !admin &&
                 <ul className='col-auto'>
-                  <li><Link className='li ml-3 button-38' to="/login">Log in</Link></li>
-                  <li><Link className='li button-33 mr-3' to="/signup">Sign up</Link></li>
-                </ul> :
-                ''
-
-              : ''
+                  <li><Link className='li btn btn-outline-primary me-1' to="/login">Log in</Link></li>
+                  <li><Link className='li btn btn-outline-primary' to="/signup">Sign up</Link></li>
+                </ul>             
             }
 
-          </div>
+          </div> 
+          {user || admin ?
+            <button onClick={onLogOut} className=' col-auto btn btn-outline-primary me-2 li' >Log out</button>
+            : ''
+          }
           <ul className='col-auto fixed-end user-icon'>
-            {user || admin ?
-              <button onClick={onLogOut} className='btn btn-logout m-0' >Log out</button>
-              : ''
-            }
+
             {userObj && userObj.img_url
               ? <img src={userObj.img_url} className='user-image' />
               : <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />}
@@ -91,7 +92,6 @@ export default function HeaderClient() {
                 <div className="dropdown border rounded-2">
                   <ul>
                     <li>
-
                       <Link onClick={() => {
                         setShowDropdown(!showDropdown)
                         onLogOut()
