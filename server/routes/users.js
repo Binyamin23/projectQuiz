@@ -30,6 +30,36 @@ router.get("/myInfo", auth, async (req, res) => {
   }
 })
 
+// Add a favorite question
+router.post("/addFavorite", auth, async (req, res) => {
+  const { userId, questionId } = req.body;
+
+  // Validate userId and questionId
+  if (!userId || !questionId) {
+    return res.status(400).json({ error: 'userId and questionId are required.' });
+  }
+
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      // Check if question is already favorited
+      if (!user.favorite_ids.includes(questionId)) {
+        user.favorite_ids.push(questionId);
+        await user.save();
+        res.status(200).json({ success: true, message: "Added to favorites" });
+      } else {
+        res.status(200).json({ success: false, message: "Question already in favorites" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (err) {
+    console.error("Error updating user's favorites:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
 // Get a user's favorite questions
 router.get("/favorites", auth, async (req, res) => {
   try {
@@ -49,6 +79,36 @@ router.get("/favorites", auth, async (req, res) => {
   }
 });
 
+// Remove a favorite question from a user
+router.delete("/removeFavorite", auth, async (req, res) => {
+  const { questionId } = req.body;
+
+  // Validate questionId
+  if (!questionId) {
+    return res.status(400).json({ error: 'questionId is required.' });
+  }
+
+  try {
+    const user = await UserModel.findById(req.tokenData._id); // Extract user ID from the token
+    if (user) {
+      const index = user.favorite_ids.indexOf(questionId);
+
+      // Check if question exists in the favorites
+      if (index > -1) {
+        user.favorite_ids.splice(index, 1);
+        await user.save();
+        res.status(200).json({ success: true, message: "Removed from favorites" });
+      } else {
+        res.status(404).json({ success: false, message: "Question not found in favorites" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (err) {
+    console.error("Error updating user's favorites:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 
 router.post("/updateWrongIds", auth, async (req, res) => {
