@@ -5,7 +5,7 @@ import { faCircleInfo, faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, LevelContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
-import Modal from 'react-modal'; // 
+import Modal from 'react-modal'; 
 
 Modal.setAppElement('#root');
 
