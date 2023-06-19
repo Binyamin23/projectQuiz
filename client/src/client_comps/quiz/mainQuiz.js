@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, LevelContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
+import Modal from 'react-modal'; // 
+
+Modal.setAppElement('#root');
 
 const Quiz = ({ questions }) => {
 
@@ -14,22 +17,41 @@ const Quiz = ({ questions }) => {
     const [submitting, setSubmitting] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
 
+    // State to control the visibility of the modal
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    // State to hold the extra info
+    const [moreInfo, setMoreInfo] = useState([]);
+
     // Function to determine the font size of the question based on its length
     const getFontSize = (text) => {
         const length = text.length;
         const screenWidth = window.innerWidth;
-        if (screenWidth > 576) { // Adjust the breakpoint as needed
-            if (length < 100) return '1.5rem';
-            if (length < 200) return '1.2rem';
-            if (length < 300) return '1rem';
-            return '0.9rem';
+    
+        if (screenWidth > 576) { 
+            if (length < 40) return '1.2rem';
+            if (length < 60) return '1.1rem';
+            if (length < 80) return '1rem';
+            if (length < 100) return '0.95rem';
+            if (length < 120) return '0.9rem';
+            if (length < 140) return '0.85rem';
+            if (length < 160) return '0.8rem';
+            if (length < 180) return '0.75rem';
+            if (length < 200) return '0.7rem';
+            return '0.65rem';
         } else {
-            if (length < 100) return '1rem';
-            if (length < 200) return '0.9rem';
-            if (length < 300) return '0.8rem';
-            return '0.7rem';
+            if (length < 30) return '1rem';
+            if (length < 50) return '0.95rem';
+            if (length < 70) return '0.9rem';
+            if (length < 90) return '0.85rem';
+            if (length < 110) return '0.8rem';
+            if (length < 130) return '0.75rem';
+            if (length < 150) return '0.7rem';
+            return '0.65rem';
         }
     };
+    
+    
+    
 
     // Function to add a question to favorites
     const addToFavorites = async (_id) => {
@@ -39,19 +61,35 @@ const Quiz = ({ questions }) => {
         }
         try {
             const response = await doApiMethod(API_URL + '/users/addFavorite', 'POST', { userId: userObj._id, questionId: _id });
-    
+
             if (response.success) {
                 toast.success('Question added to favorites');
             } else {
                 toast.info('Question already saved in favorites');
             }
-    
+
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong, please try again');
         }
     };
-    
+
+    const showMoreInfo = (_id) => {
+        const questionInfo = questions.find(question => question._id === _id).info;
+        setMoreInfo(questionInfo.split('\n')); // Split the info by newline characters
+        setModalIsOpen(true);
+        // Prevent scrolling in the background
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close the modal and allow scrolling
+    const closeModal = () => {
+        setModalIsOpen(false);
+        // Allow scrolling again
+        document.body.style.overflow = 'auto';
+    };
+
+
     // Function to shuffle the answers of a question
     const shuffleArray = (array) => {
         const newArr = [...array];
@@ -180,6 +218,44 @@ const Quiz = ({ questions }) => {
 
     return (
         <div className="quiz-container container center-vertically" id="quiz-component">
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="More Info"
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)' },
+                    content: {
+                        color: 'lightsteelblue',
+                        top: '50%',
+                        left: '50%',
+                        right: '10%',
+                        bottom: 0,
+                        marginRight: '-50%',
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: '#fff',
+                        borderRadius: '10px',
+                        padding: '30px',
+                        overflowY: 'auto', // Enable scrolling inside the modal
+                        maxHeight: '90vh', // Set a maximum height
+                    },
+                }}
+            >
+                <div style={{
+                    fontFamily: 'Rajdhani',
+                    fontWeight:"500", 
+                    textAlign:"center"
+                }}>
+                <h2 >More Info</h2>
+                <br></br>
+                {moreInfo.map((line, index) => <p key={index}>{line}</p>)} {/* Render each line as a separate paragraph */}
+                <br/>
+                <button className='btn btn-dark mb-2' onClick={closeModal}>Close</button>
+                
+                </div>
+            </Modal>
+
+
             <div className='row' style={{ width: '100vw' }}>
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
@@ -202,13 +278,28 @@ const Quiz = ({ questions }) => {
                     </div>
                     {/* Add a CSS class to fix the position of the quiz footer */}
                     <div className="quiz-footer p-2">
-                        <FontAwesomeIcon
-                            onClick={() => addToFavorites(Questions[currentQuestion]._id)}
-                            className="mr-3 quiz-icon"
-                            icon={faStar}
-                        />
-                        <br />
-                        <span className='text-light p-2'>Add to favs</span>
+                        <div className='row justify-content-center'>
+                            <div className='col-3'>
+                                <FontAwesomeIcon
+                                    onClick={() => addToFavorites(Questions[currentQuestion]._id)}
+                                    className="mr-3 quiz-star"
+                                    icon={faStar}
+                                />
+                                <br />
+                                <span className='text-light p-2'>Add to favs</span>
+                            </div>
+                            {quizComplete && Questions[currentQuestion].info ?
+                                <div className='col-3'>
+                                    <FontAwesomeIcon
+                                        onClick={() => showMoreInfo(Questions[currentQuestion]._id)}
+                                        className="mr-3 quiz-info"
+                                        icon={faCircleInfo}
+                                    />
+                                    <br />
+                                    <span className='text-light p-2'>More Info</span>
+                                </div>
+                                : ''}
+                        </div>
                     </div>
                     <div className={`quiz-buttons`}>
                         <div className="d-flex justify-content-between mt-3 button-group mb-4">
