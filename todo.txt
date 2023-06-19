@@ -3,3 +3,5 @@
 
 add LEVEL IN THE ADMIN
 
+check the user_img in mobile , if open the toggle
+
