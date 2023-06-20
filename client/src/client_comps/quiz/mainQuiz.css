@@ -33,14 +33,10 @@
 }
 
 .question-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   
-  @media (max-width: 576px) { /* Adjust the breakpoint as needed */
-    .question-title {
-      font-size: 1rem;
-    }
-  }
+
   
 .btn-group {
     margin-top: 1rem;
@@ -92,10 +88,11 @@
     right: 0;
   }
   .answer-button {
-    max-height: 70px; /* Adjust this value to control the max height of the answer buttons */
-    overflow-y: auto;
-    text-align: left;
+    overflow-y: hidden;
 }
+
+
+
 
 .btn-group-container {
     display: flex;

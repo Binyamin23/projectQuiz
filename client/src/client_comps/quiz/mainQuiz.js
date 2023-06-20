@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { createElement, useContext, useEffect, useState } from 'react';
 import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { AuthContext, LevelContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
 import Modal from 'react-modal'; // 
+import useWindowWidth from '../../comps_general/useWidth';
 
 Modal.setAppElement('#root');
 
@@ -14,6 +15,8 @@ const Quiz = ({ questions }) => {
     const { user, admin, userObj, setUser, setAdmin, updateUserInfo } = useContext(AuthContext);
     const { cat, level } = useContext(LevelContext);
 
+    let width = useWindowWidth();
+
     const [submitting, setSubmitting] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
 
@@ -21,37 +24,6 @@ const Quiz = ({ questions }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     // State to hold the extra info
     const [moreInfo, setMoreInfo] = useState([]);
-
-    // Function to determine the font size of the question based on its length
-    const getFontSize = (text) => {
-        const length = text.length;
-        const screenWidth = window.innerWidth;
-    
-        if (screenWidth > 576) { 
-            if (length < 40) return '1.2rem';
-            if (length < 60) return '1.1rem';
-            if (length < 80) return '1rem';
-            if (length < 100) return '0.95rem';
-            if (length < 120) return '0.9rem';
-            if (length < 140) return '0.85rem';
-            if (length < 160) return '0.8rem';
-            if (length < 180) return '0.75rem';
-            if (length < 200) return '0.7rem';
-            return '0.65rem';
-        } else {
-            if (length < 30) return '1rem';
-            if (length < 50) return '0.95rem';
-            if (length < 70) return '0.9rem';
-            if (length < 90) return '0.85rem';
-            if (length < 110) return '0.8rem';
-            if (length < 130) return '0.75rem';
-            if (length < 150) return '0.7rem';
-            return '0.65rem';
-        }
-    };
-    
-    
-    
 
     // Function to add a question to favorites
     const addToFavorites = async (_id) => {
@@ -114,7 +86,7 @@ const Quiz = ({ questions }) => {
 
     const [Questions, setQuestions] = useState(randomizedQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('userAnswers')) || Array(questions.length).fill(null));
+    const [answers, setAnswers] = useState(Array(questions.length).fill(null));
     const [showResults, setShowResults] = useState(false);
 
     // Function to handle selecting an answer
@@ -216,6 +188,63 @@ const Quiz = ({ questions }) => {
         console.log(userObj)
     }, [Questions]);
 
+    const [answerFontSize, setAnswerFontSize] = useState();
+
+    // Add this function to your component
+    const adjustFontSize = (id) => {
+        let element = document.getElementById(id);
+        // Reset the font size to the default before each calculation.
+        if (id == "largest-answer") element.style.fontSize = "1.7rem";
+        else element.style.fontSize = "2rem";
+        const parentHeight = element.parentElement.offsetHeight;
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let fontSize = parseFloat(style);
+        while (element.offsetHeight > parentHeight) {
+            fontSize--;
+            element.style.fontSize = fontSize + "px";
+        }
+    }
+
+    const createTemporaryDiv = (text) => {
+        let parentDiv = document.getElementById('hidden-answer');
+        let div = document.createElement('div');
+        div.id = "largest-answer";
+        div.style.visibility = "hidden";
+        div.textContent = text;
+        parentDiv.appendChild(div);
+        return div;
+    }
+
+
+    const getLargestAnswer = () => {
+        let longestAnswer = '';
+        for (let i = 0; i < 4; i++) {
+            let currentAnswer = Questions[currentQuestion].answers[i];
+            if (currentAnswer.length > longestAnswer.length) {
+                longestAnswer = currentAnswer;
+            }
+        }
+        let div = createTemporaryDiv(longestAnswer);
+        adjustFontSize(div.id);
+        let result = div.style.fontSize;
+        // alert(result)
+        div.remove();
+        return result;
+    }
+
+
+    // Call this function with the id of your element when it mounts and updates
+    useEffect(() => {
+        // Reset the answer font size
+        setAnswerFontSize("2rem"); // or whatever your default font size is
+
+        adjustFontSize('question');
+        let largestAnswerFontSize = getLargestAnswer();
+        setAnswerFontSize(largestAnswerFontSize);
+    }, [currentQuestion]);
+
+    // This will run the function when the current question or showResults state changes
+
     return (
         <div className="quiz-container container center-vertically" id="quiz-component">
 
@@ -243,15 +272,15 @@ const Quiz = ({ questions }) => {
             >
                 <div style={{
                     fontFamily: 'Rajdhani',
-                    fontWeight:"500", 
-                    textAlign:"center"
+                    fontWeight: "500",
+                    textAlign: "center"
                 }}>
-                <h2 >More Info</h2>
-                <br></br>
-                {moreInfo.map((line, index) => <p key={index}>{line}</p>)} {/* Render each line as a separate paragraph */}
-                <br/>
-                <button className='btn btn-dark mb-2' onClick={closeModal}>Close</button>
-                
+                    <h2 >More Info</h2>
+                    <br></br>
+                    {moreInfo.map((line, index) => <p key={index}>{line}</p>)} {/* Render each line as a separate paragraph */}
+                    <br />
+                    <button className='btn btn-dark mb-2' onClick={closeModal}>Close</button>
+
                 </div>
             </Modal>
 
@@ -260,19 +289,25 @@ const Quiz = ({ questions }) => {
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
                 </div>
-                <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-2'>
-                    {/* Set the font size for the question based on its length */}
-                    <h3 className='mt-3 text-light question-title' style={{ fontSize: getFontSize(Questions[currentQuestion].question), maxHeight: '3rem' }}>{Questions[currentQuestion].question}</h3>
+                <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2'>
+                    <div style={{ height: '3rem' }}>
+                        <h3 id="question" className='mt-3 m-1 text-light question-title'>
+                            {Questions[currentQuestion].question}
+                        </h3>
+                    </div>
                     <div className="btn-group-container d-flex justify-content-center align-items-center">
-                        <div className="btn-group-vertical rounded-2 mt-3 text-light">
+                        <div className="mt-2 p-2">
                             {Questions[currentQuestion].answers.map((answer, index) => (
-                                <button
-                                    key={index}
-                                    className={`answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-secondary')) : (answers[currentQuestion] === index ? 'primary' : 'outline-secondary')}`}
-                                    onClick={() => !showResults && handleAnswer(currentQuestion, index)}
-                                >
-                                    <h5 style={{ fontSize: getFontSize(answer) }}>{answer}</h5>
-                                </button>
+                                <div id="hidden-answer" className='btn-group-vertical w-100' style={{ height: "4.5rem" }}>
+                                    <button
+                                        key={index}
+                                        style={{ fontSize: `${width > 500 ? answerFontSize : (parseFloat(answerFontSize) - 3) + "px"}` }}
+                                        className={` m-1 p-1 text-center answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-light')) : (answers[currentQuestion] === index ? 'primary' : 'outline-light')}`}
+                                        onClick={() => !showResults && handleAnswer(currentQuestion, index)}
+                                    >
+                                        {answer}
+                                    </button>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -286,7 +321,7 @@ const Quiz = ({ questions }) => {
                                     icon={faStar}
                                 />
                                 <br />
-                                <span className='text-light p-2'>Add to favs</span>
+                                <span className='text-light'>Add to favs</span>
                             </div>
                             {quizComplete && Questions[currentQuestion].info ?
                                 <div className='col-3'>

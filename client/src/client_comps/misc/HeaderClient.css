@@ -73,7 +73,7 @@ h2 {
   position: absolute;
   top: 90px;
   right: 1px;
-  background-color: rgba(60, 126, 250, 0.94);
+  background-color: rgba(60, 126, 250, 0.903);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.34);
   padding: 2px;
   z-index: 999;
@@ -141,18 +141,25 @@ h2 {
   }
 
   .menu ul {
+    margin-top: 5px;
+    margin-left: 45vw;
+    border-radius:5px 5px;
+    max-width: fit-content;
     display: block;
     text-align: right;
+  
   }
 
   .lli {
-    width: 80px;
-    margin-bottom: 1px;
+    width: 100px;
+    height: 45px;
+    margin-bottom: 5px;
     background-color: rgba(255, 255, 255, 1);
   }
 
   .toggle {
     border-color: black;
+    border-radius: 5%;
     outline: 0;
     box-shadow: 0 0 0 0.15rem rgba(55, 119, 237, 0.174);
   }
