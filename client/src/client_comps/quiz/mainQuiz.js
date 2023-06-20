@@ -1,35 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { createElement, useContext, useEffect, useState } from 'react';
 import './mainQuiz.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { AuthContext, LevelContext } from '../../context/createContext';
 import { API_URL, doApiMethod, removeFromUserWrongIds, updateUserScoresByCat, updateUserWrongIds } from '../../services/apiService';
+import Modal from 'react-modal'; // 
+import useWindowWidth from '../../comps_general/useWidth';
+
+Modal.setAppElement('#root');
 
 const Quiz = ({ questions }) => {
 
     const { user, admin, userObj, setUser, setAdmin, updateUserInfo } = useContext(AuthContext);
     const { cat, level } = useContext(LevelContext);
 
+    let width = useWindowWidth();
+
     const [submitting, setSubmitting] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
 
-    // Function to determine the font size of the question based on its length
-    const getFontSize = (text) => {
-        const length = text.length;
-        const screenWidth = window.innerWidth;
-        if (screenWidth > 576) { // Adjust the breakpoint as needed
-            if (length < 100) return '1.5rem';
-            if (length < 200) return '1.2rem';
-            if (length < 300) return '1rem';
-            return '0.9rem';
-        } else {
-            if (length < 100) return '1rem';
-            if (length < 200) return '0.9rem';
-            if (length < 300) return '0.8rem';
-            return '0.7rem';
-        }
-    };
+    // State to control the visibility of the modal
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    // State to hold the extra info
+    const [moreInfo, setMoreInfo] = useState([]);
 
     // Function to add a question to favorites
     const addToFavorites = async (_id) => {
@@ -39,19 +33,35 @@ const Quiz = ({ questions }) => {
         }
         try {
             const response = await doApiMethod(API_URL + '/users/addFavorite', 'POST', { userId: userObj._id, questionId: _id });
-    
+
             if (response.success) {
                 toast.success('Question added to favorites');
             } else {
                 toast.info('Question already saved in favorites');
             }
-    
+
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong, please try again');
         }
     };
-    
+
+    const showMoreInfo = (_id) => {
+        const questionInfo = questions.find(question => question._id === _id).info;
+        setMoreInfo(questionInfo.split('\n')); // Split the info by newline characters
+        setModalIsOpen(true);
+        // Prevent scrolling in the background
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close the modal and allow scrolling
+    const closeModal = () => {
+        setModalIsOpen(false);
+        // Allow scrolling again
+        document.body.style.overflow = 'auto';
+    };
+
+
     // Function to shuffle the answers of a question
     const shuffleArray = (array) => {
         const newArr = [...array];
@@ -76,7 +86,7 @@ const Quiz = ({ questions }) => {
 
     const [Questions, setQuestions] = useState(randomizedQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('userAnswers')) || Array(questions.length).fill(null));
+    const [answers, setAnswers] = useState(Array(questions.length).fill(null));
     const [showResults, setShowResults] = useState(false);
 
     // Function to handle selecting an answer
@@ -178,37 +188,153 @@ const Quiz = ({ questions }) => {
         console.log(userObj)
     }, [Questions]);
 
+    const [answerFontSize, setAnswerFontSize] = useState();
+
+    // Add this function to your component
+    const adjustFontSize = (id) => {
+        let element = document.getElementById(id);
+        // Reset the font size to the default before each calculation.
+        if (id == "largest-answer") element.style.fontSize = "1.7rem";
+        else element.style.fontSize = "2rem";
+        const parentHeight = element.parentElement.offsetHeight;
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let fontSize = parseFloat(style);
+        while (element.offsetHeight > parentHeight) {
+            fontSize--;
+            element.style.fontSize = fontSize + "px";
+        }
+    }
+
+    const createTemporaryDiv = (text) => {
+        let parentDiv = document.getElementById('hidden-answer');
+        let div = document.createElement('div');
+        div.id = "largest-answer";
+        div.style.visibility = "hidden";
+        div.textContent = text;
+        parentDiv.appendChild(div);
+        return div;
+    }
+
+
+    const getLargestAnswer = () => {
+        let longestAnswer = '';
+        for (let i = 0; i < 4; i++) {
+            let currentAnswer = Questions[currentQuestion].answers[i];
+            if (currentAnswer.length > longestAnswer.length) {
+                longestAnswer = currentAnswer;
+            }
+        }
+        let div = createTemporaryDiv(longestAnswer);
+        adjustFontSize(div.id);
+        let result = div.style.fontSize;
+        // alert(result)
+        div.remove();
+        return result;
+    }
+
+
+    // Call this function with the id of your element when it mounts and updates
+    useEffect(() => {
+        // Reset the answer font size
+        setAnswerFontSize("2rem"); // or whatever your default font size is
+
+        adjustFontSize('question');
+        let largestAnswerFontSize = getLargestAnswer();
+        setAnswerFontSize(largestAnswerFontSize);
+    }, [currentQuestion]);
+
+    // This will run the function when the current question or showResults state changes
+
     return (
         <div className="quiz-container container center-vertically" id="quiz-component">
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="More Info"
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)' },
+                    content: {
+                        color: 'lightsteelblue',
+                        top: '50%',
+                        left: '50%',
+                        right: '10%',
+                        bottom: 0,
+                        marginRight: '-50%',
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: '#fff',
+                        borderRadius: '10px',
+                        padding: '30px',
+                        overflowY: 'auto', // Enable scrolling inside the modal
+                        maxHeight: '90vh', // Set a maximum height
+                    },
+                }}
+            >
+                <div style={{
+                    fontFamily: 'Rajdhani',
+                    fontWeight: "500",
+                    textAlign: "center"
+                }}>
+                    <h2 >More Info</h2>
+                    <br></br>
+                    {moreInfo.map((line, index) => <p key={index}>{line}</p>)} {/* Render each line as a separate paragraph */}
+                    <br />
+                    <button className='btn btn-dark mb-2' onClick={closeModal}>Close</button>
+
+                </div>
+            </Modal>
+
+
             <div className='row' style={{ width: '100vw' }}>
                 <div className="quiz-header">
                     Question {currentQuestion + 1} of {Questions.length}
                 </div>
-                <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2 p-2'>
-                    {/* Set the font size for the question based on its length */}
-                    <h3 className='mt-3 text-light question-title' style={{ fontSize: getFontSize(Questions[currentQuestion].question), maxHeight: '3rem' }}>{Questions[currentQuestion].question}</h3>
+                <div style={{ maxHeight: '80vh' }} className='col-12 justify-content-center text-center bg-black bg-opacity-50 rounded-2'>
+                    <div style={{ height: '3rem' }}>
+                        <h3 id="question" className='mt-3 m-1 text-light question-title'>
+                            {Questions[currentQuestion].question}
+                        </h3>
+                    </div>
                     <div className="btn-group-container d-flex justify-content-center align-items-center">
-                        <div className="btn-group-vertical rounded-2 mt-3 text-light">
+                        <div className="mt-2 p-2">
                             {Questions[currentQuestion].answers.map((answer, index) => (
-                                <button
-                                    key={index}
-                                    className={`answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-secondary')) : (answers[currentQuestion] === index ? 'primary' : 'outline-secondary')}`}
-                                    onClick={() => !showResults && handleAnswer(currentQuestion, index)}
-                                >
-                                    <h5 style={{ fontSize: getFontSize(answer) }}>{answer}</h5>
-                                </button>
+                                <div id="hidden-answer" className='btn-group-vertical w-100' style={{ height: "4.5rem" }}>
+                                    <button
+                                        key={index}
+                                        style={{ fontSize: `${width > 500 ? answerFontSize : (parseFloat(answerFontSize) - 3) + "px"}` }}
+                                        className={` m-1 p-1 text-center answer-button btn btn-${showResults ? (index === Questions[currentQuestion].correct ? 'success' : (answers[currentQuestion] === index ? 'danger' : 'outline-light')) : (answers[currentQuestion] === index ? 'primary' : 'outline-light')}`}
+                                        onClick={() => !showResults && handleAnswer(currentQuestion, index)}
+                                    >
+                                        {answer}
+                                    </button>
+                                </div>
                             ))}
                         </div>
                     </div>
                     {/* Add a CSS class to fix the position of the quiz footer */}
                     <div className="quiz-footer p-2">
-                        <FontAwesomeIcon
-                            onClick={() => addToFavorites(Questions[currentQuestion]._id)}
-                            className="mr-3 quiz-icon"
-                            icon={faStar}
-                        />
-                        <br />
-                        <span className='text-light p-2'>Add to favs</span>
+                        <div className='row justify-content-center'>
+                            <div className='col-3'>
+                                <FontAwesomeIcon
+                                    onClick={() => addToFavorites(Questions[currentQuestion]._id)}
+                                    className="mr-3 quiz-star"
+                                    icon={faStar}
+                                />
+                                <br />
+                                <span className='text-light'>Add to favs</span>
+                            </div>
+                            {quizComplete && Questions[currentQuestion].info ?
+                                <div className='col-3'>
+                                    <FontAwesomeIcon
+                                        onClick={() => showMoreInfo(Questions[currentQuestion]._id)}
+                                        className="mr-3 quiz-info"
+                                        icon={faCircleInfo}
+                                    />
+                                    <br />
+                                    <span className='text-light p-2'>More Info</span>
+                                </div>
+                                : ''}
+                        </div>
                     </div>
                     <div className={`quiz-buttons`}>
                         <div className="d-flex justify-content-between mt-3 button-group mb-4">

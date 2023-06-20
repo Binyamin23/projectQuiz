@@ -34,6 +34,9 @@ h2 {
   color: rgba(60, 126, 250, 0.483);
 }
 
+.logoDiv {
+  margin-right: 0px;
+}
 
 .logo {
   width: 7rem;
@@ -53,13 +56,11 @@ h2 {
   border-color: #ccc;
 }
 
-.menu {
-  margin-left: -2rem;
-}
 
-.li {
+
+.lli {
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .user-icon {
@@ -68,16 +69,11 @@ h2 {
   transition: all 0.2s ease-in-out;
 }
 
-.btn-logout {
-  color: rgb(60, 126, 250);
-  margin-right: 6px;
-}
-
 .dropdown {
   position: absolute;
-  top: 120px;
-  right: 20px;
-  background-color: rgba(60, 126, 250, 0.94);
+  top: 90px;
+  right: 1px;
+  background-color: rgba(60, 126, 250, 0.903);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.34);
   padding: 2px;
   z-index: 999;
@@ -92,6 +88,8 @@ h2 {
   color: white;
 }
 
+
+
 .dropdown ul li {
   margin-bottom: 0px;
   color: white;
@@ -102,62 +100,73 @@ h2 {
   color: white;
 }
 
-/* CSS file */
+
 .desktop-link {
   font-size: 20px;
-  /* Modify this value to increase or decrease the font size */
 }
 
 .user-image {
-  width: 40px;
-  height: 40px;
+
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 
 .fa-duo {
-  font-size: 30px;
+  font-size: 38px;
 }
 
-@media (max-width: 500px) {
-  .menu {
-    display: flex;
-    flex-wrap: nowrap;
+
+
+.bi-list {
+  color: rgba(60, 126, 250, 0.94);
+  display: none;
+}
+
+@media(max-width:767px) {
+  .bi-list {
+    display: block;
   }
-}
 
+  .fa-duo:hover {
+    color: rgb(97, 150, 249);
+  }
 
-.button-38 {
-  background-color: #FFFFFF;
-  border: 0;
-  border-radius: .5rem;
-  box-sizing: border-box;
-  color: #111827;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: .875rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  padding: .75rem 1rem;
-  text-align: center;
-  text-decoration: none #D1D5DB solid;
-  text-decoration-thickness: auto;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
+  .menu {
+    position: absolute;
+    top: 77px;
+    padding-right: 47px;
+  }
 
-.button-38:hover {
-  background-color: rgb(249,250,251);
-}
+  .menu ul {
+    margin-top: 5px;
+    margin-left: 45vw;
+    border-radius:5px 5px;
+    max-width: fit-content;
+    display: block;
+    text-align: right;
+  
+  }
 
-.button-38:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
+  .lli {
+    width: 100px;
+    height: 45px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 1);
+  }
 
-.button-38:focus-visible {
-  box-shadow: none;
+  .toggle {
+    border-color: black;
+    border-radius: 5%;
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(55, 119, 237, 0.174);
+  }
+
+  .toggle:hover {
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(55, 119, 237, 0.509);
+  }
+
 }

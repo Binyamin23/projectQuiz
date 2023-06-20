@@ -97,13 +97,13 @@ export default function QuestionsList() {
     }
   };
 
-  const onEditClick = async (id, { question, level, cat_url, answers, status }) => {
+  const onEditClick = async (id, { question, level, cat_url,img_url, info, answers, status }) => {
     if (id === editQuestionId) {
       setEditQuestionId(null);
       setEditQuestion({});
     } else {
       setEditQuestionId(id);
-      setEditQuestion({ question, level, cat_url, answers, status });
+      setEditQuestion({ question, level, cat_url, img_url, info, answers, status });
     }
   };
 
@@ -256,6 +256,10 @@ export default function QuestionsList() {
                               Info
                             </label>
                             <textarea
+                              rows={3}
+                              wrap='hard'
+                              style={{ maxHeight: '200px', overflowY: 'auto' }} // Set a max height and make it scrollable
+
                               className="form-control"
                               id={`info_${q._id}`}
                               value={editQuestion.info}

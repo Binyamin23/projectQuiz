@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  confirmPassword:String,
   date_created: {
     type: Date,
     default: Date.now()
@@ -57,7 +58,8 @@ exports.validteUser = (reqBody) => {
     name: Joi.string().min(2).max(150).required(),
     email: Joi.string().min(2).max(150).email().required(),
     password: Joi.string().min(3).max(150).required(),
-    img_url: Joi.string().min(1).max(500).allow(null, ""),
+    confirmPassword: Joi.string().min(3).max(150).required(),
+    img_url: Joi.string().min(1).max(500).allow(null,""),
     agreeToPrivacy: Joi.boolean().required().valid(true).messages({ 'any.only': 'You must agree to the privacy policy and terms of service' })
   })
   return joiSchema.validate(reqBody);

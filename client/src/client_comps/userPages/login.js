@@ -49,10 +49,10 @@ export default function Login() {
               className="input_text" placeholder="Password" />
             {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
           </div>
-          <div class="button_group" id="login_button">
+          <div class="button_group">
             <button>Login</button>
           </div>
-          <div class="fotter">
+          <div class="login_footer">
             <Link to={'/forgotPassword'}><strong>Forgot Password?</strong></Link>
             <Link to={'/signUp'}><strong>SingUp</strong></Link>
           </div>

@@ -33,14 +33,10 @@
 }
 
 .question-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   
-  @media (max-width: 576px) { /* Adjust the breakpoint as needed */
-    .question-title {
-      font-size: 1rem;
-    }
-  }
+
   
 .btn-group {
     margin-top: 1rem;
@@ -56,14 +52,25 @@
     margin-top: 1rem;
 }
 
-.quiz-icon {
+.quiz-star {
     color: #dbd751;
     font-size: 24px;
     transition: transform 0.2s;
     cursor: pointer;
   }
   
-  .quiz-icon:hover {
+  .quiz-star:hover {
+    transform: scale(1.2);
+  }
+
+  .quiz-info {
+    color: rgb(15, 143, 234);
+    font-size: 24px;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .quiz-info:hover {
     transform: scale(1.2);
   }
   
@@ -81,10 +88,11 @@
     right: 0;
   }
   .answer-button {
-    max-height: 70px; /* Adjust this value to control the max height of the answer buttons */
-    overflow-y: auto;
-    text-align: left;
+    overflow-y: hidden;
 }
+
+
+
 
 .btn-group-container {
     display: flex;

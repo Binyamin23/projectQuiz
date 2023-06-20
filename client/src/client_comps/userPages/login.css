@@ -116,7 +116,7 @@ h2 {
 
 }
 
-#login_button {
+.button_group {
     position: relative;
     width: 300px;
     height: 40px;
@@ -126,7 +126,7 @@ h2 {
 
 }
 
-#login_button button {
+.button_group button {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -144,25 +144,25 @@ h2 {
     align-items: center;
 }
 
-#login_button button:hover {
+.button_group button:hover {
     background-color: rgba(0, 0, 0, 0.174);
 }
 
-.fotter {
+.login_footer {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
 
 }
 
-.fotter a {
+.login_footer a {
     text-decoration: none;
     cursor: pointer;
     font-size: 18px;
     color: #000000;
 }
 
-.fotter a:hover {
+.login_footer a:hover {
     color: #0000009d;
 }
 
@@ -177,29 +177,8 @@ h2 {
         max-width: 320px;
     }
 
-    .login_form {
-        padding: 20px;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    .input_group {
-        margin-top: 20px;
-    }
-
-    #login_button {
+    .button_group {
         width: 230px !important;
-        height: auto;
-        margin-top: 30px;
     }
 
-    #login_button button {
-        font-size: 16px;
-    }
-
-    .fotter a {
-        font-size: 14px;
-    }
 }

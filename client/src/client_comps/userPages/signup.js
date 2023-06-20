@@ -8,7 +8,13 @@ import './signup.css'
 export default function Signup() {
   const nav = useNavigate();
   const fileRef = useRef();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {getValues, register, handleSubmit, formState: { errors } } = useForm();
+
+  const validateConfirmPassword = (value) => {
+    if (value !== getValues('password')) {
+      return 'Passwords do not match';
+    }
+  }
 
   const onSubForm = (bodyData) => {
     const formData = new FormData();
@@ -56,33 +62,42 @@ export default function Signup() {
   return (
     <div className="bodyy">
       <div className="signUp_form_container">
-        <form className="login_form" onSubmit={handleSubmit(onSubForm)}>
+        <form className="signUp_form" onSubmit={handleSubmit(onSubForm)}>
           <h2>SignUp</h2>
 
-          <div className="input_group">
+          <div className="signUp_input_group">
             <i class="fa fa-user"></i>
             <input {...register("name", { required: true, minLength: 2, maxLength: 30 })}
-              className="input_text" placeholder="UserName" type="text" />
+              className="signUp_input_text" placeholder="UserName" type="text" />
             {errors.name && <div className="text-danger">* Enter a valid email (min 2 chars)</div>}
           </div>
-          <div className="input_group">
+          <div className="signUp_input_group">
             <i class="fa fa-envelope-o"></i>
             <input {...register("email", {
               required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             })} type="email" placeholder="Email" className="input_text" />
             {errors.email && <div className="text-danger">* Enter valid email</div>}
           </div>
-          <div className="input_group">
+          <div className="signUp_input_group">
             <i class="fa fa-lock"></i>
             <input {...register("password", { required: true, minLength: 3 })} type="password"
-              className="input_text" placeholder="Password" />
+              className="signUp_input_text" placeholder="Password" />
             {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
           </div>
-          <div className="input_group">
-            <i class="fa fa-picture-o"></i>
-            <input ref={fileRef} style={{border:'none'}} className="input_text form-control" type="file" />
+          <div className="signUp_input_group">
+            <i class="fa fa-lock"></i>
+            <input {...register('confirmPassword', {
+              required: { value: true, message: 'Confirm password is required' }, maxLength: 20,minLength:2,
+              validate: validateConfirmPassword
+            })}
+              type="password" className="signUp_input_text" placeholder="Confirm Password" />
+            {errors.confirmPassword && <p className='text-danger'>{errors.confirmPassword.message} </p>}
           </div>
-          <div className="input_group">
+          <div className="signUp_input_group">
+            <i class="fa fa-picture-o"></i>
+            <input ref={fileRef} style={{ border: 'none' }} className="input_text form-control" type="file" />
+          </div>
+          <div className="signUp_input_group">
             <input type="checkbox" {...register('agreeToPrivacy', { required: true })} />
             <label>I agree to the<span>
               <Link to="/privacy-policy" className='linkCheckBox' > <strong> Privacy Policy</strong></Link>
@@ -92,11 +107,11 @@ export default function Signup() {
               terms of service</div>}
           </div>
 
-          <div class="button_group" id="login_button">
-            <button>Submit</button>
+          <div class="signUp_button_group">
+            <button>SignUp</button>
           </div>
-          <div class="fotter">
-            <label style={{fontSize:"18px"}}>Do you have an account??&nbsp;<Link to={'/login'}><strong>SignIn</strong></Link></label>
+          <div class="signUp_footer">
+            <label style={{ fontSize: "18px" }}>Do you have an account??&nbsp;<Link to={'/login'}><strong>SignIn</strong></Link></label>
           </div>
 
         </form>
