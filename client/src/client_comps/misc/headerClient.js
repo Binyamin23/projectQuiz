@@ -93,8 +93,8 @@ export default function HeaderClient() {
               </ul>
             }
 
-            {(user || admin) &&
-              <button onClick={onLogOut} className='btn btn-outline-primary' >Log out</button>
+            {(user || admin) && !isMobileList &&
+              <button onClick={onLogOut} className='lli btn btn-outline-primary me-2' >Log out</button>
             }
             <ul className='col-auto fixed-end user-icon'>
               {userObj && userObj.img_url
