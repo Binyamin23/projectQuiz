@@ -93,8 +93,8 @@ export default function HeaderClient() {
               </ul>
             }
 
-            {(user || admin) && !isMobileList &&
-              <button onClick={onLogOut} className='lli btn btn-outline-primary me-2' >Log out</button>
+            {(user || admin) &&
+              <button onClick={onLogOut} className='btn btn-outline-primary' >Log out</button>
             }
             <ul className='col-auto fixed-end user-icon'>
               {userObj && userObj.img_url
@@ -114,7 +114,7 @@ export default function HeaderClient() {
                 </div>
               )
                 : isMobileList && showDropdown &&
-                <div className="dropdown border rounded-2">
+                <div className="dropdown border rounded-2 m-3">
                   <ul>
                     <li>
                       <Link onClick={() => {
