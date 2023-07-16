@@ -28,6 +28,7 @@ export default function AddCategory() {
   }
 
   const doApi = async (bodyData) => {
+    console.log(bodyData)
     try {
       let url = API_URL + "/categories/newCat";
       let data = await doApiMethod(url, "POST", bodyData);
@@ -63,7 +64,7 @@ export default function AddCategory() {
 
         <label>Upload Image</label>
         <div className="form-group">
-          <input ref={fileRef} type="file" className="form-control-file" />
+          <input ref={fileRef} type="file" className="form-control-fil" />
         </div>
 
         <label>info</label>

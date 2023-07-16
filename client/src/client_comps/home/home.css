@@ -1,0 +1,37 @@
+/* css for home */
+.home_strip{
+  min-height: 350px;
+  background: grey;
+  color:white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-position: center;
+  background-size: cover;
+}
+
+.home_strip h1{
+  font-size: 3.5em;
+  color:white;
+  text-shadow: 0 1px 0 #CCCCCC, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+  /* text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #d633ff, 0 0 30px #d633ff, 0 0 40px #d633ff, 0 0 55px #d633ff, 0 0 75px #d633ff; */
+}
+
+main .bg-category{
+  min-height: 160px;
+  background-size: cover;
+  background-position: center;
+
+}
+
+main .bg-category a{
+  color:white;
+  text-decoration: none;
+  text-shadow: 1px 3px 0 #313030, 1px 13px 5px #111111;
+  display: inline-block;
+  transition: 1000ms;
+}
+
+main .bg-category a:hover{
+  transform: translate(0,-24px);
+}

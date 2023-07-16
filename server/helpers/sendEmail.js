@@ -37,14 +37,14 @@ const mailOption = (_id = "", uniqueString = "", _email, _subject, _html) => {
     return mailOptions;
 }
 
-exports.sendResetPasswordEmail = async ({ _id, email }, redirectUrl, created, expired, res) => {
+exports.sendResetPasswordEmail = async({ _id, email }, redirectUrl , created , expired,res) => {
     const request = await PasswordResetModel.findOne({ userId: _id });
     if (request) await PasswordResetModel.deleteOne({ userId: _id });
     const resetString = uuidv4() + _id;
     const html = `<p>We heard that you forgot your password.</p>
     <p>Don't worry, use the link below to reset it.</p>
     <p>This link <b>expires in 15min </b></p>
-    <p>Press <a href=${redirectUrl + "?id=" + _id + "&str=" + resetString}>here</a></p>`;
+    <p>Press <a href=${redirectUrl +"?id="+_id+"&str="+ resetString}>here</a></p>`;
     const mail = mailOption(_id, resetString, email, "Reset Password", html);
     PasswordResetModel.deleteMany({ userId: _id })
         .then(result => {
@@ -54,28 +54,19 @@ exports.sendResetPasswordEmail = async ({ _id, email }, redirectUrl, created, ex
                     const newPasswordResetModel = new PasswordResetModel({
                         userId: _id,
                         resetString: hashedResetString,
-                        createdAt: created,
-                        expiresAt: expired
+                        createdAt:created,
+                        expiresAt:expired
                     })
 
                     newPasswordResetModel.save()
                         .then(() => {
                             // send the email notification
                             transporter.sendMail(mail, (err, info) => {
-                                if (err) {
-                                    console.log('Error occurred. ' + err.message);
-                                    return res.json({
-                                        status: "failed",
-                                        message: "Error while sending the email",
-                                        error: err.message
-                                    });
-                                } else {
-                                    return res.json({
-                                        status: "Pending",
-                                        message: "Password reset email sent"
-                                    });
-                                }
-                            });
+                                return res.json({
+                                    status: "Pending",
+                                    message: "Password reset email sent"
+                                })
+                            })
                         })
                 })
         })

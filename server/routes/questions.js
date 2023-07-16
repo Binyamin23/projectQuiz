@@ -1,15 +1,17 @@
-// import necessary libraries and middleware
 const express = require("express");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { GamesAppsModel, validateJoi, QuestionsModel } = require("../models/questionsModel")
 const { random } = require("lodash")
 const _ = require("lodash");
 
-// Initialize router
+// // Run the updateRandom() function every day at midnight
+// cron.schedule("0 0 * * *", async () => {
+//   await updateRandom();
+// });
+
 const router = express.Router();
 
-// Route to get all questions
-router.get("/all", authAdmin, async (req, res) => {
+router.get("/all", auth, async (req, res) => {
   try {
     let query = {};
     if (req.query.cat) query.cat_url = new RegExp(req.query.cat, 'i');
@@ -19,27 +21,30 @@ router.get("/all", authAdmin, async (req, res) => {
     res.json(data);
   }
   catch (err) {
-    console.error("Error while fetching all questions:", err.message);
-    res.status(500).json({ error: 'Error while fetching all questions', message: err.message });
+    console.log("get all Questions", err);
+    res.status(500).json(err);
   }
-});
+})
 
-// Get level one questions for a specific category
+
+
 router.get("/levelOne/category/:cat", async (req, res) => {
   let cat = req.params.cat;
+
   let reg = new RegExp(cat, "i");
 
   try {
-    let data = await QuestionsModel.find({ level: 1, cat_url: reg });
+    let data = await QuestionsModel.find({ level: 1, cat_url: reg })
     res.json(data);
   }
   catch (err) {
-    console.error("Error while fetching level one questions:", err.message);
-    res.status(500).json({ error: 'Error while fetching level one questions', message: err.message });
+    console.log("levelOne", err)
+    res.status(500).json(err)
   }
-});
+})
 
-// Update random field for documents, useful for random question selection
+
+
 async function updateRandom(level, cat) {
   const reg = new RegExp(cat, "i");
   const docs = await QuestionsModel.find({ level: level, cat_url: reg });
@@ -48,16 +53,17 @@ async function updateRandom(level, cat) {
     doc.random = Math.random();
     await doc.save();
   }
+
+  console.log("Updated", docs.length, "documents");
 }
 
-
-// Get questions with specific level and category, prioritizing wrong answered questions
 router.get("/", auth, async (req, res) => {
   let level = req.query.level;
   let cat = req.query.cat;
   let reverse = req.query.reverse == "yes" ? 1 : -1;
   let wrongIds = req.query.wrongIds ? req.query.wrongIds.split(",").filter(id => id) : [];
   let limit = req.query.limit; // Set default limit to 10
+
   let reg = new RegExp(cat, "i");
 
   try {
@@ -80,105 +86,129 @@ router.get("/", auth, async (req, res) => {
 
     // Send the merged data as the response
     res.json(mergedData);
-    // Update the random field for all documents with the same level and category in the collection
-    await updateRandom(level, cat);
+     // Update the random field for all documents with the same level and category in the collection
+     await updateRandom(level, cat);
+
   } catch (err) {
-    console.error("Error while getting questions:", err.message);
-    res.status(500).json({ error: 'Error while getting questions', message: err.message });
+    console.log("get Questions", err);
+    res.status(500).json(err);
   }
 });
 
-// Route to get count of questions
-router.get("/count", authAdmin, async (req, res) => {
-  try {
-    let findQuery = {};
-    if (req.query.cat) {
-      findQuery = { cat_url: req.query.cat }
+
+
+  // יחזיר את מספר הרשומות במערכת
+  // מה שיחסוף מפיינד רגיל המון משאבים מהמסד נתונים
+  router.get("/count", authAdmin, async (req, res) => {
+    let cat = req.query.cat;
+    try {
+      let findQuery = {};
+      // בשביל צד לקוח שנעשה עמוד קטגוריה שנוכל לדעת לאותה קטגוריה כמה עמודים יש
+      if (cat) {
+        findQuery = { cat_url: cat }
+      }
+      let count = await QuestionsModel.countDocuments(findQuery);
+      res.json(count)
     }
-    let count = await QuestionsModel.countDocuments(findQuery);
-    res.json(count)
-  }
-  catch (err) {
-    console.error("Error while counting questions:", err.message);
-    res.status(500).json({ error: 'Error while counting questions', message: err.message });
-  }
-});
+    catch (err) {
+      console.log("count", err);
+      res.status(502).json({ err })
+    }
+  })
 
-// Get a single question using its ID
-router.get("/single/:id", async (req, res) => {
-  try {
-    // SELECT * FROM gameApps WHERE id = '${id}'
-    let id = req.params.id;
-    let data = await GamesAppsModel.findOne({ _id: id });
-    res.json(data);
-  }
-  catch (err) {
-    console.error("Error while fetching a single question:", err.message);
-    res.status(500).json({ error: 'Error while fetching a single question', message: err.message });
-  }
-});
+  router.get("/single/:id", async (req, res) => {
+    try {
+      // SELECT * FROM gameApps WHERE id = '${id}'
+      let id = req.params.id;
+      let data = await GamesAppsModel.findOne({ _id: id });
+      res.json(data);
+    }
+    catch (err) {
+      console.log(err);
+      res.status(502).json({ err })
+    }
+  })
 
-// Post route to create a new question
-router.post("/newQuestion", authAdmin, async (req, res) => {
-  let validBody = validateJoi(req.body);
-  if (validBody.error) {
-    return res.status(400).json(validBody.error.details)
-  }
-  try {
-    let question = new QuestionsModel(req.body);
-    question.user_id = req.tokenData._id;
-    question.short_id = await createShortId(); // create short_id
-    await question.save();
-    res.status(201).json(question);
-  }
-  catch (err) {
-    console.error("Error while creating a new question:", err.message);
-    res.status(500).json({ error: 'Error while creating a new question', message: err.message });
-  }
-});
 
-// Put route to update a question
-router.put("/:id", authAdmin, async (req, res) => {
-  try {
+
+  router.post("/newQuestion", authAdmin, async (req, res) => {
     let validBody = validateJoi(req.body);
+    if (validBody.error) {
+      return res.status(401).json(validBody.error.details)
+    }
+    try {
+      let question = new QuestionsModel(req.body);
+      question.user_id = req.tokenData._id;
+      question.short_id = await createShortId(); // create short_id
+      console.log(question);
+      await question.save();
+      res.status(201).json(question);
+    }
+    catch (err) {
+      console.log("questions", err);
+      res.status(502).json({ err })
+    }
+  })
+
+  router.post("/favorites", async (req, res) => {
+    try {
+      let data = await QuestionsModel.find({ _id: { $in: req.body.ids } })
+      res.json(data);
+    }
+    catch (err) {
+      console.log(err);
+      res.status(502).json({ err })
+    }
+  })
+
+
+  router.put("/:id", authAdmin, async (req, res) => {
+    let validBody = validateJoi(req.body);
+    // אם יש טעות יזהה מאפיין אירור בולידבאדי
     if (validBody.error) {
       return res.status(400).json(validBody.error.details);
     }
-    let id = req.params.id;
-    let data = await QuestionsModel.updateOne({ _id: id }, req.body);
-    res.json(data);
-  }
-  catch (err) {
-    console.error("Error while updating a question:", err.message);
-    res.status(500).json({ error: 'Error while updating a question', message: err.message });
-  }
-});
+    try {
+      let id = req.params.id;
 
-// Delete a question
-router.delete("/:id", authAdmin, async (req, res) => {
-  try {
-    let id = req.params.id;
-    let data = await QuestionsModel.deleteOne({ _id: id });
-    res.json(data);
-  }
-  catch (err) {
-    console.error("Error while deleting a question:", err.message);
-    res.status(500).json({ error: 'Error while deleting a question', message: err.message });
-  }
-});
+      let data = await QuestionsModel.updateOne({ _id: id }, req.body)
+      res.json(data);
+    }
+    catch (err) {
+      console.log("putQuestion", err)
+      res.status(500).json(err)
+    }
+  })
 
-const createShortId = async () => {
-  try {
-    while (true) {
-      let rnd = random(0, 9999);
-      let quiz = await QuestionsModel.findOne({ short_id: rnd });
-      if (!quiz) { return rnd }
+
+  router.delete("/:id", authAdmin, async (req, res) => {
+    try {
+      let id = req.params.id;
+      let data = await QuestionsModel.deleteOne({ _id: id })
+      res.json(data);
+    }
+    catch (err) {
+      console.log("deleteQuestion", err)
+      res.status(500).json(err)
+    }
+  })
+
+  // async -> פונקציה שעושה רטרן והיא אסינכרונית אוטומטית
+  // מחזירה פרומיס
+  const createShortId = async () => {
+    try {
+      while (true) {
+        // מייצר מספר רנדומלי
+        let rnd = random(0, 9999);
+        // בודק אם הוא כבר קיים באחד מהרשומות
+        let quiz = await QuestionsModel.findOne({ short_id: rnd });
+        // אם גיים הוא שקר זה אומר שהמספר ייחודי ואותו נחזיר
+        if (!quiz) { return rnd }
+      }
+    }
+    catch (err) {
+      return err
     }
   }
-  catch (err) {
-    return err
-  }
-}
 
-
-module.exports = router;
+  module.exports = router;

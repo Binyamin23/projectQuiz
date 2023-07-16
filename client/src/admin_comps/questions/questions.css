@@ -1,4 +1,9 @@
 
+  /* table td .form-control {
+    width: 100%;
+  }
+   */
+
    td {
     max-width: 100px; /* Or whatever max-width you want */
     overflow: auto; /* Or 'hidden' if you prefer */
