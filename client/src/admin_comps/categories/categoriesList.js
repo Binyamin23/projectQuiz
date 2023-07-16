@@ -5,8 +5,9 @@ import { Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './categoriesList.css'
 import useWindowWidth from '../../comps_general/useWidth';
-import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import Row from './Row';
+import Loading from '../../comps_general/loading';
+import { AuthContext, CategoryContext } from '../../context/createContext';
 
 
 export default function CategoriesList() {
