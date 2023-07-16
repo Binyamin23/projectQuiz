@@ -1,25 +1,39 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_URL, doApiMethod } from '../../services/apiService';
+import './signup.css'
 
 export default function Signup() {
   const nav = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const fileRef = useRef();
+  const {getValues, register, handleSubmit, formState: { errors } } = useForm();
+
+  const validateConfirmPassword = (value) => {
+    if (value !== getValues('password')) {
+      return 'Passwords do not match';
+    }
+  }
 
   const onSubForm = (bodyData) => {
-    console.log(bodyData);
-    doApi(bodyData);
+    const formData = new FormData();
+    for (let key in bodyData) {
+      formData.append(key, bodyData[key]);
+    }
+    // Append the file
+    if (fileRef.current.files.length > 0) {
+      formData.append('myFile', fileRef.current.files[0]);
+    }
+    console.log(formData)
+    doApi(formData);
   }
 
   const doApi = async (bodyData) => {
 
     try {
       let url = API_URL + '/users/signUp';
-      console.log(url);
       let data = await doApiMethod(url, "POST", bodyData);
-      console.log(data);
       if (data._id) {
         nav("/login");
         toast.success("You signed up successfully. Now you can sign in.")
@@ -42,47 +56,67 @@ export default function Signup() {
         toast.error("There is a problem. Please try again later.");
       }
     }
-}
+  }
 
 
   return (
-    <div className="container-fluid p-4 bg-light">
-      <div className="row justify-content-center">
-        <div className="col-11 col-md-6 p-4 bg-white shadow rounded-2">
-          <h1 className="text-center mb-4">Sign up to our site</h1>
-          <form onSubmit={handleSubmit(onSubForm)}>
-            <div className="form-group fw-bold">
-              <label>Name:</label>
-              <input {...register("name", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="text" />
-              {errors.name && <div className="text-danger">* Enter a valid name (min 2 chars)</div>}
-            </div>
-            <div className="form-group fw-bold">
-              <label>Email:</label>
-              <input {...register("email", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="email" />
-              {errors.email && <div className="text-danger">* Enter a valid email (min 2 chars)</div>}
-            </div>
-            <div className="form-group fw-bold">
-              <label>Password:</label>
-              <input {...register("password", { required: true, minLength: 2, maxLength: 30 })} className="form-control" type="password" />
-              {errors.password && <div className="text-danger">* Enter a valid password (min 2 chars)</div>}
-            </div>
-            <div className="mt-4 text-center">
-              <div className="form-check d-flex justify-content-center">
-                <input className="form-check-input me-2" type="checkbox" {...register('agreeToPrivacy', { required: true })} />
-                <label className="form-check-label">
-                 I agree to the<span><Link to="/privacy-policy"> privacy policy</Link></span> 
-                </label>
-              </div>
-              {errors.agreeToPrivacy && <div className="text-danger">* You must agree to the privacy policy and terms of service</div>}
-              <button className="btn btn-primary w-50 mt-3 d-block mx-auto">Sign up</button>
-            </div>
+    <div className="bodyy">
+      <div className="signUp_form_container">
+        <form className="signUp_form" onSubmit={handleSubmit(onSubForm)}>
+          <h2>SignUp</h2>
 
+          <div className="signUp_input_group">
+            <i class="fa fa-user"></i>
+            <input {...register("name", { required: true, minLength: 2, maxLength: 30 })}
+              className="signUp_input_text" placeholder="UserName" type="text" />
+            {errors.name && <div className="text-danger">* Enter a valid email (min 2 chars)</div>}
+          </div>
+          <div className="signUp_input_group">
+            <i class="fa fa-envelope-o"></i>
+            <input {...register("email", {
+              required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+            })} type="email" placeholder="Email" className="input_text" />
+            {errors.email && <div className="text-danger">* Enter valid email</div>}
+          </div>
+          <div className="signUp_input_group">
+            <i class="fa fa-lock"></i>
+            <input {...register("password", { required: true, minLength: 3 })} type="password"
+              className="signUp_input_text" placeholder="Password" />
+            {errors.password && <div className="text-danger">* Enter valid password (min 3 chars)</div>}
+          </div>
+          <div className="signUp_input_group">
+            <i class="fa fa-lock"></i>
+            <input {...register('confirmPassword', {
+              required: { value: true, message: 'Confirm password is required' }, maxLength: 20,minLength:2,
+              validate: validateConfirmPassword
+            })}
+              type="password" className="signUp_input_text" placeholder="Confirm Password" />
+            {errors.confirmPassword && <p className='text-danger'>{errors.confirmPassword.message} </p>}
+          </div>
+          <div className="signUp_input_group">
+            <i class="fa fa-picture-o"></i>
+            <input ref={fileRef} style={{ border: 'none' }} className="input_text form-control" type="file" />
+          </div>
+          <div className="signUp_input_group">
+            <input type="checkbox" {...register('agreeToPrivacy', { required: true })} />
+            <label>I agree to the<span>
+              <Link to="/privacy-policy" className='linkCheckBox' > <strong> Privacy Policy</strong></Link>
+            </span>
+            </label>
+            {errors.agreeToPrivacy && <div className="text-danger">* You must agree to the privacy policy and
+              terms of service</div>}
+          </div>
 
+          <div class="signUp_button_group">
+            <button>SignUp</button>
+          </div>
+          <div class="signUp_footer">
+            <label style={{ fontSize: "18px" }}>Do you have an account??&nbsp;<Link to={'/login'}><strong>SignIn</strong></Link></label>
+          </div>
 
-            <p className='mt-4 text-center'>Do you have an account? <br></br> <Link className='text-primary' to="/login"><strong> Sign in</strong></Link></p>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
+
   )
 }

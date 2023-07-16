@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Route } from "react-router-dom"
 import UsersList from "../admin_comps/users/usersList"
 import CatQuiz from "../client_comps/quiz/catQuiz"
@@ -13,35 +13,36 @@ import AddCategory from "../admin_comps/categories/addCategory"
 import EditCategory from "../admin_comps/categories/editCategory"
 import ForgotPassword from "../client_comps/userPages/forgotPassword.js"
 import ResetPassword from "../client_comps/userPages/resetPassword"
+import About from "../client_comps/userPages/about"
 
-// פו
 export const clientRoutes = () => {
-  return(
+  return (
     <React.Fragment>
-       <Route path="/" element={<CatQuiz/>} />
-       <Route path="/test" element={<h2>Test 4444</h2>} />
-       <Route path="/category/:catName/level/:level" element={<CatQuiz/>} />
-        <Route path="/favs" element={<FavoritesPage/>}/>
-        <Route path="/scores" element={<ScoresOverview/>}/>
+      <Route path="/" element={<CatQuiz />} />
+      <Route path="/category/:catName/level/:level" element={<CatQuiz />} />
+      <Route path="/favs" element={<FavoritesPage />} />
+      <Route path="/scores" element={<ScoresOverview />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/about" element={<About/>} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path='/forgotPassword' element={<ForgotPassword />} />
+      <Route path='/resetPassword' element={<ResetPassword />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />       
-        <Route path='/forgotPassword' element={<ForgotPassword/>} />
-        <Route path='/resetPassword' element={<ResetPassword />} />
-  
     </React.Fragment>
   )
 }
 
 export const adminRoutes = () => {
-  return(
-    <React.Fragment>
-        <Route path="/admin/categories" element={<CategoriesList />} />
-        <Route path="/admin/categories/new" element={<AddCategory />} />
-        <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
-        <Route path="/admin/questions" element={<QuestionsList/>} />
-        <Route path="/admin/users" element={<UsersList />} />
-    </React.Fragment>
+
+  return (
+
+        <React.Fragment>
+          <Route path="/admin/categories" element={<CategoriesList />} />
+          <Route path="/admin/categories/new" element={<AddCategory />} />
+          <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
+          <Route path="/admin/questions" element={<QuestionsList />} />
+          <Route path="/admin/users" element={<UsersList />} />
+        </React.Fragment>
   )
 }

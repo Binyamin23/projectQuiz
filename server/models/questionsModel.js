@@ -25,7 +25,7 @@ exports.validateJoi = (_reqBody) => {
     level: Joi.number().min(1).max(3).required(),
     cat_url: Joi.string().min(1).max(20).required(),
     img_url: Joi.string().min(1).max(200).allow("", null),
-    info: Joi.string().min(10).max(500).allow("",null),
+    info: Joi.string().min(10).max(2000).allow("",null),
     answers: Joi.array().items(Joi.string()).length(4).required(),
     status: Joi.boolean().allow("",null)
   })

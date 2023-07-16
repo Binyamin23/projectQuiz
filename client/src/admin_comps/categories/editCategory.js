@@ -4,15 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
-import { AuthContext, selectedEditCategory } from '../../context/createContext';
+import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import useWindowWidth from '../../comps_general/useWidth';
 import AuthAdmin from '../middleware/authAdmin';
 
 export default function EditCategory() {
 
-  const { selectedCategory, setSelectedCategory } = useContext(selectedEditCategory);
+  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { user, admin } = useContext(AuthContext);
+  const [timerId, setTimerId] = useState(null);
+
   const nav = useNavigate();
   const params = useParams();
   const [info, setInfo] = useState({});
@@ -56,7 +58,8 @@ export default function EditCategory() {
       console.log(data)
       if (data.modifiedCount == 1) {
         toast.info("Category updated")
-        nav(-1);
+        nav(`/admin/categories?edited=${params["id"]}`);
+
       }
       else {
         setSelectedCategory('')
@@ -108,7 +111,15 @@ export default function EditCategory() {
           <div>Url code: {info.url_code}</div>
 
           <div className='mt-4 d-flex justify-content-between'>
-            <button className='btn btn-info text-light'>Update</button>
+            <button className='btn btn-info text-light' onClick={() => {
+              console.log({ error: "running" })
+              if (selectedCategory != '') {
+                setTimeout(() => {
+                  setSelectedCategory('');
+                }, 3000);
+              }
+            }}>Update</button>
+
             <button type='button' onClick={() => {
               setSelectedCategory('')
               nav(-1)

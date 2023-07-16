@@ -4,7 +4,6 @@ import HeaderClient from "./client_comps/misc/headerClient";
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { adminRoutes, clientRoutes } from "./routesPath/routesPath";
 import Page404 from "./comps_general/page404";
 import Footer from "./client_comps/misc/footer";
 import Sidebar from "./client_comps/misc/sidebar";
@@ -12,31 +11,32 @@ import UserAuth from "./comps_general/authClient";
 import UpdateLevel from "./comps_general/updateLevel";
 import AdminHeader from "./admin_comps/misc/adminHeader";
 import CategoryContext from "./comps_general/categoryContext";
+import CategoryProvider from "./comps_general/categoryContext";
+import { adminRoutes, clientRoutes } from "./routesPath/routesPath";
+
 
 function App() {
+
   return (
     <BrowserRouter>
       <UserAuth>
-        <CategoryContext>
-          <UpdateLevel>   {/* Routes of header what to show client or admin header... */}
+        <CategoryProvider>
+          <UpdateLevel>
             <Routes>
               <Route path="/admin/*" element={<AdminHeader />} />
+
               <Route path="/*" element={
                 <>
                   <HeaderClient />
-                  <Sidebar />
+                  {/* <Sidebar /> */}
                 </>
               } />
+
             </Routes>
             <main>
               <Routes>
-                {/* client */}
-                {/* לא יכלנו לזמן כקומפנינטה מכיוון שראוטס
-        מצפה שבתוכו יגיע ישירות ריאקט פרגמט או ראוט
-        אבל כן אפשר לעשות פונקציה שמחזיר קומפנינטות */}
                 {clientRoutes()}
                 {adminRoutes()}
-                <Route path="/*" element={<Page404 />} />
               </Routes>
             </main>
             <Routes>
@@ -47,7 +47,7 @@ function App() {
             {/* The toast messages added here */}
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
           </UpdateLevel>
-        </CategoryContext>
+        </CategoryProvider>
       </UserAuth>
     </BrowserRouter>
   );

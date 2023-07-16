@@ -1,8 +1,9 @@
 import axios from "axios"
 
-// export const API_URL = "https://code-quiz-server.onrender.com";
-export const API_URL = "http://localhost:3008";
-// export const API_URL = "http://blalba.cyclic.com";
+export const API_URL = "https://code-quiz-server.onrender.com";
+export const API_URL_CLIENT = "http://localhost:3000";
+
+
 
 export const TOKEN_KEY = "apps_tok";
 

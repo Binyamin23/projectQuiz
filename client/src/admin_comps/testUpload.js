@@ -1,9 +1,9 @@
 import { Configuration, OpenAIApi } from "openai";
 import { useState } from "react";
-import { apiPostGPT, OPEN_AI_KEY } from "../services/apiService";
 import { arrayItems } from "./chatGPT/aiOptions";
 import OptionSelection from "./chatGPT/optionSelection";
 import Translation from "./chatGPT/translation";
+import { OPEN_AI_KEY } from "../services/apiService";
 
 function Chat() {
   const [option, setOption] = useState({});
