@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { API_URL, doApiGet, doApiMethod } from '../../services/apiService';
-import { AuthContext, CategoryContext, selectedEditCategory } from '../../context/createContext';
 import useWindowWidth from '../../comps_general/useWidth';
 import AuthAdmin from '../middleware/authAdmin';
+import { AuthContext, CategoryContext } from '../../context/createContext';
 
 export default function EditCategory() {
 
-  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
+  const { editCategory, setEditCategory } = useContext(CategoryContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { user, admin } = useContext(AuthContext);
   const [timerId, setTimerId] = useState(null);
@@ -37,7 +37,6 @@ export default function EditCategory() {
     let url = API_URL + "/categories/single/" + params["id"]
     try {
       let data = await doApiGet(url);
-      console.log(data);
       setInfo(data);
     }
     catch (err) {
@@ -47,7 +46,6 @@ export default function EditCategory() {
   }
 
   const onSub = (bodyData) => {
-    console.log(bodyData)
     doApi(bodyData);
   }
 
@@ -55,17 +53,15 @@ export default function EditCategory() {
     try {
       let url = API_URL + "/categories/edit/" + params["id"];
       let data = await doApiMethod(url, "PUT", bodyData);
-      console.log(data)
-      if (data.modifiedCount == 1) {
+      if (data.updateResult.modifiedCount) {
         toast.info("Category updated")
-        nav(`/admin/categories?edited=${params["id"]}`);
+        nav(`/admin/categories?edit=${params["id"]}`);
 
       }
       else {
-        setSelectedCategory('')
+        setEditCategory('')
         toast.error("You didn't change anything since the last update")
         nav(-1)
-        console.log()
 
       }
     }
@@ -112,16 +108,15 @@ export default function EditCategory() {
 
           <div className='mt-4 d-flex justify-content-between'>
             <button className='btn btn-info text-light' onClick={() => {
-              console.log({ error: "running" })
-              if (selectedCategory != '') {
+              if (editCategory != '') {
                 setTimeout(() => {
-                  setSelectedCategory('');
+                  setEditCategory('');
                 }, 3000);
               }
             }}>Update</button>
 
             <button type='button' onClick={() => {
-              setSelectedCategory('')
+              setEditCategory('')
               nav(-1)
             }} className='btn btn-outline-dark'>Close</button>
           </div>

@@ -131,7 +131,6 @@ const Quiz = ({ questions }) => {
 
                 if (userObj && userObj.wrong_ids && userObj.wrong_ids.includes(Questions[i]._id)) {
                     const data = await removeFromUserWrongIds(userObj._id, Questions[i]._id);
-                    console.log("Removed question ID from user's wrong_ids:", data);
                     userObj.wrong_ids = userObj.wrong_ids.filter(id => id !== Questions[i]._id);
                 }
 
@@ -141,9 +140,7 @@ const Quiz = ({ questions }) => {
                 }
             } else {
                 if (userObj) {
-                    console.log("check:", userObj);
                     const data = await updateUserWrongIds(userObj._id, Questions[i]._id);
-                    console.log("Added question ID to user's wrong_ids:", data);
                     userObj.wrong_ids.push(Questions[i]._id);
                 }
                 wrongAnswers++;
@@ -184,8 +181,7 @@ const Quiz = ({ questions }) => {
     };
 
     useEffect(() => {
-        console.log(Questions)
-        console.log(userObj)
+        
     }, [Questions]);
 
     const [answerFontSize, setAnswerFontSize] = useState();

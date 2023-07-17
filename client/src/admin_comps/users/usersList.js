@@ -30,7 +30,6 @@ export default function UsersList() {
     let url = API_URL + "/users/allUsers";
     try {
       let data = await doApiGet(url);
-      console.log(data);
       setAr(data)
     }
     catch (err) {
@@ -59,7 +58,6 @@ export default function UsersList() {
     let url = `${API_URL}/users/role/?user_id=${_id}&role=${newRole}`;
     try {
       let data = await doApiMethod(url, "PATCH");
-      console.log(data);
 
       if (data.modifiedCount == 1) {
         doApi();

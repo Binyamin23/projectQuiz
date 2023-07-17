@@ -126,12 +126,17 @@ h2 {
 }
 
 @media(max-width:767px) {
+
+  .me-2{
+    font-size: xx-large;
+  }
+
   .bi-list {
     display: block;
   }
 
   .fa-duo:hover {
-    color: rgb(97, 150, 249);
+    color: rgb(58, 120, 235);
   }
 
   .menu {
@@ -166,7 +171,7 @@ h2 {
 
   .toggle:hover {
     outline: 0;
-    box-shadow: 0 0 0 0.15rem rgba(55, 119, 237, 0.509);
+    box-shadow: 0 0 0 0.15rem rgba(113, 158, 241, 0.509);
   }
 
 }

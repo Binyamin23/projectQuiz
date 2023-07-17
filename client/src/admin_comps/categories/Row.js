@@ -5,44 +5,44 @@ import { Button } from 'react-bootstrap';
 import './categoriesList.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-const Row = ({ item, onXClick, setSelectedCategory, setShowPicture, selectedCategory, showPicture, isMobile }) => {
+
+const Row = ({ item, onXClick, setEditCategory, setShowPicture, editCategory, showPicture, isMobile }) => {
+
     const [isEditing, setIsEditing] = useState(false);
     const [isAddImage, setIsAddImage] = useState(false)
     const [query] = useSearchParams();
     const { _id, name, url_code, info } = item;
+
+
     useEffect(() => {
-        console.log("%c show", "color:blue")
-    }, [])
-    useEffect(() => {
-        if (query.get("edited") == _id) {
+        if (query.get("edit") == _id) {
             setIsEditing(true);
             setTimeout(() => {
                 setIsEditing(false);
             }, 20000)
 
-        }
-        ;
-    }, [query.get("edited")])
+        };
+    }, [query.get("edit")])
 
     const xClick = () => {
         window.confirm("Delete item?") && onXClick()
     }
     const editClick = () => {
-        setSelectedCategory();
+        setEditCategory();
         nav("/admin/categories/edit/" + _id);
     }
     const nav = useNavigate();
     const uploadImage = () => {
         setIsAddImage(!isAddImage);
-        if (selectedCategory != _id) {
-            setSelectedCategory(_id);
+        if (editCategory != _id) {
+            setEditCategory(_id);
             setShowPicture(true);
         }
         else {
-            if (selectedCategory === _id) {
+            if (editCategory === _id) {
                 setShowPicture(true);
             }
-            if (selectedCategory === _id && showPicture) {
+            if (editCategory === _id && showPicture) {
                 setShowPicture(false);
 
             }
@@ -54,7 +54,9 @@ const Row = ({ item, onXClick, setSelectedCategory, setShowPicture, selectedCate
             <td>
                 {name}
                 {isEditing &&
+                   
                     <FontAwesomeIcon className='ms-3' icon={faCircleCheck} flip style={{ color: "#23d138", transition: 'background-color 3s' }} />
+                    
                 }
             </td>
             <td>{url_code}</td>
@@ -66,7 +68,7 @@ const Row = ({ item, onXClick, setSelectedCategory, setShowPicture, selectedCate
                 {isAddImage &&
                     <AddPictureToCategory
                         categoryId={_id}
-                        setPictureComp={setSelectedCategory}
+                        setPictureComp={setEditCategory}
                         close={() => setIsAddImage(false)}
                     />}
             </td>

@@ -12,7 +12,6 @@ const QuizForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const questionObj = { question, level, cat_url, img_url, info, answers };
-        console.log("addQuestion",questionObj)
         try {
             await doApiMethod( API_URL + '/questions/newQuestion', 'POST', questionObj);
             alert('Question added successfully!');

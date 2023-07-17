@@ -4,7 +4,7 @@ import { TOKEN_KEY } from '../../services/apiService'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTie } from '@fortawesome/free-solid-svg-icons'
 import './HeaderClient.css'
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import useWindowWidth from '../../comps_general/useWidth';
 import { AuthContext, LevelContext } from '../../context/createContext';
 
@@ -49,7 +49,73 @@ export default function HeaderClient() {
     nav("/")
   }
 
+
+
+  const menuRef = useRef();
+  const dropdownRef = useRef();
+
+
+  // for menu dropdown
+  useEffect(() => {
+    const handleMenuClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      
+          setToggle(false);
+      
+      }
+    };
+
+    window.addEventListener("mousedown", handleMenuClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleMenuClickOutside);
+    };
+  }, []);
+
+  // for login/signup dropdown
+  useEffect(() => {
+    const handleDropdownClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      
+          setShowDropdown(false);
+        
+      }
+    };
+
+    window.addEventListener("mousedown", handleDropdownClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleDropdownClickOutside);
+    };
+  }, []);
+
+
+
+
+  const toggleTimeoutRef = useRef();
+  const dropdownTimeoutRef = useRef();
+
+  useEffect(() => {
+    if (toggle) {
+      toggleTimeoutRef.current = setTimeout(() => {
+        setToggle(false);
+      }, 5000);
+    } else {
+      clearTimeout(toggleTimeoutRef.current);
+    }
+  }, [toggle]);
+
+  useEffect(() => {
+    if (showDropdown) {
+      dropdownTimeoutRef.current = setTimeout(() => {
+        setShowDropdown(false);
+      },5000);
+    } else {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
+  }, [showDropdown]);
+
+
   return (
+
     <header className="container-fluid bg-dark-subtle p-2 shadow">
       <div className="container">
         <div className="row position-relative align-items-center">
@@ -66,23 +132,26 @@ export default function HeaderClient() {
 
           {/* Menu Icon */}
           <div className="toggle col-auto text-end d-md-none ms-auto">
-            <svg onClick={() => setToggle(!toggle)} xmlns="http://www.w3.org/2000/svg" width="36px" height="36px" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
+            <svg onClick={() => {
+              setToggle(!toggle)
+              if (showDropdown) setShowDropdown(false)
+            }} xmlns="http://www.w3.org/2000/svg" width="36px" height="36px" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
             </svg>
           </div>
 
           {/* Menu List */}
-         
-            <div className='menu col-md-6'  style={{ display: (isMobileList && !toggle) ? "none" : "block" }}>
-              <ul className=''>
-                <li className='me-2'><Link className='lli btn btn-outline-primary' to="/">Home</Link></li>
-                <li className='me-2'><Link className='lli btn btn-outline-primary' to="/scores">Scores</Link></li>
-                <li className='me-2'><Link className='lli btn btn-outline-primary' to="/favs">Favs</Link></li>
-                <li className='me-2'><Link className='lli btn btn-outline-primary' to="/about">About</Link></li>
-                {admin &&
-                  <li className='me-2'><Link className='lli btn btn-outline-primary' to="/admin/categories">Admin</Link></li>}
-              </ul>
-            </div>
+
+          <div className='menu col-md-6' style={{ display: (isMobileList && !toggle) ? "none" : "block" }} ref={menuRef}>
+            <ul className=''>
+              <li className='me-2'><Link onClick={() => { setToggle(!toggle) }} className='lli btn btn-outline-primary' to="/">Home</Link></li>
+              <li className='me-2'><Link onClick={() => { setToggle(!toggle) }} className='lli btn btn-outline-primary' to="/scores">Scores</Link></li>
+              <li className='me-2'><Link onClick={() => { setToggle(!toggle) }} className='lli btn btn-outline-primary' to="/favs">Favs</Link></li>
+              <li className='me-2'><Link onClick={() => { setToggle(!toggle) }} className='lli btn btn-outline-primary' to="/about">About</Link></li>
+              {admin &&
+                <li className='me-2'><Link onClick={() => { setToggle(!toggle) }} className='lli btn btn-outline-primary' to="/admin/categories">Admin</Link></li>}
+            </ul>
+          </div>
 
           {/* Log in/out and User Icon */}
           <div className='col-auto col-md-4 text-end d-flex align-items-center justify-content-end'>
@@ -99,11 +168,14 @@ export default function HeaderClient() {
             <ul className='col-auto fixed-end user-icon'>
               {userObj && userObj.img_url
                 ? <img src={userObj.img_url} className='user-image' />
-                : <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => setShowDropdown(!showDropdown)} />}
+                : <FontAwesomeIcon icon={faUserTie} className='fa-duo' onClick={() => {
+                  setShowDropdown(!showDropdown)
+                  if (toggle) setToggle(false)
+                }} />}
 
               {isMobileList && showDropdown && !user && !admin ? (
 
-                <div className="dropdown rounded-2">
+                <div className="dropdown rounded-2" ref={dropdownRef}>
                   <ul>
                     <li>
                       <Link onClick={() => setShowDropdown(!showDropdown)} to="/login">Log in</Link>
@@ -114,7 +186,7 @@ export default function HeaderClient() {
                 </div>
               )
                 : isMobileList && showDropdown &&
-                <div className="dropdown border rounded-2 m-3">
+                <div className="dropdown border rounded-2 m-3" ref={dropdownRef}>
                   <ul>
                     <li>
                       <Link onClick={() => {

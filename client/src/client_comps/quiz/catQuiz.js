@@ -40,7 +40,6 @@ export default function CatQuiz() {
     try {
       let url = API_URL + "/categories/all";
       let data = await doApiGet(url);
-      console.log("cat quit fetch cats:", data);
       setCategories(data); // Update the categories state with fetched data
     }
     catch (err) {
@@ -52,8 +51,6 @@ export default function CatQuiz() {
   // Function for fetching quiz questions data
   const fetchQuestions = async () => {
     let data;
-    console.log(userObj);
-    console.log("check cat and level:", cat, level);
     try {
       if (!user && !admin) {
         data = await doApiGet(API_URL + `/questions/levelOne/category/${cat}`);
@@ -67,7 +64,6 @@ export default function CatQuiz() {
           data = await doApiGet(API_URL + `/questions/?cat=${cat}&level=${level}&limit=10`);
         }
       }
-      console.log("quizCat - questions", data);
       if (data && data.length > 0) {
         setQuestions(data); // Update the questions state with fetched data
         setLoading(false); // Set loading state to false to indicate that the data has been fetched

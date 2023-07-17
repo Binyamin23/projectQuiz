@@ -15,7 +15,7 @@ const UpdateLevel = ({ children }) => {
     const pathParts = location.pathname.split('/');
     const catFromUrl = pathParts[2];
     const levelFromUrl = pathParts[4];
-    console.log("context: catform:", catFromUrl)
+
     if (location.pathname === '/') {
       setCat('c');
       setLevel(1);

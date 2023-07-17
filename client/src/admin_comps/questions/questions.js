@@ -111,7 +111,6 @@ export default function QuestionsList() {
 
   const onSaveEditClick = async () => {
     let url = API_URL + '/questions/' + editQuestionId;
-    console.log(editQuestion)
     try {
       let data = await doApiMethod(url, 'PUT', editQuestion);
       toast.success('Question updated');

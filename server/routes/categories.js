@@ -121,17 +121,17 @@ router.put("/edit/:id", authAdmin, async (req, res) => {
   }
   try {
     let id = req.params.id;
-    let updatedCategory = await CategoryModel.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedCategory) {
-      return res.status(404).json({ err: "Category not found" });
-    }
-    res.json(updatedCategory);
+    let updateResult = await CategoryModel.updateOne({ _id: id }, req.body);
+    
+    return res.json({ updateResult});
   }
   catch (err) {
     console.log(err);
-    res.status(502).json({ err })
+    res.status(502).json({ err });
   }
 });
+
+
 
 
 

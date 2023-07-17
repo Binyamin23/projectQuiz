@@ -13,7 +13,7 @@ import { AuthContext, CategoryContext } from '../../context/createContext';
 export default function CategoriesList() {
 
   const [ar, setAr] = useState([]);
-  const { selectedCategory, setSelectedCategory } = useContext(CategoryContext);
+  const { editCategory, setEditCategory } = useContext(CategoryContext);
 
   const [showPicture, setShowPicture] = useState(false);
   const { user, admin, setUser, setAdmin } = useContext(AuthContext);
@@ -38,7 +38,6 @@ export default function CategoriesList() {
     try {
       let url = API_URL + "/categories/all";
       let data = await doApiGet(url);
-      console.log(data);
       setAr(data)
     }
     catch (err) {
@@ -89,9 +88,9 @@ export default function CategoriesList() {
                   key={item._id}
                   item={item}
                   onXClick={() => onXClick(item._id)}
-                  setSelectedCategory={() => setSelectedCategory(item._id)}
+                  setEditCategory={() => setEditCategory(item._id)}
                   setShowPicture={() => setShowPicture(true)}
-                  selectedCategory={selectedCategory}
+                  editCategory={editCategory}
                   showPicture={showPicture}
                   isMobile={isMobile}
                 />)
