@@ -73,7 +73,8 @@ const Quiz = ({ questions }) => {
     };
 
     // Randomize the order of questions and their answers
-    const randomizedQuestions = questions.map((question) => {
+    const shuffledQuestions = shuffleArray(questions);
+    const randomizedQuestions = shuffledQuestions.map((question) => {
         const shuffledAnswers = shuffleArray(question.answers);
         const correctIndex = shuffledAnswers.indexOf(question.answers[0]);
 
