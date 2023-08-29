@@ -88,7 +88,7 @@ export default function CatQuiz() {
   // Fetch questions data when the 'cat', 'level', or 'userObj' dependency changes
   useEffect(() => {
     fetchQuestions();
-  }, [cat, level, userObj]);
+  }, [cat, level, userObj, user, admin]);
 
   // Function for handling click on the arrow icon
   const handleArrowClick = (componentId) => {
